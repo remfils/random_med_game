@@ -13,6 +13,8 @@
 		public var MOVE_WEST = false;
 		public var MOVE_NORTH = false;
 		public var MOVE_SOUTH = false;
+		
+		private var _collider:Collider;
 
 		private var vx:Number = 0;
 		private var vy:Number = 0;
@@ -23,6 +25,8 @@
 		
 		public function Player():void {
 			gotoAndStop("south");
+			
+			_collider = getChildByName( "collider" ) as Collider;
 		}
 		
 		public function setMovement(State:String, max:Boolean = true) {
@@ -101,6 +105,10 @@
 		
 			x += vx;
 			y += vy;
+		}
+		
+		public function getCollider () :Collider {
+			return _collider;
 		}
 		
 		public function getLeft():Point {
