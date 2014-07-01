@@ -13,23 +13,18 @@
 		public var MOVE_WEST = false;
 		public var MOVE_NORTH = false;
 		public var MOVE_SOUTH = false;
-
-		public var COLLIDE = false;
 		
 		private var _collider:Collider;
-
-		private var vx:Number = 0;
-		private var vy:Number = 0;
-		private var top_vx:Number = 0;
-		private var top_vy: Number = 0;
 		
-		private var P:Point;
+		private var px:Number;
+		private var py:Number;
 		
 		public function Player():void {
 			gotoAndStop("south");
-
-			
 			_collider = getChildByName( "collider" ) as Collider;
+			
+			px = x;
+			py = y;
 		}
 		
 		public function setCollide ( C:Boolean ) {
@@ -73,52 +68,26 @@
 			}
 		}
 		
-		private function getSpeed (speed:Number, max_speed:Number, acc:Number):Number {
-			var dir = max_speed - speed < 0 ? -1 : 1;
-			if ( max_speed == speed ) return max_speed;
-			else return speed += dir*acc;
-		}
-		
-		public function isStopped ():Boolean {
-			return (top_vx == 0 && top_vy == 0);
-		}
-		
 		public function move (X:Number, Y:Number):void {
-			x = X;
-			y = Y;
+			x = px = X;
+			y = py = Y;
 		}
-		
-		/*public function push (dx:Number, dy:Number) {
-			x -= dx*vx;
-			y -= dy*vy;
-		}*/
 		
 
 		public function push ( C:Collider ) {
-			if ( x < C.x ) x = C.parent.x + C.x - width - 1;
-			else x = C.parent.x + C.x + C.width + 1;
 			
-			if ( y < C.y ) y = C.parent.y + C.y - height - 1;
-			else y = C.parent.y + C.y + C.height + 1;
 		}
 		
 		/**
 		 * метод обновляющий координаты персонажа
 		 */
 		public function update():void {
-			if (MOVE_EAST) top_vx = MAX_SPEED;
-			if (MOVE_WEST) top_vx = -MAX_SPEED;
-			if (MOVE_SOUTH) top_vy = MAX_SPEED;
-			if (MOVE_NORTH) top_vy = -MAX_SPEED;
+			var ds = x - px;
 			
-			vx = getSpeed (vx,top_vx,1);
-			vy = getSpeed (vy,top_vy,1);
-
+			x += ds;
 			
-			//if ( COLLIDE ) push();
-		
-			x += vx;
-			y += vy;
+			ds = y - py
+			y += ds;
 		}
 		
 
