@@ -66,10 +66,12 @@
 		}
 		
 		public function checkCollisions () {
+			_player.setCollide(false);
 			for (var k in _doors) {
 				if ( _doors[k].checkSloppyCollision ( _player ) ) {
 					if ( _doors[k].checkCollision( _player ) ) {
-						_player.push();
+						//_player.setCollide(true);
+						_player.push( _doors[k].getCollider() );
 					}
 				}
 			}
@@ -82,7 +84,6 @@
 				case 37:
 				case 65:
 					_player.setMovement("west");
-					trace ( "1" );
 					break;
 				case 38:
 				case 87:
