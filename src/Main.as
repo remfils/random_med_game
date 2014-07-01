@@ -35,7 +35,7 @@
 		}
 		
 		// adding a wall to array
-		public function addWall (A:Collider) {
+		public function addWall ( A:Collider ) {
 			_walls.push(A);
 		}
 		
@@ -66,17 +66,21 @@
 		}
 		
 		public function checkCollisions () {
-			_player.setCollide(false);
 			for (var k in _doors) {
 				if ( _doors[k].checkSloppyCollision ( _player ) ) {
 					if ( _doors[k].checkCollision( _player ) ) {
-						//_player.setCollide(true);
 						_player.push( _doors[k].getCollider() );
 					}
 				}
 			}
 			
-			// if (_doors[0].isPlayerLeaving(_player)) gotoLevelFromDoor(0);
+			for ( k in _walls ) {
+				if ( _walls[k].checkSloppyCollision ( _player ) ) {
+					if ( _walls[k].checkCollision( _player ) ) {
+						_player.push( _walls[k] );
+					}
+				}
+			}
 		}
 		
 		public function keyDown_fun(E:KeyboardEvent) {
