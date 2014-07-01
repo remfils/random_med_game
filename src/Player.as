@@ -13,6 +13,7 @@
 		public var MOVE_WEST = false;
 		public var MOVE_NORTH = false;
 		public var MOVE_SOUTH = false;
+		public var COLLIDE = false;
 		
 		private var _collider:Collider;
 
@@ -27,6 +28,10 @@
 			gotoAndStop("south");
 			
 			_collider = getChildByName( "collider" ) as Collider;
+		}
+		
+		public function setCollide ( C:Boolean ) {
+			COLLIDE = C;
 		}
 		
 		public function setMovement(State:String, max:Boolean = true) {
@@ -86,9 +91,12 @@
 			y -= dy*vy;
 		}*/
 		
-		public function push () {
-			x -= vx;
-			y -= vy;
+		public function push ( C:Collider ) {
+			if ( x < C.x ) x = C.parent.x + C.x - width - 1;
+			else x = C.parent.x + C.x + C.width + 1;
+			
+			if ( y < C.y ) y = C.parent.y + C.y - height - 1;
+			else y = C.parent.y + C.y + C.height + 1;
 		}
 		
 		/**
@@ -102,6 +110,8 @@
 			
 			vx = getSpeed (vx,top_vx,1);
 			vy = getSpeed (vy,top_vy,1);
+			
+			//if ( COLLIDE ) push();
 		
 			x += vx;
 			y += vy;

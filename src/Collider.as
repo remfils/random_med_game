@@ -12,7 +12,7 @@
 
 		//создаём коллайдер
 		public function Collider () {
-			this.visible = false;
+			// this.visible = false;
 			
 			var w2:Number = width/2,
 				h2:Number = height/2;
@@ -42,11 +42,7 @@
 
 		// проверка столкновений
 		public function checkCollision (P:Player):Boolean {
-			return unlocked && ( hitTestPoint ( P.getBottom().x, P.getBottom().y )
-							  || hitTestPoint ( P.getTop().x, P.getTop().y )
-							  || hitTestPoint ( P.getLeft().x, P.getLeft().y )
-							  || hitTestPoint ( P.getRight().x, P.getRight().y )
-			);
+			return unlocked && this.hitTestObject(P.getCollider());
 		}
 
 	}

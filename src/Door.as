@@ -25,6 +25,10 @@
 			return !locked && _spawner.checkSloppyCollision( P );
 		}
 		
+		public function getCollider () : Collider {
+			return _collider;
+		}
+		
 		public function unlock ():void {
 			gotoAndPlay( "unlocked" );
 		}
