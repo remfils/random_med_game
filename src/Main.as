@@ -72,23 +72,7 @@
 		}
 
 		public function checkCollisions () {
-/*for (var k in _doors) {
-				if ( _doors[k].checkSloppyCollision ( _player ) ) {
-					if ( _doors[k].checkCollision( _player ) ) {
-						_player.push( _doors[k].getCollider() );
-					}
-				}
-			}
-			
-			for ( k in _walls ) {
-				if ( _walls[k].checkSloppyCollision ( _player ) ) {
-					if ( _walls[k].checkCollision( _player ) ) {
-						_player.push( _walls[k] );
-					}
-				}
-			}*/
-
-			var ray:Ray = new Ray(_player.x,_player.y,_player.getVX(),_player.getVY(), 1);
+			var ray:Ray = new Ray(_player.getCastPointX(),_player.getCastPointY(),_player.getVX(),_player.getVY(), 1);
 
 			while ( ray.collided() ) {
 				for (var k in _colliders) {

@@ -11,10 +11,13 @@
 		static public const SPEED = 4;
 		static public const D_SPEED = SPEED * Math.SQRT2 / 2;
 		
-		public var MOVE_EAST = false;
-		public var MOVE_WEST = false;
-		public var MOVE_NORTH = false;
-		public var MOVE_SOUTH = false;
+		public var MOVE_RIGHT = false;
+		public var MOVE_LEFT = false;
+		public var MOVE_UP = false;
+		public var MOVE_DOWN = false;
+		
+		private var dir_x:Number;
+		private var dir_y:Number;
 		
 		private var _collider:Collider;
 		
@@ -24,6 +27,8 @@
 		public function Player():void {
 			gotoAndStop("south");
 			_collider = getChildByName( "collider" ) as Collider;
+			dir_x = 0;
+			dir_y = -1;
 			
 			px = x;
 			py = y;
@@ -40,33 +45,29 @@
 		public function setMovement(State:String, max:Boolean = true) {
 			switch (State) {
 				case "east" :
-					MOVE_EAST = max;
+					MOVE_RIGHT = max;
 					if (!max) {
-						//top_vx = 0;
 						if ( isStopped() ) this.gotoAndStop( "stand_east" );
 					}
 					else gotoAndStop("east");
 					break;
 				case "west" :
-					MOVE_WEST = max;
+					MOVE_LEFT = max;
 					if (!max) {
-						//top_vx = 0;
 						if ( isStopped() ) this.gotoAndStop( "stand_west" );
 					}
 					else gotoAndStop("west");
 					break;
 				case "south" :
-					MOVE_SOUTH = max;
-					if (!max){
-						//top_vy = 0;
+					MOVE_DOWN = max;
+					if (!max) {
 						if ( isStopped() ) this.gotoAndStop( "stand_south" );
 					}
 					else gotoAndStop("south");
 					break;
 				case "north" :
-					MOVE_NORTH = max;
-					if (!max){
-						//top_vy = 0;
+					MOVE_UP = max;
+					if (!max) {
 						if ( isStopped() ) this.gotoAndStop( "stand_north" );
 					}
 					else gotoAndStop("north");
@@ -97,6 +98,16 @@
 			}
 		}
 		
+		public function getCastPointX () :Number {
+			if ( dir_x > 0 ) return x + width/2;
+			else return x - width/2;
+		}
+		
+		public function getCastPointY ():Number {
+			if ( dir_y > 0 ) return y + height/2;
+			else return y - height/2;
+		}
+		
 		public function update():void {
 			var ds = x - px;
 			px = x;
@@ -112,12 +123,14 @@
 			if ( Math.abs(ds) < 0.02 ) ds = 0;
 			y += ds;
 			
-			if ( MOVE_EAST )  {
-				if ( MOVE_SOUTH ) {
+			if ( MOVE_RIGHT )  {
+				dir_x = 1;
+				
+				if ( MOVE_DOWN ) {
 					x += D_SPEED;
 					y += D_SPEED;
 				}
-				else if ( MOVE_NORTH ) {
+				else if ( MOVE_UP ) {
 					x += D_SPEED;
 					y -= D_SPEED;
 				}
@@ -125,12 +138,13 @@
 				
 			}
 			
-			if ( MOVE_WEST )  {
-				if ( MOVE_SOUTH ) {
+			if ( MOVE_LEFT )  {
+				dir_x = -1;
+				if ( MOVE_DOWN ) {
 					x -= D_SPEED;
 					y += D_SPEED;
 				}
-				else if ( MOVE_NORTH ) {
+				else if ( MOVE_UP ) {
 					x -= D_SPEED;
 					y -= D_SPEED;
 				}
@@ -138,11 +152,13 @@
 				
 			}
 			
-			if ( MOVE_SOUTH && !( MOVE_EAST || MOVE_WEST ) ) {
+			if ( MOVE_DOWN && !( MOVE_RIGHT || MOVE_LEFT ) ) {
+				dir_y = 1;
 				y += SPEED;
 			}
 			
-			if ( MOVE_NORTH && !( MOVE_EAST || MOVE_WEST ) ) {
+			if ( MOVE_UP && !( MOVE_RIGHT || MOVE_LEFT ) ) {
+				dir_y = -1;
 				y -= SPEED;
 			}
 		}

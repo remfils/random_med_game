@@ -26,16 +26,8 @@
 			return _collider;
 		}
 		
-		public function checkSloppyCollision ( P:Player ):Boolean {
-			return locked && _collider.checkSloppyCollision( P );
-		}
-		
-		public function checkCollision ( P:Player ) {
-			return locked && _collider.checkCollision( P );
-		}
-		
 		public function checkSpawner ( P:Player ): Boolean {
-			return !locked && _spawner.checkSloppyCollision( P );
+			return !locked && _spawner.checkCollision( P.x, P.y );
 		}
 
 		public function unlock ():void {

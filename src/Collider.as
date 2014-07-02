@@ -32,18 +32,10 @@
 		public function lock () {
 			unlocked = true;
 		}
-		
-		// проверка простых столкновений
-		public function checkSloppyCollision ( P:Player ):Boolean {
-			return unlocked && P.x > top_left.x
-							&& P.x < bottom_right.x
-							&& P.y > top_left.y
-							&& P.y < bottom_right.y;
-		}
 
 		// проверка столкновений
-		public function checkCollision (P:Player):Boolean {
-			return unlocked && this.hitTestObject(P.getCollider());
+		public function checkCollision ( X:Number, Y:Number ):Boolean {
+			return unlocked && this.hitTestPoint( X, Y );
 		}
 		
 		public function getCollider ():Collider {
