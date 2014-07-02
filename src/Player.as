@@ -9,6 +9,7 @@
 		static public const FRICTION:Number = 0.2;
 		static public const MAX_SPEED = 6;
 		static public const SPEED = 4;
+		static public const D_SPEED = SPEED * Math.SQRT2 / 2;
 		
 		public var MOVE_EAST = false;
 		public var MOVE_WEST = false;
@@ -103,10 +104,39 @@
 			if ( Math.abs(ds) < 0.02 ) ds = 0;
 			y += ds;
 			
-			if ( MOVE_EAST ) x += SPEED;
-			if ( MOVE_WEST ) x -= SPEED;
-			if ( MOVE_SOUTH ) y += SPEED;
-			if ( MOVE_NORTH ) y -= SPEED;
+			if ( MOVE_EAST )  {
+				if ( MOVE_SOUTH ) {
+					x += D_SPEED;
+					y += D_SPEED;
+				}
+				else if ( MOVE_NORTH ) {
+					x += D_SPEED;
+					y -= D_SPEED;
+				}
+				else x += SPEED;
+				
+			}
+			
+			if ( MOVE_WEST )  {
+				if ( MOVE_SOUTH ) {
+					x -= D_SPEED;
+					y += D_SPEED;
+				}
+				else if ( MOVE_NORTH ) {
+					x -= D_SPEED;
+					y -= D_SPEED;
+				}
+				else x -= SPEED;
+				
+			}
+			
+			if ( MOVE_SOUTH && !( MOVE_EAST || MOVE_WEST ) ) {
+				y += SPEED;
+			}
+			
+			if ( MOVE_NORTH && !( MOVE_EAST || MOVE_WEST ) ) {
+				y -= SPEED;
+			}
 		}
 		
 
