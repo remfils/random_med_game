@@ -45,6 +45,10 @@
 		public function checkCollision (P:Player):Boolean {
 			return unlocked && this.hitTestObject(P.getCollider());
 		}
+		
+		public function getCollider ():Collider {
+			return this;
+		}
 
 	}
 

@@ -7,6 +7,8 @@
 		
 		// проверяет активен ли элемент
 		function active ():Boolean;
+		
+		function getCollider ():Collider;
 
 	}
 

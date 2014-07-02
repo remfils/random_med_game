@@ -29,6 +29,14 @@
 			py = y;
 		}
 		
+		public function getVX() :Number {
+			return x - px;
+		}
+		
+		public function getVY ():Number {
+			return y - py;
+		}
+		
 		public function setMovement(State:String, max:Boolean = true) {
 			switch (State) {
 				case "east" :

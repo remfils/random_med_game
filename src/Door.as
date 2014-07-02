@@ -1,7 +1,7 @@
 ﻿package src {
 	import flash.display.MovieClip;
 	
-	public class Door extends MovieClip {
+	public class Door extends MovieClip implements GameObject {
 		
 		private var locked:Boolean = true;
 		
@@ -11,6 +11,19 @@
 		public function Door() {
 			_spawner = this.getChildByName("spawner") as Collider;
 			_collider = this.getChildByName("collider") as Collider;
+		}
+		
+		// gameobjct methods
+		public function active ():Boolean {
+			return locked;
+		}
+		
+		public function update () {
+			
+		}
+		
+		public function getCollider () : Collider {
+			return _collider;
 		}
 		
 		public function checkSloppyCollision ( P:Player ):Boolean {
@@ -24,14 +37,10 @@
 		public function checkSpawner ( P:Player ): Boolean {
 			return !locked && _spawner.checkSloppyCollision( P );
 		}
-		
-
-		public function getCollider () : Collider {
-			return _collider;
-		}
 
 		public function unlock ():void {
 			gotoAndPlay( "unlocked" );
+			locked = false;
 		}
 
 	}
