@@ -11,7 +11,7 @@
 		private var ds:Number;
 		private var end_distance:Number;
 
-		public function Ray( X:Number, Y:Number, DX:Number, DY:Number, END_DISTANCE:Number ) {
+		public function Ray( X:Number, Y:Number, DX:Number, DY:Number, END_DISTANCE:Number=1 ) {
 			x = X;
 			y = Y;
 			

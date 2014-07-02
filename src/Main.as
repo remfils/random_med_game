@@ -72,17 +72,32 @@
 		}
 
 		public function checkCollisions () {
-			var ray:Ray = new Ray(_player.getCastPointX(),_player.getCastPointY(),_player.getVX(),_player.getVY(), 1);
-
-			while ( ray.collided() ) {
-				for (var k in _colliders) {
-					if (_colliders[k].hitTestPoint(ray.x,ray.y)) {
-						_player.push ( _colliders[k] );
-					}
+			var ray:Ray;
+			
+			for ( var i:int=0; i < 3; i++ ) {
+				switch ( i ) {
+					case 0:
+						ray = new Ray(_player.getCastPointX(),_player.y,_player.getVX(),_player.getVY());
+						break;
+					case 1:
+						ray = new Ray(_player.y,_player.getCastPointY(),_player.getVX(),_player.getVY());
+						break;
+					default:
+						ray = new Ray(_player.getCastPointX(),_player.getCastPointY(),_player.getVX(),_player.getVY());
 				}
+				
 
-				ray.inc ();
+				while ( ray.collided() ) {
+					for (var k in _colliders) {
+						if (_colliders[k].hitTestPoint(ray.x,ray.y)) {
+							_player.push ( _colliders[k] );
+						}
+					}
+	
+					ray.inc ();
+				}
 			}
+			
 		}
 
 		public function keyDown_fun (E:KeyboardEvent) {
