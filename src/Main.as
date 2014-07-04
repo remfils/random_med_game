@@ -10,11 +10,14 @@
 		private var finished:Boolean = false;
 
 		var _player:Player;
-
+		
 		var _colliders:Array = new Array ();
-
 		var _walls:Array = new Array();
 		var _doors:Array = new Array();
+		var _levels:Array = new Array();
+		
+		var cLevel:Level;
+		
 
 		public function Main () {
 			super ();
@@ -26,34 +29,42 @@
 		// FUNCTIONS FOR LEVEL START
 
 		// setups game
-		public function init () {
+		public function init ( doorNames:Array, wallNames:Array, gameObjectNames:Array ) {
+			// setup stage
 			this.stage.focus = this;
 			addChild (_player);
-
-			stage.addEventListener (Event.ENTER_FRAME, update);
-			stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown_fun);
-			stage.addEventListener (KeyboardEvent.KEY_UP, keyUp_fun);
-		}
-
-		// adding a wall to array
-		public function addWall ( A:Collider ) {
-			_walls.push (A);
-			_colliders.push ( A );
-		}
-
-		// adds door
-		
-		public function addDoor ( nam:String ) {
-			var door:Door = getChildByName( nam ) as Door;
 			
-			_doors.push ( door );
-			_colliders.push ( door.getCollider() );
-		}
+			// setup doors
+			var i = doorNames.length,
+				door:Door = null;
+			while ( i-- ) {
+				door = getChildByName( doorNames[i] ) as Door;
+				_doors.push ( door );
+				_colliders.push ( door.getCollider() );
+			}
+			
+			// setup walls
+			i = wallNames.length;			
+			var A:Collider = null;
 
-		// adds object
-		public function addObject ( A:ActiveObject ) {
-			_activeAreas.push ( A.getActiveArea() );
-			_colliders.push ( A.getCollider() );
+			while ( i-- ) {
+				A = getChildByName ( wallNames[i] ) as Collider ;
+				_walls.push (A);
+				_colliders.push ( A );
+			}
+
+			setUpLevel ( gameObjectNames );
+
+			// add event listeners
+			stage.addEventListener ( Event.ENTER_FRAME, update );
+			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
+			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
+		}
+		
+		public function setUpLevel ( _gameObjects:Array ) {
+			if ( _levels[ currentFrame ] == null ) {
+				cLevel = _levels [ currentFrame ] = new Level ( this, _player, _gameObjects );
+			}
 		}
 
 		public function lockDoors () {
@@ -111,14 +122,14 @@
 		}
 		
 		public function checkActiveObjectsCollision ():Boolean {
-			var i:int = _activeAreas.length;
+			/*var i:int = _activeAreas.length;
 			
 			while ( i-- ) {
 				if ( _activeAreas[i].checkCollision ( _player.x, _player.y ) ) {
 					_activeAreas[i].parent.positiveOutcome ();
 					return true;
 				}
-			}
+			}*/
 			
 			return false;
 		}

@@ -11,8 +11,8 @@
 		private var _active = true;
 
 		public function Lever () {
-			_collider = this.getChildByName( "collider" ) as Collider ;
-			_activeArea = this.getChildByName( "activeArea" ) as Collider ;
+			_collider = getChildByName( "collider" ) as Collider ;
+			_activeArea = getChildByName( "activeArea" ) as Collider ;
 		}
 		
 		public function active ():Boolean {
