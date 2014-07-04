@@ -6,7 +6,7 @@
 	import flash.geom.Point;
 
 	public class Main extends MovieClip {
-
+		// true если уровень закончен
 		private var finished:Boolean = false;
 
 		var _player:Player;
@@ -51,9 +51,8 @@
 		}
 
 		// adds object
-		public function addObject ( A:ActiveGameObject ) {
+		public function addObject ( A:ActiveObject ) {
 			_activeAreas.push ( A.getActiveArea() );
-			
 			_colliders.push ( A.getCollider() );
 		}
 
@@ -110,8 +109,22 @@
 				}
 			}
 		}
+		
+		public function checkActiveObjectsCollision ():Boolean {
+			var i:int = _activeAreas.length;
+			
+			while ( i-- ) {
+				if ( _activeAreas[i].checkCollision ( _player.x, _player.y ) ) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
 
 		public function keyDown_fun (E:KeyboardEvent) {
+			// trace (E.keyCode);
+			
 			switch (E.keyCode) {
 				case 37 :
 				case 65 :
@@ -129,8 +142,13 @@
 				case 83 :
 					_player.setMovement ("south");
 					break;
+				case 69:
+					if ( checkActiveObjectsCollision () ) {
+						if ( !finished ) openLevel ();
+					}
+					break;
 				case 32 :
-					openLevel ();
+					
 					break;
 			}
 		}

@@ -3,7 +3,7 @@
 	import flash.display.MovieClip;
 
 
-	public class Lever extends MovieClip implements ActiveGameObject {
+	public class Lever extends MovieClip implements ActiveObject {
 		
 		private var _collider:Collider;
 		private var _activeArea:Collider;

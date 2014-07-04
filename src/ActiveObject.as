@@ -1,6 +1,6 @@
 ﻿package src{
 
-	public interface ActiveObject {
+	public interface ActiveObject extends GameObject {
 
 		// Interface methods:
 		function getActiveArea ():Collider;
