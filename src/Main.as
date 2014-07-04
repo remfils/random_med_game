@@ -105,6 +105,10 @@
 							_player.push ( _colliders[k] );
 						}
 					}
+					
+					if ( cLevel.checkCollisions( ray.x, ray.y ) ) {
+						_player.push ( C );
+					}
 	
 					ray.inc ();
 				}
