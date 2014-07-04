@@ -7,6 +7,8 @@
 		
 		private var _collider:Collider;
 		private var _activeArea:Collider;
+		
+		private var _active = true;
 
 		public function Lever () {
 			_collider = this.getChildByName( "collider" ) as Collider ;
@@ -14,7 +16,7 @@
 		}
 		
 		public function active ():Boolean {
-			return true;
+			return _active;
 		}
 		
 		public function update (){}
@@ -25,6 +27,20 @@
 		
 		public function getActiveArea () :Collider {
 			return _activeArea;
+		}
+		
+		public function positiveOutcome () {
+			if ( _active ) {
+				_active = false;
+				gotoAndPlay ("open");
+			}
+		}
+		
+		public function negativeOutcome () {
+			if ( _active ) {
+				gotoAndPlay ("break");
+				_active = false;
+			}
 		}
 		
 	}

@@ -4,6 +4,10 @@
 
 		// Interface methods:
 		function getActiveArea ():Collider;
+		
+		function positiveOutcome ();
+		
+		function negativeOutcome ();
 	}
 
 }

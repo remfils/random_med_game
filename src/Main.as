@@ -12,12 +12,9 @@
 		var _player:Player;
 
 		var _colliders:Array = new Array ();
+
 		var _walls:Array = new Array();
-
 		var _doors:Array = new Array();
-		var _activeAreas:Array = new Array();
-
-		var spawner:Spawner;
 
 		public function Main () {
 			super ();
@@ -45,9 +42,12 @@
 		}
 
 		// adds door
-		public function addDoor (D:Door) {
-			_doors.push (D);
-			_colliders.push ( D.getCollider() );
+		
+		public function addDoor ( nam:String ) {
+			var door:Door = getChildByName( nam ) as Door;
+			
+			_doors.push ( door );
+			_colliders.push ( door.getCollider() );
 		}
 
 		// adds object
@@ -115,6 +115,7 @@
 			
 			while ( i-- ) {
 				if ( _activeAreas[i].checkCollision ( _player.x, _player.y ) ) {
+					_activeAreas[i].parent.positiveOutcome ();
 					return true;
 				}
 			}
