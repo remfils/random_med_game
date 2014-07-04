@@ -4,6 +4,8 @@
 	import flash.events.*;
 	import flash.ui.Keyboard;
 	import flash.geom.Point;
+	
+	import src.levels.CastleLevel;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -29,31 +31,13 @@
 		// FUNCTIONS FOR LEVEL START
 
 		// setups game
-		public function init ( doorNames:Array, wallNames:Array, gameObjectNames:Array ) {
+		public function init () {
 			// setup stage
 			this.stage.focus = this;
+			
+			setUpLevel ();
+			
 			addChild (_player);
-			
-			// setup doors
-			var i = doorNames.length,
-				door:Door = null;
-			while ( i-- ) {
-				door = getChildByName( doorNames[i] ) as Door;
-				_doors.push ( door );
-				_colliders.push ( door.getCollider() );
-			}
-			
-			// setup walls
-			i = wallNames.length;			
-			var A:Collider = null;
-
-			while ( i-- ) {
-				A = getChildByName ( wallNames[i] ) as Collider ;
-				_walls.push (A);
-				_colliders.push ( A );
-			}
-
-			setUpLevel ( gameObjectNames );
 
 			// add event listeners
 			stage.addEventListener ( Event.ENTER_FRAME, update );
@@ -61,9 +45,14 @@
 			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
 		
-		public function setUpLevel ( _gameObjects:Array ) {
+		public function setUpLevel () {
 			if ( _levels[ currentFrame ] == null ) {
-				cLevel = _levels [ currentFrame ] = new Level ( this, _player, _gameObjects );
+				cLevel = _levels [ currentFrame ] = new CastleLevel ( _player );
+				
+				// setting coordinates
+				cLevel.y = stage.stageHeight - cLevel.height;
+				
+				addChild ( cLevel );
 			}
 		}
 
@@ -104,10 +93,6 @@
 						if (_colliders[k].checkCollision(ray.x,ray.y)) {
 							_player.push ( _colliders[k] );
 						}
-					}
-					
-					if ( cLevel.checkCollisions( ray.x, ray.y ) ) {
-						_player.push ( C );
 					}
 	
 					ray.inc ();

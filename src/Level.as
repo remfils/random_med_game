@@ -2,26 +2,21 @@
 	import flash.display.Stage;
 	import flash.display.MovieClip;
 	
-	public class Level implements GameObject {
+	public class Level extends MovieClip implements GameObject {
 		var _activeAreas:Array = new Array();
-		var _activeColliders:Array = new Array();
+		var _colliders:Array = new Array();
+		var _doors:Array = new Array();
+		
 		
 		var finished:Boolean = false;
 		var _player:Player;
 
-		public function Level( main:MovieClip, player:Player, gameObjectNames:Array ) {
+		public function Level( player:Player ) {
+			// player
 			_player = player;
 			
-			// add gameObjects
-			var i = gameObjectNames.length,
-				A:ActiveObject = null;
+			// walls
 			
-			while ( i-- ) {
-				A = main.getChildByName( gameObjectNames[i] ) as ActiveObject;
-				
-				_activeAreas.push ( A.getActiveArea () );
-				_activeColliders.push ( A.getCollider () );
-			}
 		}
 		
 		public function update () {
@@ -49,7 +44,7 @@
 		
 		public function addObject ( A:ActiveObject ) {
 			_activeAreas.push ( A.getActiveArea() );
-			_activeColliders.push ( A.getCollider() );
+			_colliders.push ( A.getCollider() );
 		}
 		
 		
