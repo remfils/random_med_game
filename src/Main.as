@@ -15,7 +15,7 @@
 		var _walls:Array = new Array();
 
 		var _doors:Array = new Array();
-		var _GO:Array = new Array();
+		var _activeAreas:Array = new Array();
 
 		var spawner:Spawner;
 
@@ -51,8 +51,8 @@
 		}
 
 		// adds object
-		public function addObject (A:GameObject) {
-			_GO.push (A);
+		public function addObject ( A:ActiveGameObject ) {
+			_activeAreas.push ( A.getActiveArea() );
 			
 			_colliders.push ( A.getCollider() );
 		}
