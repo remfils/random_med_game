@@ -68,11 +68,13 @@
 
 		public function update (e:Event) {
 			_player.update ();
+			
+			cLevel.update();
 
-			checkCollisions ();
+			//checkCollisions ();
 		}
 
-		public function checkCollisions () {
+		/* public function checkCollisions () {
 			var ray:Ray;
 			
 			for ( var i:int=0; i < 3; i++ ) {
@@ -108,7 +110,7 @@
 					
 				}
 			}
-		}
+		}*/
 		
 		public function checkActiveObjectsCollision ():Boolean {
 			/*var i:int = _activeAreas.length;

@@ -8,11 +8,11 @@
 		public var level:int;
 		
 		private var _collider:Collider;
-		private var _spawner:Collider;
+		private var _exit:Collider;
 
 		public function Door() {
-			_spawner = this.getChildByName("spawner") as Collider;
-			_collider = this.getChildByName("collider") as Collider;
+			_exit = getChildByName("exit") as Collider;
+			_collider = getChildByName("collider") as Collider;
 		}
 		
 		public function setDestination ( LEVEL:int ) {
@@ -32,8 +32,12 @@
 			return _collider;
 		}
 		
-		public function checkSpawner ( P:Player ): Boolean {
-			return !locked && _spawner.checkCollision( P.x, P.y );
+		public function getExit ():Collider {
+			return _exit;
+		}
+		
+		public function checkExitCollision ( P:Player ): Boolean {
+			return !locked && _exit.checkCollision( P.x, P.y );
 		}
 		
 		public function lock ():void {

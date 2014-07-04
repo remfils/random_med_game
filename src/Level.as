@@ -6,32 +6,53 @@
 		var _activeAreas:Array = new Array();
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
+		var _exits:Array = new Array();
 		
 		
 		var finished:Boolean = false;
 		var _player:Player;
 
 		public function Level( player:Player ) {
+			// adding stuff ti level
+
 			// player
 			_player = player;
 			
 			// walls
+			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" ),
+				i:int = ar.length;
+			
+			while ( i-- ) {
+				_colliders.push ( getChildByName ( ar[i] ) as Collider );
+			}
+			
+			// doors
+			var D:Door = null;
+			ar = new Array("door0", "door1", "door2", "door3");
+			i = ar.length;
+			while ( i-- ) {
+				D = getChildByName ( ar[i] ) as Door ;
+				_doors.push( D );
+				_colliders.push( D.getCollider() );
+				_exits.push ( D.getExit() );
+			}
 			
 		}
 		
 		public function update () {
-			
+			checkCollisions();
 		}
 		
-		public function checkCollisions ( X:Number, Y:Number ):Collider {
-			var i=_activeAreas.length;
+		public function checkCollisions () {
+			
+			var i = _colliders.length;
 			while ( i-- ) {
-				if ( _activeColliders[i].checkCollision ( X, Y ) ) {
-					return  _activeColliders[i];
+				if ( _colliders[i].checkCollision ( _player.x, _player.y ) ) {
+					_player.push(_colliders[i]);
+					trace (1);
 				}
 			}
 			
-			return null;
 		}
 		
 		public function active():Boolean {
