@@ -7,6 +7,8 @@
 
 	public class Main extends MovieClip {
 
+		private var finished:Boolean = false;
+
 		var _player:Player;
 
 		var _colliders:Array = new Array ();
@@ -89,7 +91,7 @@
 
 				while ( ray.collided() ) {
 					for (var k in _colliders) {
-						if (_colliders[k].hitTestPoint(ray.x,ray.y)) {
+						if (_colliders[k].checkCollision(ray.x,ray.y)) {
 							_player.push ( _colliders[k] );
 						}
 					}
@@ -98,6 +100,15 @@
 				}
 			}
 			
+			// check spawner collision
+			if ( finished ) {
+				for ( k in _doors ) {
+					if ( _doors[k].checkSpawner ( _player ) ) {
+						goOut ( _doors[k] );
+					}
+					
+				}
+			}
 		}
 
 		public function keyDown_fun (E:KeyboardEvent) {
@@ -149,15 +160,32 @@
 
 
 		private function openLevel () {
+			finished = true;
 			for each (var k in _doors) {
 				k.unlock ();
+			}
+		}
+		
+		private function lockLevel () {
+			finished = false;
+			for(var k in _doors) {
+				_doors[k].lock ();
 			}
 		}
 
 		public function gotoLevel (frame:Number) {
 			gotoAndStop (frame);
+			
+			lockLevel ();
+		}
+		
+		public function goOut ( DOOR:Door ) {
+			gotoLevel ( DOOR.level );
+			
+			_player.move (DOOR.x, DOOR.y);
 		}
 
+// --
 		public function gotoLevelFromDoor (I:Number) {
 			gotoAndStop (_doors[I].frame);
 			_player.x = _doors[I].x;

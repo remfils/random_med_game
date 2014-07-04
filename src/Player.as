@@ -81,7 +81,7 @@
 		}
 		
 		public function isStopped () :Boolean {
-			return x - px == 0 && y - py == 0;
+			return Math.abs ( getVX() ) < 2 && Math.abs ( getVY() ) < 2 ;
 		}
 		
 
@@ -113,14 +113,14 @@
 			px = x;
 			
 			ds -= ds/2.3 + ds*ds*ds/2000;
-			if ( Math.abs(ds) < 0.02 ) ds = 0;
+			if ( Math.abs(ds) < 0.07 ) ds = 0;
 			x += ds;
 			
 			ds = y - py;
 			py = y;
 			
 			ds -= ds/2.3 + ds*ds*ds/2000;
-			if ( Math.abs(ds) < 0.02 ) ds = 0;
+			if ( Math.abs(ds) < 0.07 ) ds = 0;
 			y += ds;
 			
 			if ( MOVE_RIGHT )  {
@@ -129,12 +129,17 @@
 				if ( MOVE_DOWN ) {
 					x += D_SPEED;
 					y += D_SPEED;
+					dir_y = 1;
 				}
 				else if ( MOVE_UP ) {
 					x += D_SPEED;
 					y -= D_SPEED;
+					dir_y = -1;
 				}
-				else x += SPEED;
+				else {
+					x += SPEED;
+					dir_y = 0;
+				}
 				
 			}
 			
@@ -143,23 +148,39 @@
 				if ( MOVE_DOWN ) {
 					x -= D_SPEED;
 					y += D_SPEED;
+					dir_y = 1;
 				}
 				else if ( MOVE_UP ) {
 					x -= D_SPEED;
 					y -= D_SPEED;
+					dir_y = -1;
 				}
-				else x -= SPEED;
+				else {
+					x -= SPEED
+					dir_y = 0;
+				};
 				
 			}
 			
 			if ( MOVE_DOWN && !( MOVE_RIGHT || MOVE_LEFT ) ) {
 				dir_y = 1;
+				dir_x = 0;
 				y += SPEED;
 			}
 			
 			if ( MOVE_UP && !( MOVE_RIGHT || MOVE_LEFT ) ) {
 				dir_y = -1;
+				dir_x = 0;
 				y -= SPEED;
+			}
+			
+			// setting the face directioon
+			if ( isStopped() ) {
+				if ( dir_x == 0 ) {
+					if ( dir_y > 0 ) gotoAndStop ("stand_south");
+					else gotoAndStop ("stand_north");
+				} else if ( dir_x > 0 ) gotoAndStop ("stand_east");
+				else gotoAndStop ("stand_west");
 			}
 		}
 		

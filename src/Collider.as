@@ -13,7 +13,7 @@
 		//создаём коллайдер
 		public function Collider () {
 
-			// this.visible = false;
+			this.visible = false;
 			
 			var w2:Number = width/2,
 				h2:Number = height/2;
