@@ -49,7 +49,6 @@
 			while ( i-- ) {
 				if ( _colliders[i].checkCollision ( _player.x, _player.y ) ) {
 					_player.push(_colliders[i]);
-					trace (1);
 				}
 			}
 			

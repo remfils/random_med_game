@@ -6,18 +6,17 @@
 	import flash.geom.Point;
 	
 	import src.levels.CastleLevel;
+	import fl.transitions.Tween;
+	import fl.transitions.TweenEvent;
+	import fl.transitions.easing.*;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
 		private var finished:Boolean = false;
 
 		var _player:Player;
-		
-		var _colliders:Array = new Array ();
-		var _walls:Array = new Array();
-		var _doors:Array = new Array();
+
 		var _levels:Array = new Array();
-		
 		var cLevel:Level;
 		
 
@@ -31,37 +30,46 @@
 		// FUNCTIONS FOR LEVEL START
 
 		// setups game
-		public function init () {
+		public function init ( levels:Array ) {
 			// setup stage
 			this.stage.focus = this;
 			
-			setUpLevel ();
+			cLevel = new CastleLevel ( _player );
+			
+			createLevels ( levels );
+			
+			//setUpLevel ();
 			
 			addChild (_player);
 
 			// add event listeners
-			stage.addEventListener ( Event.ENTER_FRAME, update );
+			/*stage.addEventListener ( Event.ENTER_FRAME, update );*/
 			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
 			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
 		
-		public function setUpLevel () {
-			if ( _levels[ currentFrame ] == null ) {
-				cLevel = _levels [ currentFrame ] = new CastleLevel ( _player );
+		public function createLevels ( instructions:Array ) {
+			var	level:Level = null;
+			
+			for ( var i=0; i<instructions.length; i++ ) {
+				level = new CastleLevel ( _player );
+				level.x = instructions[i][0]*level.width;
+				level.y = instructions[i][1]*level.height;
 				
-				// setting coordinates
-				cLevel.y = stage.stageHeight - cLevel.height;
+				_levels.push ( level );
 				
-				addChild ( cLevel );
+				addChild ( level );
 			}
 		}
 
+/* отправить в level
 		public function lockDoors () {
 			for each (var k in _doors) {
 				k.lock ();
 			}
 			_walls.unlock ();
 		}
+*/
 
 
 		// FUNCTION FOR MID-LEVEL
@@ -111,20 +119,20 @@
 				}
 			}
 		}*/
-		
+/* отправить в level
 		public function checkActiveObjectsCollision ():Boolean {
-			/*var i:int = _activeAreas.length;
+			var i:int = _activeAreas.length;
 			
 			while ( i-- ) {
 				if ( _activeAreas[i].checkCollision ( _player.x, _player.y ) ) {
 					_activeAreas[i].parent.positiveOutcome ();
 					return true;
 				}
-			}*/
+			}
 			
 			return false;
 		}
-
+*/
 		public function keyDown_fun (E:KeyboardEvent) {
 			// trace (E.keyCode);
 			
@@ -146,12 +154,12 @@
 					_player.setMovement ("south");
 					break;
 				case 69:
-					if ( checkActiveObjectsCollision () ) {
+					/*if ( checkActiveObjectsCollision () ) {
 						if ( !finished ) openLevel ();
-					}
+					}*/
 					break;
 				case 32 :
-					
+					endLevel ();
 					break;
 			}
 		}
@@ -176,10 +184,27 @@
 					break;
 			}
 		}
+		
+		public function endLevel () {
+//			gotoAndStop (2) ;
+
+			cLevel = _levels[1];
+			
+			//setUpLevel();
+			
+			var tween:Tween = new Tween (this, "x",Strong.easeInOut,x,x-cLevel.width, 25);
+			
+			tween.addEventListener(TweenEvent.MOTION_FINISH, function () {
+				_player.x = cLevel.x + 100;
+				_player.y = cLevel.y + 100;
+				
+				// cLevel.showLevel ();
+			} );
+		}
 
 		// FUNCTIONS FOR END GAME
 
-
+/* отправить в level
 		private function openLevel () {
 			finished = true;
 			for each (var k in _doors) {
@@ -193,9 +218,10 @@
 				_doors[k].lock ();
 			}
 		}
-
+*/
+/*
 		public function gotoLevel (frame:Number) {
-			gotoAndStop (frame);
+			
 			
 			lockLevel ();
 		}
@@ -212,7 +238,7 @@
 			_player.x = _doors[I].x;
 			_player.y = _doors[I].y;
 		}
-
+*/
 	}
 
 }
