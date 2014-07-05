@@ -8,8 +8,8 @@
 	public class CastleLevel extends src.Level {
 		
 		
-		public function CastleLevel( player:Player ) {
-			super ( player );
+		public function CastleLevel( player:Player, END_LEVEL:Function ) {
+			super ( player, END_LEVEL );
 		}
 	}
 	

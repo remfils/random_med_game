@@ -34,7 +34,7 @@
 			// setup stage
 			this.stage.focus = this;
 			
-			cLevel = new CastleLevel ( _player );
+			cLevel = new CastleLevel ( _player, nextLevel );
 			
 			createLevels ( levels );
 			
@@ -43,7 +43,7 @@
 			addChild (_player);
 
 			// add event listeners
-			/*stage.addEventListener ( Event.ENTER_FRAME, update );*/
+			stage.addEventListener ( Event.ENTER_FRAME, update );
 			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
 			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
@@ -52,7 +52,7 @@
 			var	level:Level = null;
 			
 			for ( var i=0; i<instructions.length; i++ ) {
-				level = new CastleLevel ( _player );
+				level = new CastleLevel ( _player, nextLevel );
 				level.x = instructions[i][0]*level.width;
 				level.y = instructions[i][1]*level.height;
 				
@@ -60,6 +60,9 @@
 				
 				addChild ( level );
 			}
+			
+			cLevel = _levels[0];
+			cLevel.lock();
 		}
 
 /* отправить в level
@@ -71,15 +74,12 @@
 		}
 */
 
-
 		// FUNCTION FOR MID-LEVEL
 
 		public function update (e:Event) {
 			_player.update ();
 			
 			cLevel.update();
-
-			//checkCollisions ();
 		}
 
 		/* public function checkCollisions () {
@@ -159,7 +159,7 @@
 					}*/
 					break;
 				case 32 :
-					endLevel ();
+					nextLevel (1);
 					break;
 			}
 		}
@@ -185,8 +185,18 @@
 			}
 		}
 		
+		public function nextLevel ( I:int ) {
+			cLevel = _levels[I];
+			
+			var tween:Tween = new Tween (this, "x",Strong.easeInOut, x, -cLevel.x, 25);
+			
+			tween.addEventListener(TweenEvent.MOTION_FINISH, function () {
+				cLevel.lock();
+			} );
+		}
+		
 		public function endLevel () {
-//			gotoAndStop (2) ;
+			cLevel.unlock();
 
 			cLevel = _levels[1];
 			
@@ -195,10 +205,7 @@
 			var tween:Tween = new Tween (this, "x",Strong.easeInOut,x,x-cLevel.width, 25);
 			
 			tween.addEventListener(TweenEvent.MOTION_FINISH, function () {
-				_player.x = cLevel.x + 100;
-				_player.y = cLevel.y + 100;
-				
-				// cLevel.showLevel ();
+				cLevel.lock();
 			} );
 		}
 

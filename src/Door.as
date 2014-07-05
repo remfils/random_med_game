@@ -53,6 +53,10 @@
 			
 			_collider.unlock();
 		}
+		
+		public function hide () {
+			visible = false;
+		}
 
 	}
 	

@@ -11,12 +11,16 @@
 		
 		var finished:Boolean = false;
 		var _player:Player;
+		
+		var endLevel:Function;
 
-		public function Level( player:Player ) {
+		public function Level( player:Player, END_LEVEL:Function ) {
 			// adding stuff ti level
 
 			// player
 			_player = player;
+			
+			endLevel = END_LEVEL;
 			
 			// walls
 			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" ),
@@ -32,10 +36,13 @@
 			i = ar.length;
 			while ( i-- ) {
 				D = getChildByName ( ar[i] ) as Door ;
+				D.hide();
 				_doors.push( D );
 				_colliders.push( D.getCollider() );
 				_exits.push ( D.getExit() );
 			}
+			
+			unlock();
 			
 		}
 		
@@ -49,6 +56,15 @@
 			while ( i-- ) {
 				if ( _colliders[i].checkCollision ( _player.x, _player.y ) ) {
 					_player.push(_colliders[i]);
+				}
+			}
+			
+			if ( finished ) {
+				i = _exits.length;
+				while ( i-- ) {
+					if ( _exits[i].checkCollision ( _player.x, _player.y ) ) {
+						endLevel ( i );
+					}
 				}
 			}
 			
@@ -67,6 +83,21 @@
 			_colliders.push ( A.getCollider() );
 		}
 		
+		public function lock () {
+			var i=_doors.length;
+			
+			while ( i-- ) {
+				_doors[i].lock ();
+			}
+		}
+		
+		public function unlock () {
+			var i=_doors.length;
+			
+			while ( i-- ) {
+				_doors[i].unlock ();
+			}
+		}
 		
 		public function negativeOutcome ( A:ActiveObject ) {
 			A.negativeOutcome ();
