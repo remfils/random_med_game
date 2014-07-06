@@ -37,13 +37,43 @@
 			while ( i-- ) {
 				D = getChildByName ( ar[i] ) as Door ;
 				D.hide();
+				
 				_doors.push( D );
 				_colliders.push( D.getCollider() );
 				_exits.push ( D.getExit() );
 			}
 			
-			unlock();
+		}
+		
+		public function setNextLevel ( doors:Array ) {
+			var i = doors.length;
 			
+			while ( i-- ) {
+				switch ( doors[i].exitDirection ) {
+					case "left" :
+						_doors[0].show();
+						_doors[0].unlock();
+						_doors[0].setGoto ( doors[i].nextLevel );
+						break;
+					case "right" :
+						_doors[2].show();
+						_doors[2].unlock();
+						_doors[2].setGoto ( doors[i].nextLevel );
+						break;
+					case "up" :
+					case "top" :
+						_doors[3].show();
+						_doors[3].unlock();
+						_doors[3].setGoto ( doors[i].nextLevel );
+						break;
+					case "down" :
+					case "bottom":
+						_doors[1].show();
+						_doors[1].unlock();
+						_doors[1].setGoto ( doors[i].nextLevel );
+						break;
+				}
+			}
 		}
 		
 		public function update () {
@@ -63,11 +93,39 @@
 				i = _exits.length;
 				while ( i-- ) {
 					if ( _exits[i].checkCollision ( _player.x, _player.y ) ) {
-						endLevel ( i );
+						endLevel ( _exits[i].parent );
+						return;
+						//endLevel ( i );
 					}
 				}
 			}
 			
+		}
+		
+		public function getOppositeDoor ( d:Door ):Door {
+			var doorRotation = d.rotation;
+			
+			//trace (doorRotation);
+			
+			switch ( doorRotation ) {
+				case 90:
+					doorRotation = -90;
+					break;
+				case 180:
+				case -180:
+					doorRotation = 0;
+					break;
+				default:
+					doorRotation += 180;
+			}
+				
+			var i = _doors.length;
+			
+			while ( i-- ) {
+				if ( _doors[i].rotation == doorRotation ) return _doors[i];
+			}
+			
+			return new Door();
 		}
 		
 		public function active():Boolean {
@@ -93,10 +151,16 @@
 		
 		public function unlock () {
 			var i=_doors.length;
-			
+
 			while ( i-- ) {
 				_doors[i].unlock ();
 			}
+		}
+		
+		public function finish () {
+			unlock();
+			
+			finished = true;
 		}
 		
 		public function negativeOutcome ( A:ActiveObject ) {

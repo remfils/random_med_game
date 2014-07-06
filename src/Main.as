@@ -9,10 +9,13 @@
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.*;
+	import src.stat.PlayerStat;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
-		private var finished:Boolean = false;
+		private var blockControlls:Boolean = false;
+
+		var stat:PlayerStat;
 
 		var _player:Player;
 
@@ -38,9 +41,16 @@
 			
 			createLevels ( levels );
 			
-			//setUpLevel ();
+			y = _levels[0].y + stage.stageHeight - _levels[0].height;
 			
+			//setUpLevel ();
 			addChild (_player);
+			
+			// setup menu
+			stat = new PlayerStat();
+			stat.x = 0;
+			stat.y = 0;
+			addChild (stat);
 
 			// add event listeners
 			stage.addEventListener ( Event.ENTER_FRAME, update );
@@ -55,6 +65,8 @@
 				level = new CastleLevel ( _player, nextLevel );
 				level.x = instructions[i][0]*level.width;
 				level.y = instructions[i][1]*level.height;
+				
+				level.setNextLevel ( instructions[i][2] );
 				
 				_levels.push ( level );
 				
@@ -79,7 +91,7 @@
 		public function update (e:Event) {
 			_player.update ();
 			
-			cLevel.update();
+			if ( !blockControlls ) cLevel.update();
 		}
 
 		/* public function checkCollisions () {
@@ -136,6 +148,8 @@
 		public function keyDown_fun (E:KeyboardEvent) {
 			// trace (E.keyCode);
 			
+			if ( blockControlls ) return;
+			
 			switch (E.keyCode) {
 				case 37 :
 				case 65 :
@@ -159,7 +173,7 @@
 					}*/
 					break;
 				case 32 :
-					nextLevel (1);
+					cLevel.finish ();
 					break;
 			}
 		}
@@ -185,13 +199,25 @@
 			}
 		}
 		
-		public function nextLevel ( I:int ) {
-			cLevel = _levels[I];
+		public function nextLevel ( exitDoor:Door ) {
+			cLevel = _levels[ exitDoor.goto ];
 			
-			var tween:Tween = new Tween (this, "x",Strong.easeInOut, x, -cLevel.x, 25);
+			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			
-			tween.addEventListener(TweenEvent.MOTION_FINISH, function () {
+			//trace (enterDoor.y);
+			
+			blockControlls = true;
+			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, cLevel.x + enterDoor.x, 25 );
+			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, cLevel.y + enterDoor.y, 25 );
+			
+			//trace (cLevel.y);
+			
+			var tweenX:Tween = new Tween (this, "x",Strong.easeInOut, x, -cLevel.x, 25);
+			var tweenY:Tween = new Tween (this, "y",Strong.easeInOut, y, -cLevel.y + stage.stageHeight - cLevel.height, 25);
+			
+			tweenX.addEventListener(TweenEvent.MOTION_FINISH, function () {
 				cLevel.lock();
+				blockControlls = false;
 			} );
 		}
 		

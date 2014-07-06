@@ -6,5 +6,5 @@ flashProFiles/flashProID=1403998568079
 flashProFiles/asVersion=0
 flashProFiles/boundTemplate=C:/Users/Влад/AppData/Local/Adobe/Flash CS6/en_US/Configuration/ActionScript 3.0/Templates/boundClass_as3.as
 flashProFiles/classTemplate=C:/Users/Влад/AppData/Local/Adobe/Flash CS6/en_US/Configuration/ActionScript 3.0/Templates/standardClass_as3.as
-flashProFiles/recentFiles=src/Door.as;src/helpers/DoorLink.as;src/levels/CastleLevel.as;src/Level.as;src/Main.as;main.fla;src/GameObjects/Lever.as;src/Collider.as;src/GameObject.as;src/CollisionManager.as;src/stat/Statistics.as;src/ActiveObject.as;src/Player.as;src/Ray.as;src/Spawner.as
+flashProFiles/recentFiles=src/Main.as;src/stat/PlayerStat.as;main.fla;src/task/TaskEvent.as;src/task/Task.as;src/Door.as;src/helpers/DoorLink.as;src/levels/CastleLevel.as;src/Level.as;src/GameObjects/Lever.as;src/Collider.as;src/GameObject.as;src/CollisionManager.as;src/stat/Statistics.as;src/ActiveObject.as;src/Player.as;src/Ray.as;src/Spawner.as
 flashProFiles/locations=

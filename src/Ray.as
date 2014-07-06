@@ -1,5 +1,9 @@
-﻿package src {
-	
+﻿
+package src {
+	/**
+	 * Класс для просцета столкновений персонажа с обьектами
+	 * Содает луч, точки которого проверяются в столкновениях
+	 */
 	public class Ray {
 		
 		public var x:Number;
@@ -24,6 +28,10 @@
 			dy = DY/d/3;
 		}
 		
+		/**
+		 * меняет положение точки луча на шаг
+		 * @return [description]
+		 */
 		public function inc () {
 			x += dx;
 			y += dy;
@@ -31,6 +39,10 @@
 			ds += Math.sqrt( dx*dx + dy*dy );
 		}
 		
+		/**
+		 * Возвращает true если луч закончил свой ход
+		 * @return [description]
+		 */
 		public function collided ():Boolean {
 			return ds < end_distance;
 		}

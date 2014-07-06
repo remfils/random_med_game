@@ -5,6 +5,8 @@
 		
 		private var locked:Boolean = true;
 		
+		public var goto:int;
+		
 		public var level:int;
 		
 		private var _collider:Collider;
@@ -13,10 +15,16 @@
 		public function Door() {
 			_exit = getChildByName("exit") as Collider;
 			_collider = getChildByName("collider") as Collider;
+			
+			show();
 		}
 		
 		public function setDestination ( LEVEL:int ) {
 			level = LEVEL;
+		}
+		
+		public function setGoto ( I:int ) {
+			goto = I;
 		}
 		
 		// gameobjct methods
@@ -47,15 +55,20 @@
 			_collider.lock();
 		}
 
-		public function unlock ():void {
-			gotoAndPlay( "unlocked" );
-			locked = false;
-			
-			_collider.unlock();
+		public function unlock () {
+			if ( visible ) {
+				gotoAndPlay( "unlocked" );
+				locked = false;
+				_collider.unlock();
+			}
 		}
 		
 		public function hide () {
 			visible = false;
+		}
+		
+		public function show () {
+			visible = true;
 		}
 
 	}
