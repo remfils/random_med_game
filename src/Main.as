@@ -43,7 +43,7 @@
 			
 			createLevels ( levels );
 			
-			y = _levels[0].y + stage.stageHeight - _levels[0].height;
+			levelMap.y = _levels[0].y + stage.stageHeight - _levels[0].height;
 			
 			//setUpLevel ();
 			addChild (_player);
@@ -209,17 +209,18 @@
 			cLevel = _levels[ exitDoor.goto ];
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
+			var correctY = stage.stageHeight - cLevel.height;
 			
 			//trace (enterDoor.y);
 			
 			blockControlls = true;
 			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, enterDoor.x, 25 );
-			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, enterDoor.y, 25 );
+			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, enterDoor.y + correctY, 25 );
 			
 			//trace (cLevel.y);
 			
 			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 25);
-			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y , 25);
+			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 25);
 			
 			tweenX.addEventListener(TweenEvent.MOTION_FINISH, function () {
 				cLevel.lock();
