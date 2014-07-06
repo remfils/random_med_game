@@ -22,6 +22,8 @@
 		var _levels:Array = new Array();
 		var cLevel:Level;
 		
+		var levelMap:MovieClip;
+		
 
 		public function Main () {
 			super ();
@@ -61,6 +63,8 @@
 		public function createLevels ( instructions:Array ) {
 			var	level:Level = null;
 			
+			levelMap = new MovieClip();
+			
 			for ( var i=0; i<instructions.length; i++ ) {
 				level = new CastleLevel ( _player, nextLevel );
 				level.x = instructions[i][0]*level.width;
@@ -70,8 +74,10 @@
 				
 				_levels.push ( level );
 				
-				addChild ( level );
+				levelMap.addChild ( level );
 			}
+			
+			addChild ( levelMap );
 			
 			cLevel = _levels[0];
 			cLevel.lock();
@@ -207,13 +213,13 @@
 			//trace (enterDoor.y);
 			
 			blockControlls = true;
-			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, cLevel.x + enterDoor.x, 25 );
-			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, cLevel.y + enterDoor.y, 25 );
+			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, enterDoor.x, 25 );
+			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, enterDoor.y, 25 );
 			
 			//trace (cLevel.y);
 			
-			var tweenX:Tween = new Tween (this, "x",Strong.easeInOut, x, -cLevel.x, 25);
-			var tweenY:Tween = new Tween (this, "y",Strong.easeInOut, y, -cLevel.y + stage.stageHeight - cLevel.height, 25);
+			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 25);
+			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y , 25);
 			
 			tweenX.addEventListener(TweenEvent.MOTION_FINISH, function () {
 				cLevel.lock();
