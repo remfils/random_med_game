@@ -1,9 +1,9 @@
-package src.task {
+﻿package src.task {
 	
 	public class Task {
 
-		public function Task() {
-			// constructor code
+		public function Task( onComplete:Function ) {
+			
 		}
 
 	}
