@@ -45,6 +45,13 @@
 			
 			levelMap.y = _levels[0].y + stage.stageHeight - _levels[0].height;
 			
+			_levels[1].addTask();
+			_levels[3].addTask();
+			_levels[4].addTask();
+			_levels[6].addTask();
+			_levels[7].addTask();
+			_levels[10].addTask();
+			
 			//setUpLevel ();
 			addChild (_player);
 			
@@ -174,12 +181,12 @@
 					_player.setMovement ("south");
 					break;
 				case 69:
-					/*if ( checkActiveObjectsCollision () ) {
-						if ( !finished ) openLevel ();
-					}*/
+					var A:ActiveObject = cLevel.checkActiveAreasCollision();
+					if ( A == null ) return;
+					A.action();
 					break;
 				case 32 :
-					cLevel.finish ();
+					//cLevel.finish ();
 					break;
 			}
 		}

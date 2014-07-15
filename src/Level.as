@@ -1,15 +1,17 @@
 ﻿package src {
 	import flash.display.Stage;
 	import flash.display.MovieClip;
+	import src.GameObjects.Lever;
+	import src.stat.Random;
 	
 	public class Level extends MovieClip implements GameObject {
+		var _gameObjects:Array = new Array();
 		var _activeAreas:Array = new Array();
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
 		
-		
-		var finished:Boolean = false;
+		var finished:Boolean = true;
 		var _player:Player;
 		
 		var endLevel:Function;
@@ -76,6 +78,40 @@
 			}
 		}
 		
+		public function addTask () {
+			var levers:Array = new Array(),
+				L:Lever;
+			
+			for	( var i=0; i < 3; i++ ){
+				L = new Lever( negativeOutcome );
+				L.y = 200;
+				L.x = 170 + i*L.width + i*10;
+				addChild( L );
+				
+				L.gotoAndStop(1);
+				
+				_gameObjects.push (L);
+				_activeAreas.push(L.getActiveArea());
+				_colliders.push(L.getCollider());
+			}
+			
+			var j = Random.getNumber();
+			_gameObjects[j].setFun ( positiveOutcome );
+			finished = false;
+			
+		}
+		
+		// in task
+		public function negativeOutcome():Boolean {
+			
+			return false;
+		}
+		
+		public function positiveOutcome():Boolean {
+			finish();
+			return true;
+		}
+		
 		public function update () {
 			checkCollisions();
 		}
@@ -100,6 +136,18 @@
 				}
 			}
 			
+		}
+		
+		public function checkActiveAreasCollision ():ActiveObject {
+			var i = _activeAreas.length;
+			
+			while ( i-- ) {
+				if ( _activeAreas[i].checkCollision( _player.x, _player.y) ) {
+					return _activeAreas[i].parent;
+				}
+			}
+			
+			return null;
 		}
 		
 		public function getOppositeDoor ( d:Door ):Door {
@@ -142,6 +190,8 @@
 		}
 		
 		public function lock () {
+			if ( finished ) return;
+			
 			var i=_doors.length;
 			
 			while ( i-- ) {
@@ -161,15 +211,6 @@
 			unlock();
 			
 			finished = true;
-		}
-		
-		public function negativeOutcome ( A:ActiveObject ) {
-			A.negativeOutcome ();
-			// обработка результатов здесь
-		}
-		
-		public function positimeOutcome ( A:ActiveObject ) {
-			A.positiveOutcome ();
 		}
 
 	}

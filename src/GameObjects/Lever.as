@@ -1,16 +1,20 @@
-﻿package src.levels {
+﻿package src.GameObjects {
 
 	import flash.display.MovieClip;
+	import src.ActiveObject;
 
 
 	public class Lever extends MovieClip implements ActiveObject {
 		
 		private var _collider:Collider;
 		private var _activeArea:Collider;
-		
 		private var _active = true;
+		
+		private var testFun:Function;
 
-		public function Lever () {
+		public function Lever (fun:Function) {
+			testFun = fun;
+			
 			_collider = getChildByName( "collider" ) as Collider ;
 			_activeArea = getChildByName( "activeArea" ) as Collider ;
 		}
@@ -25,24 +29,26 @@
 			return _collider;
 		}
 		
-		public function getActiveArea () :Collider {
+		public function getActiveArea ():Collider {
 			return _activeArea;
 		}
 		
-		public function positiveOutcome () {
-			if ( _active ) {
-				_active = false;
-				gotoAndPlay ("open");
-			}
+		public function setFun ( f:Function ) {
+			testFun = f;
 		}
 		
-		public function negativeOutcome () {
+		public function action () {
 			if ( _active ) {
-				gotoAndPlay ("break");
+				if ( testFun () ) {
+					gotoAndPlay("open");
+				}
+				else {
+					gotoAndPlay("break");
+				}
+				
 				_active = false;
 			}
 		}
-		
 	}
 
 }
