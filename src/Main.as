@@ -29,7 +29,7 @@
 			super ();
 
 			_player = new Player();
-			_player.move (200,200);
+			_player.move (385,400);
 		}
 
 		// FUNCTIONS FOR LEVEL START
@@ -77,7 +77,7 @@
 				level.x = instructions[i][0]*level.width;
 				level.y = instructions[i][1]*level.height;
 				
-				level.setNextLevel ( instructions[i][2] );
+				level.setNextLevel ( instructions[i][2],instructions[i][3] );
 				
 				_levels.push ( level );
 				
@@ -186,7 +186,7 @@
 					A.action();
 					break;
 				case 32 :
-					//cLevel.finish ();
+					stat.nextMenuTheme();
 					break;
 			}
 		}

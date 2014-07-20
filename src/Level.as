@@ -47,8 +47,17 @@
 			
 		}
 		
-		public function setNextLevel ( doors:Array ) {
+		public function setNextLevel ( STATE:String, doors:Array ) {
 			var i = doors.length;
+			
+			switch (STATE) {
+				case "start":
+					gotoAndStop("start_room");
+					break;
+				case "normal":
+					gotoAndStop ("normal_room_1");
+					break;
+			}
 			
 			while ( i-- ) {
 				switch ( doors[i].exitDirection ) {
@@ -85,7 +94,7 @@
 			for	( var i=0; i < 3; i++ ){
 				L = new Lever( negativeOutcome );
 				L.y = 200;
-				L.x = 170 + i*L.width + i*10;
+				L.x = 250 + i*L.width + i*40;
 				addChild( L );
 				
 				L.gotoAndStop(1);
