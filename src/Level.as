@@ -54,8 +54,23 @@
 				case "start":
 					gotoAndStop("start_room");
 					break;
-				case "normal":
+				case "normal1":
 					gotoAndStop ("normal_room_1");
+					break;
+				case "normal2":
+					gotoAndStop ("normal_room_2");
+					break;
+				case "normal3":
+					gotoAndStop ("normal_room_3");
+					break;
+				case "normal4":
+					gotoAndStop ("normal_room_4");
+					break;
+				case "normal5":
+					gotoAndStop ("normal_room_5");
+					break;
+				case "normal6":
+					gotoAndStop ("normal_room_6");
 					break;
 			}
 			

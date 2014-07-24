@@ -16,7 +16,7 @@
 		
 		public function nextMenuTheme () {
 			current_theme ++;
-			if (current_theme == totalFrames) current_theme = 1;
+			if (current_theme == totalFrames + 1) current_theme = 1;
 			gotoAndStop( current_theme );
 		}
 	}
