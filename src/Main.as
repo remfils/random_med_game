@@ -10,6 +10,7 @@
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.*;
 	import src.stat.PlayerStat;
+	import src.stat.Map;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -41,6 +42,12 @@
 			
 			cLevel = new CastleLevel ( _player, nextLevel );
 			
+			// setup menu
+			stat = new PlayerStat();
+			stat.x = 0;
+			stat.y = 0;
+			addChild (stat);
+			
 			createLevels ( levels );
 			
 			levelMap.y = _levels[0].y + stage.stageHeight - _levels[0].height;
@@ -55,11 +62,7 @@
 			//setUpLevel ();
 			addChild (_player);
 			
-			// setup menu
-			stat = new PlayerStat();
-			stat.x = 0;
-			stat.y = 0;
-			addChild (stat);
+			this.setChildIndex(stat,1);
 
 			// add event listeners
 			stage.addEventListener ( Event.ENTER_FRAME, update );
@@ -85,6 +88,9 @@
 			}
 			
 			addChild ( levelMap );
+			
+			var map:Map = stat.getMapMC();
+			map.setUpRooms(instructions);
 			
 			cLevel = _levels[0];
 			cLevel.lock();
