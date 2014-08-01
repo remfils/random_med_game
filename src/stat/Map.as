@@ -10,14 +10,49 @@
 		private var HEIGHT:int = 6;
 
 		public function Map() {
-			_rooms = new Array();
-			
 			miniMap = new Sprite();
 			addChild(miniMap);
 		}
 		
+		public function setUpScale (levels:Array) {
+			var max_x = 0,
+				max_y = 0,
+				min_x = 0,
+				min_y = 0,
+				I:int, J:int;
+			
+			for ( var i:String in levels ) {
+				I = int(i);
+				if ( max_x < I ) max_x = I;
+				if ( min_x > I ) min_x = I;
+				
+				for ( var j:String in levels[I] ) {
+					J = int (j);
+					if ( max_y < J ) max_y = J;
+					if ( min_y > J ) min_y = J;
+				}
+			}
+			
+			trace (max_x, max_y, min_x, min_y);
+			
+			WIDTH = width / ( max_x - min_x + 1 );
+			HEIGHT = height / ( max_y - min_y + 1 );
+			
+			miniMap.x -= WIDTH * min_x;
+			miniMap.y -= HEIGHT * min_y;
+		}
+		
+		public function update(levels:Array, cLevelX:int, cLevelY:int) {
+			addLevel(cLevelX, cLevelY);
+		}
+		
+		public function adjustSize () {
+			miniMap.width = width - 10;
+			miniMap.height = height - 10;
+		}
+		
 		public function setUpRooms( instructions:Array ) {
-			adjustRoomSize(instructions);
+			//adjustRoomSize(instructions);
 			
 			for (var i:int=instructions.length-1; i>=0; i--) {
 				addLevel(instructions[i][0],instructions[i][1]);
@@ -27,8 +62,8 @@
 			miniMap.y = height/2;
 		}
 		
-		public function adjustRoomSize(instructions:Array):void {
-			var i = instructions.length,
+		public function adjustRoomSize():void {
+			/*var i = instructions.length,
 				max_x = 0,
 				max_y = 0,
 				min_x = 0,
@@ -42,7 +77,7 @@
 			}
 			
 			HEIGHT = height/ (max_y - min_y + 1);
-			WIDTH = width/ (max_x - min_x + 1);
+			WIDTH = width/ (max_x - min_x + 1);*/
 		}
 		
 		private function addLevel (i:int, j:int) {

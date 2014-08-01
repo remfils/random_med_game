@@ -23,14 +23,16 @@
 		public var MOVE_DOWN = false;
 		
 		// направление персонажа
-		private var dir_x:Number;
-		private var dir_y:Number;
+		private var dx:Number;
+		private var dy:Number;
 		//коллайдер персонажа
 		private var _collider:Collider;
 		// предидущие координаты персонажа
 		// нужны для движения персонажа и столкновений
 		private var px:Number;
 		private var py:Number;
+		
+		private var currentBullet;
 		
 		public function Player():void {
 			// задаём стандартное направление
@@ -43,6 +45,8 @@
 			
 			px = x;
 			py = y;
+			
+			currentBullet = Spark;
 		}
 		/** получаем скорость по оси х */
 		public function getVX() :Number {
@@ -133,21 +137,21 @@
 		}
 		/** обновляет положение персонажа */
 		public function update():void {
-			var ds = x - px;
+			dx = x - px;
 			px = x;
 			
-			ds -= ds/2.3 + ds*ds*ds/2000;
-			if ( Math.abs(ds) < 0.07 ) ds = 0;
-			x += ds;
+			dx -= dx/2.3 + dx*dx*dx/2000;
+			if ( Math.abs(dx) < 0.07 ) dx = 0;
+			x += dx;
 			
-			ds = y - py;
+			dy = y - py;
 			py = y;
 			
-			ds -= ds/2.3 + ds*ds*ds/2000;
-			if ( Math.abs(ds) < 0.07 ) ds = 0;
-			y += ds;
+			dy -= dy/2.3 + dy*dy*dy/2000;
+			if ( Math.abs(dy) < 0.07 ) dy = 0;
+			y += dy;
 			
-			if ( MOVE_RIGHT )  {
+			if ( dx > 0 )  {
 				dir_x = 1;
 				
 				if ( MOVE_DOWN ) {
@@ -211,6 +215,10 @@
 
 		public function getCollider () :Collider {
 			return _collider;
+		}
+		
+		public function getBullet ():Bullet {
+			return currentBullet.getBullet();
 		}
 	}
 }

@@ -23,8 +23,28 @@
 			level = LEVEL;
 		}
 		
-		public function setGoto ( I:int ) {
-			goto = I;
+		public function getDirection ():String {
+			var doorRotation = rotation;
+			
+			switch ( doorRotation ) {
+				case 90:
+					doorRotation = -90;
+					break;
+				case 180:
+				case -180:
+					doorRotation = 0;
+					break;
+				default:
+					doorRotation += 180;
+			}
+			
+			switch ( doorRotation ) {
+				case   0: return "down";
+				case  90: return "left";
+				case -90: return "right";
+				case 180: return "up";
+				default: return "left";
+			}
 		}
 		
 		// gameobjct methods

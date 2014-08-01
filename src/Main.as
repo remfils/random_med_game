@@ -23,6 +23,9 @@
 		var _levels:Array = new Array();
 		var cLevel:Level;
 		
+		var cLevel_x:int = 0;
+		var cLevel_y:int = 0;
+		
 		var levelMap:MovieClip;
 		
 
@@ -50,14 +53,9 @@
 			
 			createLevels ( levels );
 			
-			levelMap.y = _levels[0].y + stage.stageHeight - _levels[0].height;
+			levelMap.y = cLevel.y + stage.stageHeight - cLevel.height;
 			
-			_levels[1].addTask();
-			_levels[3].addTask();
-			_levels[4].addTask();
-			_levels[6].addTask();
-			_levels[7].addTask();
-			_levels[10].addTask();
+			_levels[-1][0].addTask();
 			
 			//setUpLevel ();
 			addChild (_player);
@@ -82,7 +80,14 @@
 				
 				level.setNextLevel ( instructions[i][2],instructions[i][3] );
 				
-				_levels.push ( level );
+				if ( _levels[ instructions[i][0] ] ) {
+					_levels[ instructions[i][0] ][ instructions[i][1] ] = level;
+				}
+				else {
+					_levels[ instructions[i][0] ] = new Array();
+					_levels[ instructions[i][0] ][ instructions[i][1] ] = level;
+				}
+				
 				
 				levelMap.addChild ( level );
 			}
@@ -90,9 +95,10 @@
 			addChild ( levelMap );
 			
 			var map:Map = stat.getMapMC();
-			map.setUpRooms(instructions);
+			map.setUpScale(_levels);
+			map.update(_levels,cLevel_x, cLevel_y);
 			
-			cLevel = _levels[0];
+			cLevel = _levels[cLevel_x][cLevel_y];
 			cLevel.lock();
 		}
 
@@ -165,7 +171,7 @@
 		}
 */
 		public function keyDown_fun (E:KeyboardEvent) {
-			// trace (E.keyCode);
+			//trace (E.keyCode);
 			
 			if ( blockControlls ) return;
 			
@@ -194,6 +200,9 @@
 				case 32 :
 					stat.nextMenuTheme();
 					break;
+				case 74 :
+					cLevel.addBullet(_player.getBullet());
+					break;
 			}
 		}
 
@@ -219,10 +228,29 @@
 		}
 		
 		public function nextLevel ( exitDoor:Door ) {
-			cLevel = _levels[ exitDoor.goto ];
+			var doorDirection = exitDoor.getDirection();
+			
+			switch ( doorDirection ) {
+				case "up":
+					cLevel_y --;
+					break;
+				case "down":
+					cLevel_y ++;
+					break;
+				case "left":
+					cLevel_x --;
+					break;
+				case "right":
+					cLevel_x ++;
+					break;
+			}
+			cLevel = _levels[ cLevel_x ][ cLevel_y ] ;
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			var correctY = stage.stageHeight - cLevel.height;
+			
+			var map = stat.getMapMC();
+			map.update(_levels, cLevel_x, cLevel_y);
 			
 			//trace (enterDoor.y);
 			

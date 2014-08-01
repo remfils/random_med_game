@@ -10,6 +10,7 @@
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
+		var _bullets:Array = new Array();
 		
 		var finished:Boolean = true;
 		var _player:Player;
@@ -75,28 +76,24 @@
 			}
 			
 			while ( i-- ) {
-				switch ( doors[i].exitDirection ) {
+				switch ( doors[i] ) {
 					case "left" :
 						_doors[0].show();
 						_doors[0].unlock();
-						_doors[0].setGoto ( doors[i].nextLevel );
 						break;
 					case "right" :
 						_doors[2].show();
 						_doors[2].unlock();
-						_doors[2].setGoto ( doors[i].nextLevel );
 						break;
 					case "up" :
 					case "top" :
 						_doors[3].show();
 						_doors[3].unlock();
-						_doors[3].setGoto ( doors[i].nextLevel );
 						break;
 					case "down" :
 					case "bottom":
 						_doors[1].show();
 						_doors[1].unlock();
-						_doors[1].setGoto ( doors[i].nextLevel );
 						break;
 				}
 			}
@@ -138,6 +135,8 @@
 		
 		public function update () {
 			checkCollisions();
+			
+			updateBullets();
 		}
 		
 		public function checkCollisions () {
@@ -162,6 +161,19 @@
 			
 		}
 		
+		public function updateBullets() {
+			var i = _bullets.length;
+			
+			while (i--) {
+				_bullets[i].update();
+			}
+		}
+		
+		public function addBullet(B:Bullet) {
+			_bullets.push(B);
+			addChild(B);
+		}
+		
 		public function checkActiveAreasCollision ():ActiveObject {
 			var i = _activeAreas.length;
 			
@@ -174,6 +186,7 @@
 			return null;
 		}
 		
+		// ------------------------
 		public function getOppositeDoor ( d:Door ):Door {
 			var doorRotation = d.rotation;
 			
