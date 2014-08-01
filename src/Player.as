@@ -9,6 +9,7 @@
 	 * Главный класс игрока
 	 */
 	public class Player extends MovieClip {
+		static public var instance:Player;
 
 		static public const FRICTION:Number = 0.2; //--
 		static public const MAX_SPEED = 6; //--
@@ -23,8 +24,8 @@
 		public var MOVE_DOWN = false;
 		
 		// направление персонажа
-		private var dx:Number;
-		private var dy:Number;
+		public var dir_x:Number;
+		public var dir_y:Number;
 		//коллайдер персонажа
 		private var _collider:Collider;
 		// предидущие координаты персонажа
@@ -36,7 +37,7 @@
 		
 		public function Player():void {
 			// задаём стандартное направление
-			gotoAndStop("south");
+			gotoAndStop("stand_down");
 			dir_x = 0;
 			dir_y = -1;
 
@@ -47,6 +48,12 @@
 			py = y;
 			
 			currentBullet = Spark;
+			instance = this;
+		}
+		
+		static public function getPlayer():Player {
+			if ( instance == null ) instance = new Player();
+			return instance;
 		}
 		/** получаем скорость по оси х */
 		public function getVX() :Number {
@@ -65,31 +72,19 @@
 			switch (State) {
 				case "east" :
 					MOVE_RIGHT = max;
-					if (!max) {
-						if ( isStopped() ) this.gotoAndStop( "stand_east" );
-					}
-					else gotoAndStop("east");
+					if ( max ) gotoAndStop("right");
 					break;
 				case "west" :
 					MOVE_LEFT = max;
-					if (!max) {
-						if ( isStopped() ) this.gotoAndStop( "stand_west" );
-					}
-					else gotoAndStop("west");
+					if ( max ) gotoAndStop("left");
 					break;
 				case "south" :
 					MOVE_DOWN = max;
-					if (!max) {
-						if ( isStopped() ) this.gotoAndStop( "stand_south" );
-					}
-					else gotoAndStop("south");
+					if ( max ) gotoAndStop("down");
 					break;
 				case "north" :
 					MOVE_UP = max;
-					if (!max) {
-						if ( isStopped() ) this.gotoAndStop( "stand_north" );
-					}
-					else gotoAndStop("north");
+					if ( max ) gotoAndStop("up");
 					break;
 			}
 		}
@@ -137,21 +132,21 @@
 		}
 		/** обновляет положение персонажа */
 		public function update():void {
-			dx = x - px;
+			var ds = x - px;
 			px = x;
 			
-			dx -= dx/2.3 + dx*dx*dx/2000;
-			if ( Math.abs(dx) < 0.07 ) dx = 0;
-			x += dx;
+			ds -= ds/2.3 + ds*ds*ds/2000;
+			if ( Math.abs(ds) < 0.07 ) ds = 0;
+			x += ds;
 			
-			dy = y - py;
+			ds = y - py;
 			py = y;
 			
-			dy -= dy/2.3 + dy*dy*dy/2000;
-			if ( Math.abs(dy) < 0.07 ) dy = 0;
-			y += dy;
+			ds -= ds/2.3 + ds*ds*ds/2000;
+			if ( Math.abs(ds) < 0.07 ) ds = 0;
+			y += ds;
 			
-			if ( dx > 0 )  {
+			if ( MOVE_RIGHT )  {
 				dir_x = 1;
 				
 				if ( MOVE_DOWN ) {
@@ -205,20 +200,16 @@
 			// setting the face directioon
 			if ( isStopped() ) {
 				if ( dir_x == 0 ) {
-					if ( dir_y > 0 ) gotoAndStop ("stand_south");
-					else gotoAndStop ("stand_north");
-				} else if ( dir_x > 0 ) gotoAndStop ("stand_east");
-				else gotoAndStop ("stand_west");
+					if ( dir_y > 0 ) gotoAndStop ("stand_down");
+					else gotoAndStop ("stand_up");
+				} else if ( dir_x > 0 ) gotoAndStop ("stand_right");
+				else gotoAndStop ("stand_left");
 			}
 		}
 		
 
 		public function getCollider () :Collider {
 			return _collider;
-		}
-		
-		public function getBullet ():Bullet {
-			return currentBullet.getBullet();
 		}
 	}
 }

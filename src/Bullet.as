@@ -2,10 +2,13 @@
 	import flash.display.MovieClip;
 	
 	public class Bullet extends MovieClip {
-		static var bullet:Bullet;
-		var vx = 1, vy = 0;
+		public const SPEED:Number = 10;
+		static public const DELAY:Number = 500;
+		
+		private var vx = 1;
+		private var vy = 0;
 
-		public function Bullet(InputRotation:Number) {
+		public function Bullet() {
 			
 		}
 		
@@ -14,9 +17,9 @@
 			y += vy;
 		}
 		
-		static public function getBullet():Bullet {
-			if (!bullet) bullet = new Bullet(90);
-			return bullet;
+		public function setSpeed (dx:Number, dy:Number) {
+			vx = SPEED * dx;
+			vy = SPEED * dy;
 		}
 
 	}

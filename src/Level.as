@@ -10,7 +10,6 @@
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
-		var _bullets:Array = new Array();
 		
 		var finished:Boolean = true;
 		var _player:Player;
@@ -135,8 +134,6 @@
 		
 		public function update () {
 			checkCollisions();
-			
-			updateBullets();
 		}
 		
 		public function checkCollisions () {
@@ -161,17 +158,14 @@
 			
 		}
 		
-		public function updateBullets() {
-			var i = _bullets.length;
-			
-			while (i--) {
-				_bullets[i].update();
+		public function checkCollision (X:Number, Y:Number):Boolean {
+			var i = _colliders.length;
+			while ( i-- ) {
+				if ( _colliders[i].checkCollision ( X, Y ) ) {
+					return true;
+				}
 			}
-		}
-		
-		public function addBullet(B:Bullet) {
-			_bullets.push(B);
-			addChild(B);
+			return false;
 		}
 		
 		public function checkActiveAreasCollision ():ActiveObject {

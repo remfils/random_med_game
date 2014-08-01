@@ -5,6 +5,7 @@
 	public class Map extends MovieClip {
 		private var _rooms:Array;
 		private var miniMap:Sprite;
+		private var currentRoom:Sprite;
 		
 		private var WIDTH:int = 10;
 		private var HEIGHT:int = 6;
@@ -12,6 +13,9 @@
 		public function Map() {
 			miniMap = new Sprite();
 			addChild(miniMap);
+			
+			currentRoom = new Sprite();
+			addChild(currentRoom);
 		}
 		
 		public function setUpScale (levels:Array) {
@@ -33,17 +37,26 @@
 				}
 			}
 			
-			trace (max_x, max_y, min_x, min_y);
-			
 			WIDTH = width / ( max_x - min_x + 1 );
 			HEIGHT = height / ( max_y - min_y + 1 );
 			
 			miniMap.x -= WIDTH * min_x;
 			miniMap.y -= HEIGHT * min_y;
+			
+			redrawCurrentRoom();
+		}
+		
+		public function redrawCurrentRoom () {
+			var g = currentRoom.graphics;
+			g.clear();
+			g.beginFill(0xffffff, 0.9);
+			g.drawRect(1,1,WIDTH-3,HEIGHT-3);
 		}
 		
 		public function update(levels:Array, cLevelX:int, cLevelY:int) {
 			addLevel(cLevelX, cLevelY);
+			
+			moveRoomCursor(cLevelX, cLevelY);
 		}
 		
 		public function adjustSize () {
@@ -81,8 +94,13 @@
 		}
 		
 		private function addLevel (i:int, j:int) {
-			miniMap.graphics.beginFill(0xff0000,1);
+			miniMap.graphics.beginFill(0x000000,1);
 			miniMap.graphics.drawRect(i*WIDTH,j*HEIGHT,WIDTH-1,HEIGHT-1);
+		}
+		
+		private function moveRoomCursor(i:int, j:int) {
+			currentRoom.x = WIDTH * i + miniMap.x;
+			currentRoom.y = HEIGHT * j + miniMap.y;
 		}
 
 	}

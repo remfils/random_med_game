@@ -28,6 +28,8 @@
 		
 		var levelMap:MovieClip;
 		
+		var bulletController:BulletController;
+		
 
 		public function Main () {
 			super ();
@@ -56,6 +58,8 @@
 			levelMap.y = cLevel.y + stage.stageHeight - cLevel.height;
 			
 			_levels[-1][0].addTask();
+			
+			bulletController = new BulletController(cLevel);
 			
 			//setUpLevel ();
 			addChild (_player);
@@ -117,6 +121,8 @@
 			_player.update ();
 			
 			if ( !blockControlls ) cLevel.update();
+			
+			bulletController.update();
 		}
 
 		/* public function checkCollisions () {
@@ -201,7 +207,7 @@
 					stat.nextMenuTheme();
 					break;
 				case 74 :
-					cLevel.addBullet(_player.getBullet());
+					bulletController.spawnBullet();
 					break;
 			}
 		}
@@ -245,6 +251,7 @@
 					break;
 			}
 			cLevel = _levels[ cLevel_x ][ cLevel_y ] ;
+			bulletController.changeLevel(cLevel);
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			var correctY = stage.stageHeight - cLevel.height;

@@ -1,13 +1,9 @@
 ﻿package src {
 	
-	public class Spark extends Bullet {		
-		public function Spark() {
-			super(90);
-		}
+	public class Spark extends Bullet {
+		static public const DELAY:Number = 500;
 		
-		static public function getBullet ():Bullet {
-			if ( !bullet ) bullet = new Spark();
-			return bullet;
+		public function Spark() {
 		}
 	}
 	
