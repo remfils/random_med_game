@@ -36,7 +36,7 @@
 			while ( i-- ) {
 				_bullets[i].update();
 				
-				if ( currentLevel.checkCollision(_bullets[i].x, _bullets[i].y)) {
+				if ( _bullets[i].isActive() && currentLevel.checkCollision(_bullets[i].x, _bullets[i].y)) {
 					deleteBullet(_bullets[i]);
 				}
 			}
@@ -56,7 +56,7 @@
 			var player:Player = Player.getPlayer();
 			
 			bullet.x = player.x + player.dir_x*15;
-			bullet.y = player.y - 60;
+			bullet.y = player.y ;
 			
 			bullet.setSpeed (player.dir_x, player.dir_y);
 			
@@ -78,7 +78,9 @@
 			var j = _bullets.length;
 			while (j--) {
 				if ( B == _bullets[j] ) {
-					_bullets[j].visible = false;
+					//_bullets[j].visible = false;
+					_bullets[j].gotoAndPlay("destroy");
+					_bullets[j].stopUpdate();
 					return;
 				}
 			}
