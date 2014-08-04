@@ -1,4 +1,4 @@
-﻿package src.helpers {
+﻿package src..util {
 	
 	public class DoorLink {
 		

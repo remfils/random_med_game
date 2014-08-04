@@ -1,5 +1,8 @@
-﻿package src {
+﻿package src.objects {
+	
 	import flash.display.MovieClip;
+	import src.interfaces.GameObject;
+	import src.Player;
 	
 	public class Door extends MovieClip implements GameObject {
 		

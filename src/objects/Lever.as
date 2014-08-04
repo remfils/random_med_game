@@ -1,8 +1,7 @@
-﻿package src.GameObjects {
+﻿package src.objects {
 
 	import flash.display.MovieClip;
-	import src.ActiveObject;
-
+	import src.interfaces.ActiveObject;
 
 	public class Lever extends MovieClip implements ActiveObject {
 		

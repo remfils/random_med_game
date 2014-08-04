@@ -1,4 +1,5 @@
-﻿package src{
+﻿package src.interfaces {
+	import src.util.Collider;
 
 	public interface ActiveObject extends GameObject {
 

@@ -1,4 +1,4 @@
-﻿package src.stat {
+﻿package src.util {
 	import flash.utils.getTimer;
 	import flash.utils.Timer;
 

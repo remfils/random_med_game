@@ -1,4 +1,4 @@
-﻿package src{
+﻿package src.util {
 
 	// this is usseless
 	// should be deleted soon

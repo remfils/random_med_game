@@ -4,6 +4,8 @@
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	
+	import src.bullets.*;
+	
 	
 	/**
 	 * Главный класс игрока

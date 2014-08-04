@@ -1,8 +1,14 @@
-﻿package src {
+﻿package src.levels {
 	import flash.display.Stage;
 	import flash.display.MovieClip;
-	import src.GameObjects.Lever;
-	import src.stat.Random;
+	import src.objects.Lever;
+	import src.util.Random;
+	import src.interfaces.GameObject;
+	import src.interfaces.ActiveObject;
+	import src.objects.*;
+	import src.util.Collider;
+	
+	import src.Player;
 	
 	public class Level extends MovieClip implements GameObject {
 		var _gameObjects:Array = new Array();

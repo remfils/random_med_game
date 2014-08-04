@@ -1,6 +1,9 @@
-﻿package src {
+﻿package src.bullets {
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	
+	import src.levels.Level;
+	import src.Player;
 	
 	public class BulletController {
 		var _bullets:Array;

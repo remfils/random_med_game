@@ -1,4 +1,4 @@
-﻿package src.stat {
+﻿package src.stats {
 	
 	public class Bar {
 

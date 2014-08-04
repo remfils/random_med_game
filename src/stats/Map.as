@@ -1,4 +1,4 @@
-﻿package src.stat {
+﻿package src.stats {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	

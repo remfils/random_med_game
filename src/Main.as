@@ -1,4 +1,4 @@
-﻿package src{
+﻿package src {
 
 	import flash.display.MovieClip;
 	import flash.events.*;
@@ -9,8 +9,12 @@
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.*;
-	import src.stat.PlayerStat;
-	import src.stat.Map;
+	import src.stats.PlayerStat;
+	import src.stats.Map;
+	
+	import src.objects.*;
+	import src.levels.*;
+	import src.bullets.BulletController;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
