@@ -55,7 +55,7 @@
 			// setup stage
 			this.stage.focus = this;
 			
-			cLevel = new CastleLevel ( nextLevel );
+			cLevel = new CastleLevel ( );
 			
 			// setup menu
 			stat = new PlayerStat();
@@ -88,7 +88,7 @@
 			levelMap = new MovieClip();
 			
 			for ( var i=0; i<instructions.length; i++ ) {
-				level = new CastleLevel ( nextLevel );
+				level = new CastleLevel ();
 				level.x = instructions[i][0]*level.width;
 				level.y = instructions[i][1]*level.height;
 				

@@ -22,13 +22,11 @@
 		
 		var endLevel:Function;
 
-		public function Level( END_LEVEL:Function ) {
+		public function Level() {
 			// adding stuff ti level
 
 			// player
 			_player = Player.getInstance();
-			
-			endLevel = END_LEVEL;
 			
 			// walls
 			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" ),
@@ -148,17 +146,6 @@
 			while ( i-- ) {
 				if ( _colliders[i].checkCollision ( _player.x, _player.y ) ) {
 					_player.push(_colliders[i]);
-				}
-			}
-			
-			if ( finished ) {
-				i = _exits.length;
-				while ( i-- ) {
-					if ( _exits[i].checkCollision ( _player.x, _player.y ) ) {
-						endLevel ( _exits[i].parent );
-						return;
-						//endLevel ( i );
-					}
 				}
 			}
 			
