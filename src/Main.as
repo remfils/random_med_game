@@ -124,65 +124,6 @@
 			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
 			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
-		
-		public function init1 ( levels:Array ) {
-			// setup stage
-			
-			
-			cLevel = new CastleLevel ( );
-			
-			// setup menu
-			
-			
-			createLevels ( levels );
-			
-			levelMap.y = cLevel.y + stage.stageHeight - cLevel.height;
-			
-			_LEVEL[-1][0].addTask();
-			
-			
-			
-			//setUpLevel ();
-			addChild (_player);
-			
-			this.setChildIndex(stat,1);
-
-			// add event listeners
-		}
-		
-		public function createLevels ( instructions:Array ) {
-			var	level:Level = null;
-			
-			levelMap = new MovieClip();
-			
-			for ( var i=0; i<instructions.length; i++ ) {
-				level = new CastleLevel ();
-				level.x = instructions[i][0]*level.width;
-				level.y = instructions[i][1]*level.height;
-				
-				level.setNextLevel ( instructions[i][2],instructions[i][3] );
-				
-				if ( _LEVEL[ instructions[i][0] ] ) {
-					_LEVEL[ instructions[i][0] ][ instructions[i][1] ] = level;
-				}
-				else {
-					_LEVEL[ instructions[i][0] ] = new Array();
-					_LEVEL[ instructions[i][0] ][ instructions[i][1] ] = level;
-				}
-				
-				
-				levelMap.addChild ( level );
-			}
-			
-			addChild ( levelMap );
-			
-			var map:Map = stat.getMapMC();
-			map.setUpScale(_LEVEL);
-			map.update(_LEVEL);
-			
-			cLevel = _LEVEL[_player.currentRoom.x][_player.currentRoom.y];
-			cLevel.lock();
-		}
 
 		// FUNCTION FOR MID-LEVEL
 
@@ -289,73 +230,14 @@
 		}
 		
 		private function roomTweenFinished  (e:Event) {
-				cLevel.lock();
-				blockControlls = false;
-				
-				cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
-				
-				var tween:Tween = Tween(e.target);
-				tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
-			} 
-		
-		public function nextLevel ( exitDoor:Door ) {
-			var doorDirection = exitDoor.getDirection();
+			cLevel.lock();
+			blockControlls = false;
 			
-			switch ( doorDirection ) {
-				case "up":
-					_player.currentRoom.y --;
-					break;
-				case "down":
-					_player.currentRoom.y ++;
-					break;
-				case "left":
-					_player.currentRoom.x --;
-					break;
-				case "right":
-					_player.currentRoom.x ++;
-					break;
-			}
-			cLevel = getCurrentLevel() ;
-			bulletController.changeLevel(cLevel);
+			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
 			
-			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
-			var correctY = stage.stageHeight - cLevel.height;
-			
-			var map = stat.getMapMC();
-			map.update(_LEVEL);
-			
-			//trace (enterDoor.y);
-			
-			blockControlls = true;
-			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, enterDoor.x, 25 );
-			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, enterDoor.y + correctY, 25 );
-			
-			//trace (cLevel.y);
-			
-			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 25);
-			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 25);
-			
-			tweenX.addEventListener(TweenEvent.MOTION_FINISH, function () {
-				cLevel.lock();
-				blockControlls = false;
-			} );
+			var tween:Tween = Tween(e.target);
+			tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
 		}
-		
-		public function endLevel () {
-			cLevel.unlock();
-
-			cLevel = _LEVEL[1];
-			
-			//setUpLevel();
-			
-			var tween:Tween = new Tween (this, "x",Strong.easeInOut,x,x-cLevel.width, 25);
-			
-			tween.addEventListener(TweenEvent.MOTION_FINISH, function () {
-				cLevel.lock();
-			} );
-		}
-
-		// FUNCTIONS FOR END GAME
 	}
 
 }
