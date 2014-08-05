@@ -24,11 +24,16 @@
 
 		var _player:Player;
 
-		var _levels:Array = new Array();
+		var _level:Array = new Array();
 		var cLevel:Level;
+		
+		var currentFloor:int = 0;
+		var currentLevelRow:int = 0;
+		var currentLevelColumn:int = 0;
 		
 		var cLevel_x:int = 0;
 		var cLevel_y:int = 0;
+		var cLevel_z:int = 0;
 		
 		var levelMap:MovieClip;
 		
@@ -47,8 +52,27 @@
 		// setups game
 		public function init ( levels:Array ) {
 			var levelLoader:LevelLoader = new LevelLoader();
+			levelLoader.addLoadLevelListener(onLoadLevelComplete);
 			
-			levelLoader.loadLevel("level000");
+			levelLoader.startLevelLoad("level000");
+		}
+		
+		private function onLoadLevelComplete(e:LevelLoadedEvent) {
+			_level = e.getLevel();
+			
+			addLevelsToStage();
+		}
+		
+		private function addLevelsToStage() {
+			var k:int = _level.length;
+			
+			while (k--) {
+				for (var i in _level[k]) {
+					for (var j in _level[k][i]) {
+						addChild(_level[k][i][j]);
+					}
+				}
+			}
 		}
 		
 		public function init1 ( levels:Array ) {
@@ -67,7 +91,7 @@
 			
 			levelMap.y = cLevel.y + stage.stageHeight - cLevel.height;
 			
-			_levels[-1][0].addTask();
+			_level[-1][0].addTask();
 			
 			bulletController = new BulletController(cLevel);
 			
@@ -94,12 +118,12 @@
 				
 				level.setNextLevel ( instructions[i][2],instructions[i][3] );
 				
-				if ( _levels[ instructions[i][0] ] ) {
-					_levels[ instructions[i][0] ][ instructions[i][1] ] = level;
+				if ( _level[ instructions[i][0] ] ) {
+					_level[ instructions[i][0] ][ instructions[i][1] ] = level;
 				}
 				else {
-					_levels[ instructions[i][0] ] = new Array();
-					_levels[ instructions[i][0] ][ instructions[i][1] ] = level;
+					_level[ instructions[i][0] ] = new Array();
+					_level[ instructions[i][0] ][ instructions[i][1] ] = level;
 				}
 				
 				
@@ -109,10 +133,10 @@
 			addChild ( levelMap );
 			
 			var map:Map = stat.getMapMC();
-			map.setUpScale(_levels);
-			map.update(_levels,cLevel_x, cLevel_y);
+			map.setUpScale(_level);
+			map.update(_level,cLevel_x, cLevel_y);
 			
-			cLevel = _levels[cLevel_x][cLevel_y];
+			cLevel = _level[cLevel_x][cLevel_y];
 			cLevel.lock();
 		}
 
@@ -260,14 +284,14 @@
 					cLevel_x ++;
 					break;
 			}
-			cLevel = _levels[ cLevel_x ][ cLevel_y ] ;
+			cLevel = _level[ cLevel_x ][ cLevel_y ] ;
 			bulletController.changeLevel(cLevel);
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			var correctY = stage.stageHeight - cLevel.height;
 			
 			var map = stat.getMapMC();
-			map.update(_levels, cLevel_x, cLevel_y);
+			map.update(_level, cLevel_x, cLevel_y);
 			
 			//trace (enterDoor.y);
 			
@@ -289,7 +313,7 @@
 		public function endLevel () {
 			cLevel.unlock();
 
-			cLevel = _levels[1];
+			cLevel = _level[1];
 			
 			//setUpLevel();
 			

@@ -2,21 +2,25 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
+	import flash.utils.*;
 	
 	public class LevelLoader {
 		private var urlLoader:URLLoader;
-		private var _level:Array = new Array();;
+		private var _level:Array = null;
 
 		public function LevelLoader() {
 			urlLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, xmlLevelLoadedListener);
 		}
 		
-		public function loadLevel (levelName:String) :Array {
+		public function addLoadLevelListener(onLoadComplete:Function) {
+			urlLoader.addEventListener("LevelLoaded", onLoadComplete);
+		}
+		
+		public function startLevelLoad (levelName:String) {
 			var urlRequest:URLRequest = new URLRequest("levels/" + levelName + ".xml");
+			//urlLoader.
 			urlLoader.load(urlRequest);
-			
-			return _level;
 		}
 		
 		private function xmlLevelLoadedListener(e:Event) {
@@ -24,6 +28,7 @@
 			
 			//trace(xmlLevel);
 			_level = createFloorArray(xmlLevel);
+			urlLoader.dispatchEvent(new LevelLoadedEvent(_level));
 		}
 		
 		private function createFloorArray(xmlLevel:XML):Array {
@@ -32,14 +37,27 @@
 			for each ( var floor:XML in xmlLevel.floor ) {
 				floors.push( createRooms(floor) );
 			}
+			
+			return floors;
 		}
 		
-		private function createRooms (xmlFloor:XML) {
-			var rooms:Array = new Array();
+		private function createRooms (xmlFloor:XML):Array {
+			var rooms:Array = new Array(),
+				cRoom:CastleLevel = null;
 			
 			for each ( var room:XML in xmlFloor.room ) {
-				rooms.push( new CastleLevel() );
+				cRoom = new CastleLevel();
+				cRoom.x = room.@x * cRoom.width;
+				cRoom.y = room.@y * cRoom.height;
+				
+				if ( !rooms[room.@x] ) {
+					rooms[room.@x] = new Array();
+				}
+				
+				rooms[room.@x][room.@y] = cRoom;
 			}
+			
+			return rooms;
 		}
 
 	}
