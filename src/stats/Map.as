@@ -21,16 +21,19 @@
 			
 			currentRoom = new Sprite();
 			addChild(currentRoom);
+			miniMap.x += 4;
+			miniMap.y += 4;
 		}
 		
 		public function setUpScale (levels:Array) {
-			var max_x = 0,
-				max_y = 0,
-				min_x = 0,
-				min_y = 0,
+			var max_x:int = 0,
+				max_y:int = 0,
+				min_x:int = 10,
+				min_y:int = 10,
 				I:int, J:int;
 			
 			for ( var i:String in levels ) {
+				trace(i);
 				I = int(i);
 				if ( max_x < I ) max_x = I;
 				if ( min_x > I ) min_x = I;
@@ -42,8 +45,10 @@
 				}
 			}
 			
-			WIDTH = width / ( max_x - min_x + 1 );
-			HEIGHT = height / ( max_y - min_y + 1 );
+			trace(max_x,max_y,min_x,min_y);
+			
+			WIDTH = width / ( max_x - min_x + 1 ) - 2;
+			HEIGHT = height / ( max_y - min_y + 1 ) - 2;
 			
 			miniMap.x -= WIDTH * min_x;
 			miniMap.y -= HEIGHT * min_y;

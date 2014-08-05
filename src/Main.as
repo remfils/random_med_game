@@ -20,8 +20,6 @@
 	public class Main extends MovieClip {
 		// true если уровень закончен
 		private var blockControlls:Boolean = false;
-		
-		
 
 		var stat:PlayerStat;
 
@@ -68,6 +66,9 @@
 			
 			addEventListeners();
 			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+			
+			stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
+			stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
 		}
 		
 		private function addObjectsToStage() {
@@ -280,6 +281,9 @@
 			blockControlls = true;
 			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 25 );
 			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 25 );
+			
+			var map = stat.getMapMC();
+			map.update(_LEVEL);
 			
 			tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
 		}
