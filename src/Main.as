@@ -31,10 +31,6 @@
 		var currentLevelRow:int = 0;
 		var currentLevelColumn:int = 0;
 		
-		var cLevel_x:int = 0;
-		var cLevel_y:int = 0;
-		var cLevel_z:int = 0;
-		
 		var levelMap:MovieClip;
 		
 		var bulletController:BulletController;
@@ -134,9 +130,9 @@
 			
 			var map:Map = stat.getMapMC();
 			map.setUpScale(_level);
-			map.update(_level,cLevel_x, cLevel_y);
+			map.update(_level,currentLevelRow, currentLevelColumn);
 			
-			cLevel = _level[cLevel_x][cLevel_y];
+			cLevel = _level[currentLevelRow][currentLevelColumn];
 			cLevel.lock();
 		}
 
@@ -272,26 +268,26 @@
 			
 			switch ( doorDirection ) {
 				case "up":
-					cLevel_y --;
+					currentLevelColumn --;
 					break;
 				case "down":
-					cLevel_y ++;
+					currentLevelColumn ++;
 					break;
 				case "left":
-					cLevel_x --;
+					currentLevelRow --;
 					break;
 				case "right":
-					cLevel_x ++;
+					currentLevelRow ++;
 					break;
 			}
-			cLevel = _level[ cLevel_x ][ cLevel_y ] ;
+			cLevel = _level[ currentFloor ][ currentLevelRow ][ currentLevelColumn ] ;
 			bulletController.changeLevel(cLevel);
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			var correctY = stage.stageHeight - cLevel.height;
 			
 			var map = stat.getMapMC();
-			map.update(_level, cLevel_x, cLevel_y);
+			map.update(_level, currentLevelRow, currentLevelColumn);
 			
 			//trace (enterDoor.y);
 			
