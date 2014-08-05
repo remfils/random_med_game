@@ -8,8 +8,8 @@
 	public class CastleLevel extends Level {
 		
 		
-		public function CastleLevel( player:Player, END_LEVEL:Function ) {
-			super ( player, END_LEVEL );
+		public function CastleLevel( END_LEVEL:Function ) {
+			super ( END_LEVEL );
 		}
 	}
 	

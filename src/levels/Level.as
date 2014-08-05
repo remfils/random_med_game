@@ -22,11 +22,11 @@
 		
 		var endLevel:Function;
 
-		public function Level( player:Player, END_LEVEL:Function ) {
+		public function Level( END_LEVEL:Function ) {
 			// adding stuff ti level
 
 			// player
-			_player = player;
+			_player = Player.getInstance();
 			
 			endLevel = END_LEVEL;
 			

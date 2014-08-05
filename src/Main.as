@@ -38,7 +38,7 @@
 		public function Main () {
 			super ();
 
-			_player = new Player();
+			_player = Player.getInstance();
 			_player.move (385,400);
 		}
 
@@ -46,10 +46,16 @@
 
 		// setups game
 		public function init ( levels:Array ) {
+			var levelLoader:LevelLoader = new LevelLoader();
+			
+			levelLoader.loadLevel("level000");
+		}
+		
+		public function init1 ( levels:Array ) {
 			// setup stage
 			this.stage.focus = this;
 			
-			cLevel = new CastleLevel ( _player, nextLevel );
+			cLevel = new CastleLevel ( nextLevel );
 			
 			// setup menu
 			stat = new PlayerStat();
@@ -82,7 +88,7 @@
 			levelMap = new MovieClip();
 			
 			for ( var i=0; i<instructions.length; i++ ) {
-				level = new CastleLevel ( _player, nextLevel );
+				level = new CastleLevel ( nextLevel );
 				level.x = instructions[i][0]*level.width;
 				level.y = instructions[i][1]*level.height;
 				

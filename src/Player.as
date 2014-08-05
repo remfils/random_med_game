@@ -53,7 +53,7 @@
 			instance = this;
 		}
 		
-		static public function getPlayer():Player {
+		static public function getInstance():Player {
 			if ( instance == null ) instance = new Player();
 			return instance;
 		}

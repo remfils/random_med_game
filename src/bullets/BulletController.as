@@ -56,7 +56,7 @@
 				_bullets.push(bullet);
 			}
 			
-			var player:Player = Player.getPlayer();
+			var player:Player = Player.getInstance();
 			
 			bullet.x = player.x + player.dir_x*15;
 			bullet.y = player.y ;
