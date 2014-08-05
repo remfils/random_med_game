@@ -13,14 +13,13 @@
 		var bulletDelay:Timer;
 		var block:Boolean = false;
 		
-		var currentLevel:Level;
+		var currentLevel:Level = null;
 		
 		var stage;
 		var i:int = 0;
 
-		public function BulletController(currentLevel:Level) {
-			this.stage = currentLevel.stage;
-			this.currentLevel = currentLevel;
+		public function BulletController(stage) {
+			this.stage = stage;
 			
 			_bullets = new Array();
 			

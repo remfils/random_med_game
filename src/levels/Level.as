@@ -102,6 +102,28 @@
 			}
 		}
 		
+		public function makeDoorWay (wallName:String) {
+			gotoAndStop ("normal_room_1");
+			switch ( wallName ) {
+				case "left" :
+					_doors[0].show();
+					_doors[0].unlock();
+					break;
+				case "right" :
+					_doors[2].show();
+					_doors[2].unlock();
+					break;
+				case "up" :
+					_doors[3].show();
+					_doors[3].unlock();
+					break;
+				case "down" :
+					_doors[1].show();
+					_doors[1].unlock();
+					break;
+			}
+		}
+		
 		public function addTask () {
 			var levers:Array = new Array(),
 				L:Lever;

@@ -1,9 +1,12 @@
 ﻿package src.stats {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import src.Player;
 	
 	public class Map extends MovieClip {
 		private var _rooms:Array;
+		private var _player:Player;
+		
 		private var miniMap:Sprite;
 		private var currentRoom:Sprite;
 		
@@ -13,6 +16,8 @@
 		public function Map() {
 			miniMap = new Sprite();
 			addChild(miniMap);
+			
+			_player = Player.getInstance();
 			
 			currentRoom = new Sprite();
 			addChild(currentRoom);
@@ -53,10 +58,10 @@
 			g.drawRect(1,1,WIDTH-3,HEIGHT-3);
 		}
 		
-		public function update(levels:Array, cLevelX:int, cLevelY:int) {
-			addLevel(cLevelX, cLevelY);
+		public function update(levels:Array) {
+			addLevel(_player.currentRoom.x, _player.currentRoom.y);
 			
-			moveRoomCursor(cLevelX, cLevelY);
+			moveRoomCursor(_player.currentRoom.x, _player.currentRoom.y);
 		}
 		
 		public function adjustSize () {

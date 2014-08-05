@@ -35,6 +35,8 @@
 		private var px:Number;
 		private var py:Number;
 		
+		public var currentRoom:Object = {x:0, y:0, z:0};
+		
 		private var currentBullet;
 		
 		public function Player():void {

@@ -1,11 +1,23 @@
 <level>
     <floor>
         
+        <room x="0" y="2">
+            asdasd
+        </room>
+
+        <room x="0" y="1" first_level="true">
+            asdasd
+        </room>
+
         <room x="0" y="0">
             asdasd
         </room>
 
-        <room x="0" y="-1">
+        <room x="2" y="1">
+            asdasd
+        </room>
+
+        <room x="1" y="1">
             asdasd
         </room>
     </floor>

@@ -24,12 +24,10 @@
 
 		var _player:Player;
 
-		var _level:Array = new Array();
+		var _LEVEL:Array = new Array();
 		var cLevel:Level;
 		
-		var currentFloor:int = 0;
-		var currentLevelRow:int = 0;
-		var currentLevelColumn:int = 0;
+		var currentRoom:Object = {x:0, y:0, z:0};
 		
 		var levelMap:MovieClip;
 		
@@ -41,6 +39,8 @@
 
 			_player = Player.getInstance();
 			_player.move (385,400);
+			
+			bulletController = new BulletController(stage);
 		}
 
 		// FUNCTIONS FOR LEVEL START
@@ -54,42 +54,86 @@
 		}
 		
 		private function onLoadLevelComplete(e:LevelLoadedEvent) {
-			_level = e.getLevel();
+			_LEVEL = e.getLevel();
+			_player.currentRoom = e.first_level;
 			
-			addLevelsToStage();
+			this.stage.focus = this;
+			
+			addObjectsToStage();
+			
+			setUpLevelMapPosition();
+			
+			addEventListeners();
 		}
 		
-		private function addLevelsToStage() {
-			var k:int = _level.length;
+		private function addObjectsToStage() {
+			addLevel();
+			
+			addPlayerStat();
+			
+			addPlayer();
+		}
+		
+		private function addLevel() {
+			var k:int = _LEVEL.length;
+			
+			levelMap = new MovieClip();
 			
 			while (k--) {
-				for (var i in _level[k]) {
-					for (var j in _level[k][i]) {
-						addChild(_level[k][i][j]);
+				for (var i in _LEVEL[k]) {
+					for (var j in _LEVEL[k][i]) {
+						levelMap.addChild(_LEVEL[k][i][j]);
 					}
 				}
 			}
+			
+			addChild(levelMap);
 		}
 		
-		public function init1 ( levels:Array ) {
-			// setup stage
-			this.stage.focus = this;
-			
-			cLevel = new CastleLevel ( );
-			
-			// setup menu
+		private function addPlayerStat() {
 			stat = new PlayerStat();
 			stat.x = 0;
 			stat.y = 0;
 			addChild (stat);
+		}
+		
+		private function addPlayer() {
+			_player = Player.getInstance();
+			addChild(_player);
+		}
+		
+		private function setUpLevelMapPosition() {
+			cLevel = _LEVEL[_player.currentRoom.z][_player.currentRoom.x][_player.currentRoom.y];
+			
+			trace(_player.currentRoom.x,_player.currentRoom.y,_player.currentRoom.z);
+			
+			levelMap.y += stat.height;
+			levelMap.x -= _player.currentRoom.x * cLevel.width;
+			levelMap.y -= _player.currentRoom.y * cLevel.height;
+		}
+		
+		private function addEventListeners() {
+			stage.addEventListener ( Event.ENTER_FRAME, update );
+			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
+			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
+		}
+		
+		public function init1 ( levels:Array ) {
+			// setup stage
+			
+			
+			cLevel = new CastleLevel ( );
+			
+			// setup menu
+			
 			
 			createLevels ( levels );
 			
 			levelMap.y = cLevel.y + stage.stageHeight - cLevel.height;
 			
-			_level[-1][0].addTask();
+			_LEVEL[-1][0].addTask();
 			
-			bulletController = new BulletController(cLevel);
+			
 			
 			//setUpLevel ();
 			addChild (_player);
@@ -97,9 +141,6 @@
 			this.setChildIndex(stat,1);
 
 			// add event listeners
-			stage.addEventListener ( Event.ENTER_FRAME, update );
-			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
-			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
 		
 		public function createLevels ( instructions:Array ) {
@@ -114,12 +155,12 @@
 				
 				level.setNextLevel ( instructions[i][2],instructions[i][3] );
 				
-				if ( _level[ instructions[i][0] ] ) {
-					_level[ instructions[i][0] ][ instructions[i][1] ] = level;
+				if ( _LEVEL[ instructions[i][0] ] ) {
+					_LEVEL[ instructions[i][0] ][ instructions[i][1] ] = level;
 				}
 				else {
-					_level[ instructions[i][0] ] = new Array();
-					_level[ instructions[i][0] ][ instructions[i][1] ] = level;
+					_LEVEL[ instructions[i][0] ] = new Array();
+					_LEVEL[ instructions[i][0] ][ instructions[i][1] ] = level;
 				}
 				
 				
@@ -129,21 +170,12 @@
 			addChild ( levelMap );
 			
 			var map:Map = stat.getMapMC();
-			map.setUpScale(_level);
-			map.update(_level,currentLevelRow, currentLevelColumn);
+			map.setUpScale(_LEVEL);
+			map.update(_LEVEL);
 			
-			cLevel = _level[currentLevelRow][currentLevelColumn];
+			cLevel = _LEVEL[_player.currentRoom.x][_player.currentRoom.y];
 			cLevel.lock();
 		}
-
-/* отправить в level
-		public function lockDoors () {
-			for each (var k in _doors) {
-				k.lock ();
-			}
-			_walls.unlock ();
-		}
-*/
 
 		// FUNCTION FOR MID-LEVEL
 
@@ -155,57 +187,6 @@
 			bulletController.update();
 		}
 
-		/* public function checkCollisions () {
-			var ray:Ray;
-			
-			for ( var i:int=0; i < 3; i++ ) {
-				switch ( i ) {
-					case 0:
-						ray = new Ray(_player.getCastPointX(),_player.y,_player.getVX(),_player.getVY());
-						break;
-					case 1:
-						ray = new Ray(_player.y,_player.getCastPointY(),_player.getVX(),_player.getVY());
-						break;
-					default:
-						ray = new Ray(_player.getCastPointX(),_player.getCastPointY(),_player.getVX(),_player.getVY());
-				}
-				
-
-				while ( ray.collided() ) {
-					for (var k in _colliders) {
-						if (_colliders[k].checkCollision(ray.x,ray.y)) {
-							_player.push ( _colliders[k] );
-						}
-					}
-	
-					ray.inc ();
-				}
-			}
-			
-			// check spawner collision
-			if ( finished ) {
-				for ( k in _doors ) {
-					if ( _doors[k].checkSpawner ( _player ) ) {
-						goOut ( _doors[k] );
-					}
-					
-				}
-			}
-		}*/
-/* отправить в level
-		public function checkActiveObjectsCollision ():Boolean {
-			var i:int = _activeAreas.length;
-			
-			while ( i-- ) {
-				if ( _activeAreas[i].checkCollision ( _player.x, _player.y ) ) {
-					_activeAreas[i].parent.positiveOutcome ();
-					return true;
-				}
-			}
-			
-			return false;
-		}
-*/
 		public function keyDown_fun (E:KeyboardEvent) {
 			//trace (E.keyCode);
 			
@@ -268,26 +249,26 @@
 			
 			switch ( doorDirection ) {
 				case "up":
-					currentLevelColumn --;
+					_player.currentRoom.y --;
 					break;
 				case "down":
-					currentLevelColumn ++;
+					_player.currentRoom.y ++;
 					break;
 				case "left":
-					currentLevelRow --;
+					_player.currentRoom.x --;
 					break;
 				case "right":
-					currentLevelRow ++;
+					_player.currentRoom.x ++;
 					break;
 			}
-			cLevel = _level[ currentFloor ][ currentLevelRow ][ currentLevelColumn ] ;
+			cLevel = _LEVEL[ _player.currentRoom.z ][ _player.currentRoom.x ][ _player.currentRoom.y ] ;
 			bulletController.changeLevel(cLevel);
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;
 			var correctY = stage.stageHeight - cLevel.height;
 			
 			var map = stat.getMapMC();
-			map.update(_level, currentLevelRow, currentLevelColumn);
+			map.update(_LEVEL);
 			
 			//trace (enterDoor.y);
 			
@@ -309,7 +290,7 @@
 		public function endLevel () {
 			cLevel.unlock();
 
-			cLevel = _level[1];
+			cLevel = _LEVEL[1];
 			
 			//setUpLevel();
 			
@@ -321,42 +302,6 @@
 		}
 
 		// FUNCTIONS FOR END GAME
-
-/* отправить в level
-		private function openLevel () {
-			finished = true;
-			for each (var k in _doors) {
-				k.unlock ();
-			}
-		}
-		
-		private function lockLevel () {
-			finished = false;
-			for(var k in _doors) {
-				_doors[k].lock ();
-			}
-		}
-*/
-/*
-		public function gotoLevel (frame:Number) {
-			
-			
-			lockLevel ();
-		}
-		
-		public function goOut ( DOOR:Door ) {
-			gotoLevel ( DOOR.level );
-			
-			_player.move (DOOR.x, DOOR.y);
-		}
-
-// --
-		public function gotoLevelFromDoor (I:Number) {
-			gotoAndStop (_doors[I].frame);
-			_player.x = _doors[I].x;
-			_player.y = _doors[I].y;
-		}
-*/
 	}
 
 }

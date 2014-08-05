@@ -7,6 +7,9 @@
 	public class LevelLoader {
 		private var urlLoader:URLLoader;
 		private var _level:Array = null;
+		private var first_level:Object;
+		
+		private var floorCounter:int = 0;
 
 		public function LevelLoader() {
 			urlLoader = new URLLoader();
@@ -28,7 +31,7 @@
 			
 			//trace(xmlLevel);
 			_level = createFloorArray(xmlLevel);
-			urlLoader.dispatchEvent(new LevelLoadedEvent(_level));
+			urlLoader.dispatchEvent(new LevelLoadedEvent(_level, first_level));
 		}
 		
 		private function createFloorArray(xmlLevel:XML):Array {
@@ -36,6 +39,7 @@
 			
 			for each ( var floor:XML in xmlLevel.floor ) {
 				floors.push( createRooms(floor) );
+				floorCounter ++;
 			}
 			
 			return floors;
@@ -54,7 +58,41 @@
 					rooms[room.@x] = new Array();
 				}
 				
+				if ( room.@first_level == "true" ) {
+					trace(room.@first_level);
+					first_level = {
+						x: room.@x,
+						y: room.@y,
+						z: floorCounter
+					};
+				}
+				
 				rooms[room.@x][room.@y] = cRoom;
+			}
+			
+			rooms = makeDoorsInRooms(rooms);
+			
+			return rooms;
+		}
+		
+		private function makeDoorsInRooms(rooms:Array):Array {
+			for ( var i in rooms ) {
+				for ( var j in rooms[i] ) {
+					trace(i,j);
+					if ( j < rooms[i].length-1 && rooms[i][j+1] ){
+						trace(1);
+						rooms[i][j].makeDoorWay("up");
+					}
+					if ( j > 0 && rooms[i][j-1] ){
+						rooms[i][j].makeDoorWay("down");
+					}
+					if ( i > 0 && rooms[i-1][j] ){
+						rooms[i][j].makeDoorWay("left");
+					}
+					if ( i < rooms.length-1 && rooms[i+1][j] ){
+						rooms[i][j].makeDoorWay("right");
+					}
+				}
 			}
 			
 			return rooms;
