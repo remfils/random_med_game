@@ -14,11 +14,14 @@
 	
 	import src.objects.*;
 	import src.levels.*;
+	import src.events.*;
 	import src.bullets.BulletController;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
 		private var blockControlls:Boolean = false;
+		
+		
 
 		var stat:PlayerStat;
 
@@ -64,6 +67,7 @@
 			setUpLevelMapPosition();
 			
 			addEventListeners();
+			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
 		}
 		
 		private function addObjectsToStage() {
@@ -103,13 +107,15 @@
 		}
 		
 		private function setUpLevelMapPosition() {
-			cLevel = _LEVEL[_player.currentRoom.z][_player.currentRoom.x][_player.currentRoom.y];
-			
-			trace(_player.currentRoom.x,_player.currentRoom.y,_player.currentRoom.z);
+			cLevel = getCurrentLevel();
 			
 			levelMap.y += stat.height;
 			levelMap.x -= _player.currentRoom.x * cLevel.width;
 			levelMap.y -= _player.currentRoom.y * cLevel.height;
+		}
+		
+		private function getCurrentLevel ():Level {
+			return _LEVEL[ _player.currentRoom.z ][ _player.currentRoom.x ][ _player.currentRoom.y ]
 		}
 		
 		private function addEventListeners() {
@@ -243,6 +249,50 @@
 					break;
 			}
 		}
+		// по возможности удалить RoomEvent
+		public function nextRoom (e:RoomEvent) {
+			cLevel.removeEventListener(RoomEvent.EXIT_ROOM_EVENT, nextRoom);
+			
+			var endDoor:Door = null;
+			if ( _player.y < 200 ) {
+				_player.currentRoom.y --;
+				 endDoor = cLevel.getDoor("down");
+			}
+			if ( _player.y > 500 ) {
+				_player.currentRoom.y ++;
+				endDoor = cLevel.getDoor("up");
+			}
+			if ( _player.x < 100 ) {
+				_player.currentRoom.x --;
+				endDoor = cLevel.getDoor("right");
+			}
+			if ( _player.x > 500 ) {
+				_player.currentRoom.x ++;
+				endDoor = cLevel.getDoor("left");
+			}
+			cLevel = getCurrentLevel();
+			
+			var correctY = stat.height;
+			
+			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 25);
+			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 25);
+			
+			blockControlls = true;
+			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 25 );
+			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 25 );
+			
+			tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
+		}
+		
+		private function roomTweenFinished  (e:Event) {
+				cLevel.lock();
+				blockControlls = false;
+				
+				cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+				
+				var tween:Tween = Tween(e.target);
+				tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
+			} 
 		
 		public function nextLevel ( exitDoor:Door ) {
 			var doorDirection = exitDoor.getDirection();
@@ -261,7 +311,7 @@
 					_player.currentRoom.x ++;
 					break;
 			}
-			cLevel = _LEVEL[ _player.currentRoom.z ][ _player.currentRoom.x ][ _player.currentRoom.y ] ;
+			cLevel = getCurrentLevel() ;
 			bulletController.changeLevel(cLevel);
 			
 			var enterDoor:Door = cLevel.getOppositeDoor ( exitDoor ) as Door;

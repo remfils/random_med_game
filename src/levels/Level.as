@@ -6,9 +6,12 @@
 	import src.interfaces.GameObject;
 	import src.interfaces.ActiveObject;
 	import src.objects.*;
+	import src.events.RoomEvent;
 	import src.util.Collider;
+	import src.Main;
 	
 	import src.Player;
+	import flash.events.Event;
 	
 	public class Level extends MovieClip implements GameObject {
 		var _gameObjects:Array = new Array();
@@ -19,6 +22,7 @@
 		
 		var finished:Boolean = true;
 		var _player:Player;
+		var i:int = 0;
 		
 		var endLevel:Function;
 
@@ -29,8 +33,8 @@
 			_player = Player.getInstance();
 			
 			// walls
-			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" ),
-				i:int = ar.length;
+			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" );
+			i = ar.length;
 			
 			while ( i-- ) {
 				_colliders.push ( getChildByName ( ar[i] ) as Collider );
@@ -52,7 +56,7 @@
 		}
 		
 		public function setNextLevel ( STATE:String, doors:Array ) {
-			var i = doors.length;
+			i = doors.length;
 			
 			switch (STATE) {
 				case "start":
@@ -99,6 +103,21 @@
 						_doors[1].unlock();
 						break;
 				}
+			}
+		}
+		
+		public function getDoor(dir:String):Door {
+			switch ( dir ) {
+				case "left" :
+					return _doors[0];
+				case "right" :
+					return _doors[2];
+				case "up" :
+					return _doors[3];
+				case "down" :
+					return _doors[1];
+				default:
+					return null;
 			}
 		}
 		
@@ -149,7 +168,6 @@
 		
 		// in task
 		public function negativeOutcome():Boolean {
-			
 			return false;
 		}
 		
@@ -160,6 +178,10 @@
 		
 		public function update () {
 			checkCollisions();
+			
+			if (finished) {
+				checkExitsCollision();
+			}
 		}
 		
 		public function checkCollisions () {
@@ -171,6 +193,15 @@
 				}
 			}
 			
+		}
+		
+		private function checkExitsCollision() {
+			i = _exits.length;
+			while (i--) {
+				if ( _exits[i].checkCollision(_player.x, _player.y) ) {
+					this.dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+				}
+			}
 		}
 		
 		public function checkCollision (X:Number, Y:Number):Boolean {

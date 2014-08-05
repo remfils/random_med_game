@@ -59,7 +59,6 @@
 				}
 				
 				if ( room.@first_level == "true" ) {
-					trace(room.@first_level);
 					first_level = {
 						x: room.@x,
 						y: room.@y,
@@ -80,17 +79,20 @@
 				for ( var j in rooms[i] ) {
 					trace(i,j);
 					if ( j < rooms[i].length-1 && rooms[i][j+1] ){
-						trace(1);
-						rooms[i][j].makeDoorWay("up");
+						trace("up");
+						rooms[i][j].makeDoorWay("down");
 					}
 					if ( j > 0 && rooms[i][j-1] ){
-						rooms[i][j].makeDoorWay("down");
+						rooms[i][j].makeDoorWay("up");
+						trace("down");
 					}
 					if ( i > 0 && rooms[i-1][j] ){
 						rooms[i][j].makeDoorWay("left");
+						trace("left");
 					}
 					if ( i < rooms.length-1 && rooms[i+1][j] ){
 						rooms[i][j].makeDoorWay("right");
+						trace("right");
 					}
 				}
 			}
