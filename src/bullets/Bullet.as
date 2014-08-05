@@ -15,6 +15,7 @@
 		}
 		
 		public function update() {
+			if (currentFrame == totalFrames) active = false;
 			if (!active) return;
 			
 			x += vx;

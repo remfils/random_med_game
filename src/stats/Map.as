@@ -33,7 +33,6 @@
 				I:int, J:int;
 			
 			for ( var i:String in levels ) {
-				trace(i);
 				I = int(i);
 				if ( max_x < I ) max_x = I;
 				if ( min_x > I ) min_x = I;
@@ -45,13 +44,10 @@
 				}
 			}
 			
-			trace(max_x,max_y,min_x,min_y);
-			
 			WIDTH = width / ( max_x - min_x + 1 ) - 2;
-			HEIGHT = height / ( max_y - min_y + 1 ) - 2;
+			HEIGHT = WIDTH / 1.5;
 			
-			miniMap.x -= WIDTH * min_x;
-			miniMap.y -= HEIGHT * min_y;
+			miniMap.y += height / 2 - HEIGHT * max_y;
 			
 			redrawCurrentRoom();
 		}

@@ -7,6 +7,7 @@
 	
 	public class BulletController {
 		var _bullets:Array;
+		var fire:Boolean;
 		
 		var BulletClass:Class;
 		
@@ -34,6 +35,10 @@
 		}
 		
 		public function update () {
+			if (fire) {
+				spawnBullet();
+			}
+			
 			i = _bullets.length;
 			while ( i-- ) {
 				_bullets[i].update();
@@ -42,6 +47,14 @@
 					deleteBullet(_bullets[i]);
 				}
 			}
+		}
+		
+		public function startBulletSpawn() {
+			fire = true;
+		}
+		
+		public function stopBulletSpawn() {
+			fire = false;
 		}
 		
 		public function spawnBullet() {
@@ -53,6 +66,8 @@
 				bullet = new BulletClass();
 				stage.addChild (bullet);
 				_bullets.push(bullet);
+				
+				trace(_bullets.length);
 			}
 			
 			var player:Player = Player.getInstance();
@@ -68,8 +83,9 @@
 		public function getFreeBullet():Bullet {
 			i = _bullets.length;
 			while (i--) {
-				if (_bullets[i].visible == false) {
-					_bullets[i].visible = true;
+				if (!_bullets[i].isActive()) {
+					_bullets[i].activate();
+					_bullets[i].gotoAndPlay(1);
 					return _bullets[i];
 				}
 			}

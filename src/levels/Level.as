@@ -144,36 +144,6 @@
 		}
 		
 		public function addTask () {
-			var levers:Array = new Array(),
-				L:Lever;
-			
-			for	( var i=0; i < 3; i++ ){
-				L = new Lever( negativeOutcome );
-				L.y = 200;
-				L.x = 250 + i*L.width + i*40;
-				addChild( L );
-				
-				L.gotoAndStop(1);
-				
-				_gameObjects.push (L);
-				_activeAreas.push(L.getActiveArea());
-				_colliders.push(L.getCollider());
-			}
-			
-			var j = Random.getNumber();
-			_gameObjects[j].setFun ( positiveOutcome );
-			finished = false;
-			
-		}
-		
-		// in task
-		public function negativeOutcome():Boolean {
-			return false;
-		}
-		
-		public function positiveOutcome():Boolean {
-			finish();
-			return true;
 		}
 		
 		public function update () {
@@ -199,7 +169,7 @@
 			i = _exits.length;
 			while (i--) {
 				if ( _exits[i].checkCollision(_player.x, _player.y) ) {
-					this.dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+					dispatchEvent(new Event(Main.EXIT_ROOM_EVENT));
 				}
 			}
 		}

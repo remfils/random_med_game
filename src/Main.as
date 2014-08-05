@@ -20,6 +20,8 @@
 	public class Main extends MovieClip {
 		// true если уровень закончен
 		private var blockControlls:Boolean = false;
+		
+		public static const EXIT_ROOM_EVENT = "exit_room";
 
 		var stat:PlayerStat;
 
@@ -45,8 +47,6 @@
 		}
 
 		// FUNCTIONS FOR LEVEL START
-
-		// setups game
 		public function init ( levels:Array ) {
 			var levelLoader:LevelLoader = new LevelLoader();
 			levelLoader.addLoadLevelListener(onLoadLevelComplete);
@@ -65,7 +65,8 @@
 			setUpLevelMapPosition();
 			
 			addEventListeners();
-			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+			
+			prepareCurrentLevel();
 			
 			stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
 			stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
@@ -124,8 +125,11 @@
 			stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
 			stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
 		}
-
-		// FUNCTION FOR MID-LEVEL
+		
+		public function prepareCurrentLevel() {
+			bulletController.changeLevel(cLevel);
+			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+		}
 
 		public function update (e:Event) {
 			_player.update ();
@@ -166,7 +170,7 @@
 					stat.nextMenuTheme();
 					break;
 				case 74 :
-					bulletController.spawnBullet();
+					bulletController.startBulletSpawn();
 					break;
 			}
 		}
@@ -189,11 +193,14 @@
 				case 83 :
 					_player.setMovement ("south",false);
 					break;
+				case 74:
+					bulletController.stopBulletSpawn();
+					break;
 			}
 		}
 		// по возможности удалить RoomEvent
-		public function nextRoom (e:RoomEvent) {
-			cLevel.removeEventListener(RoomEvent.EXIT_ROOM_EVENT, nextRoom);
+		public function nextRoom (e:Event) {
+			cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
 			
 			var endDoor:Door = null;
 			if ( _player.y < 200 ) {
@@ -216,12 +223,12 @@
 			
 			var correctY = stat.height;
 			
-			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 25);
-			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 25);
+			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
+			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 18);
 			
 			blockControlls = true;
-			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 25 );
-			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 25 );
+			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 18 );
+			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 18 );
 			
 			var map = stat.getMapMC();
 			map.update(_LEVEL);
@@ -233,7 +240,7 @@
 			cLevel.lock();
 			blockControlls = false;
 			
-			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+			prepareCurrentLevel();
 			
 			var tween:Tween = Tween(e.target);
 			tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
