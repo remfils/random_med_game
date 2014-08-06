@@ -42,11 +42,11 @@
 			}
 		}
 		
-		public function positiveOutCome() {
+		public function positiveOutcome() {
 			gotoAndPlay("open");
 		}
 		
-		public function negativeOutCome() {
+		public function negativeOutcome() {
 			gotoAndPlay("break");
 		}
 	}

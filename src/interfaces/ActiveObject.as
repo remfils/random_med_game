@@ -8,9 +8,9 @@
 		
 		function action();
 		
-		function positiveOutCome();
+		function positiveOutcome();
 		
-		function negativeOutCome();
+		function negativeOutcome();
 	}
 
 }

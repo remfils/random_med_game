@@ -22,7 +22,7 @@
 		var _exits:Array = new Array();
 		
 		var _tasks:Array = new Array();
-		var currentTask:Task;
+		var currentTask:Task = null;
 		
 		var finished:Boolean = true;
 		var _player:Player;
@@ -66,9 +66,8 @@
 		}
 		
 		public function addTask(type:String) {
-			currentTask = new Task(type);
-			
 			_tasks.push(currentTask);
+			currentTask = new Task(type);
 		}
 		
 		public function getDoor(dir:String):Door {
@@ -168,9 +167,21 @@
 			var i = _activeAreas.length;
 			while (i--) {
 				if ( object == _gameObjects[i] ) {
-					
+					if ( i == currentTask.getAnswer() ) {
+						object.positiveOutcome();
+						currentTask = getNextTask();
+						unsubscribeGameObjects();
+						unlock();
+					}
+					else {
+						object.negativeOutcome();
+					}
 				}
 			}
+		}
+		
+		private function getNextTask():Task {
+			return _tasks.pop();
 		}
 		
 		public function subscribeGameObjects() {
@@ -188,7 +199,7 @@
 		}
 		
 		public function lock () {
-			if ( finished ) return;
+			if ( isThereTasks() ) return;
 			
 			var i=_doors.length;
 			

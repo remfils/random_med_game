@@ -209,6 +209,20 @@
 				} else if ( dir_x > 0 ) gotoAndStop ("stand_right");
 				else gotoAndStop ("stand_left");
 			}
+			else {
+				if ( dir_x != 0 ) {
+					if ( dir_y > 0 ) gotoAndStop("down");
+					else if ( dir_y < 0 ) gotoAndStop("up");
+					else {
+						if ( dir_x > 0 ) gotoAndStop("right");
+						else gotoAndStop("left");
+					}
+				}
+				else {
+					if ( dir_y > 0 ) gotoAndStop("down");
+					else if ( dir_y < 0 ) gotoAndStop("up");
+				}
+			}
 		}
 		
 

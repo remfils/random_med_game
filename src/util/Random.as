@@ -11,7 +11,7 @@
 		 * Функция, которая возвращает случайное число от 1 до 3
 		 * @return число 1, 2 или 3
 		 */
-		public static function getNumber():Number {
+		public static function getOneFromThree():Number {
 			var d:Date = new Date();
 
 			var t_ms:Number = d.milliseconds,
