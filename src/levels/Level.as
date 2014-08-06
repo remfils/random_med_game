@@ -42,15 +42,15 @@
 			}
 			
 			// doors
-			var D:Door = null;
+			var door:Door = null;
 			i = 4;
 			while ( i-- ) {
-				D = getChildByName ( "door" + i ) as Door ;
-				D.hide();
+				door = getChildByName ( "door" + i ) as Door ;
+				door.hide();
 				
-				_doors.push( D );
-				_colliders.push( D.getCollider() );
-				_exits.push ( D.getExit() );
+				_doors.push( door );
+				_colliders.push( door.getCollider() );
+				_exits.push ( door.getExit() );
 			}
 			
 		}
