@@ -36,19 +36,16 @@
 			_player = Player.getInstance();
 			
 			// walls
-			var ar:Array = new Array ( "wall0", "wall1", "wall2", "wall3", "wall4", "wall5", "wall6", "wall7" );
-			i = ar.length;
-			
+			i = 8;
 			while ( i-- ) {
-				_colliders.push ( getChildByName ( ar[i] ) as Collider );
+				_colliders.push ( getChildByName ( "wall" + i ) as Collider );
 			}
 			
 			// doors
 			var D:Door = null;
-			ar = new Array("door0", "door1", "door2", "door3");
-			i = ar.length;
+			i = 4;
 			while ( i-- ) {
-				D = getChildByName ( ar[i] ) as Door ;
+				D = getChildByName ( "door" + i ) as Door ;
 				D.hide();
 				
 				_doors.push( D );
