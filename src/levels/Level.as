@@ -55,6 +55,10 @@
 			
 		}
 		
+		public function addAcrtiveObject() {
+			
+		}
+		
 		public function setNextLevel ( STATE:String, doors:Array ) {
 			i = doors.length;
 			

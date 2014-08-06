@@ -11,9 +11,7 @@
 		
 		private var testFun:Function;
 
-		public function Lever (fun:Function) {
-			testFun = fun;
-			
+		public function Lever () {
 			_collider = getChildByName( "collider" ) as Collider ;
 			_activeArea = getChildByName( "activeArea" ) as Collider ;
 		}
