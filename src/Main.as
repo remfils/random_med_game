@@ -162,9 +162,7 @@
 					_player.setMovement ("south");
 					break;
 				case 69:
-					var A:ActiveObject = cLevel.checkActiveAreasCollision();
-					if ( A == null ) return;
-					A.action();
+					activateObject();
 					break;
 				case 32 :
 					stat.nextMenuTheme();
@@ -173,6 +171,11 @@
 					bulletController.startBulletSpawn();
 					break;
 			}
+		}
+		
+		private function activateObject() {
+			var A:ActiveObject = cLevel.getCurrentActiveObject();
+			if ( A != null ) A.action();
 		}
 
 		public function keyUp_fun (E:KeyboardEvent) {

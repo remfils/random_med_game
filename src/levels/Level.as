@@ -55,8 +55,10 @@
 			
 		}
 		
-		public function addAcrtiveObject() {
-			
+		public function addActiveObject(object:ActiveObject) {
+			_activeAreas.push(object.getActiveArea());
+			_colliders.push(object.getCollider());
+			addChild(MovieClip(object));
 		}
 		
 		public function setNextLevel ( STATE:String, doors:Array ) {
@@ -188,7 +190,7 @@
 			return false;
 		}
 		
-		public function checkActiveAreasCollision ():ActiveObject {
+		public function getCurrentActiveObject():ActiveObject {
 			var i = _activeAreas.length;
 			
 			while ( i-- ) {
