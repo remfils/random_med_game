@@ -21,6 +21,7 @@
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
 		
+		var _tasks:Array = new Array();
 		var currentTask:Task;
 		
 		var finished:Boolean = true;
@@ -67,59 +68,7 @@
 		public function addTask(type:String) {
 			currentTask = new Task(type);
 			
-			if ( type != "distant" )
-			finished = false;
-		}
-		
-		public function setNextLevel ( STATE:String, doors:Array ) {
-			i = doors.length;
-			
-			switch (STATE) {
-				case "start":
-					gotoAndStop("start_room");
-					break;
-				case "normal1":
-					gotoAndStop ("normal_room_1");
-					break;
-				case "normal2":
-					gotoAndStop ("normal_room_2");
-					break;
-				case "normal3":
-					gotoAndStop ("normal_room_3");
-					break;
-				case "normal4":
-					gotoAndStop ("normal_room_4");
-					break;
-				case "normal5":
-					gotoAndStop ("normal_room_5");
-					break;
-				case "normal6":
-					gotoAndStop ("normal_room_6");
-					break;
-			}
-			
-			while ( i-- ) {
-				switch ( doors[i] ) {
-					case "left" :
-						_doors[0].show();
-						_doors[0].unlock();
-						break;
-					case "right" :
-						_doors[2].show();
-						_doors[2].unlock();
-						break;
-					case "up" :
-					case "top" :
-						_doors[3].show();
-						_doors[3].unlock();
-						break;
-					case "down" :
-					case "bottom":
-						_doors[1].show();
-						_doors[1].unlock();
-						break;
-				}
-			}
+			_tasks.push(currentTask);
 		}
 		
 		public function getDoor(dir:String):Door {
