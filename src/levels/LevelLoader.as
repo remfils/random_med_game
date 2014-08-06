@@ -3,6 +3,7 @@
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.utils.*;
+	import src.objects.Lever;
 	
 	public class LevelLoader {
 		private var urlLoader:URLLoader;
@@ -66,12 +67,31 @@
 					};
 				}
 				
+				addActiveObjectsToRoom(cRoom, room.active.*);
+				
 				rooms[room.@x][room.@y] = cRoom;
 			}
 			
 			rooms = makeDoorsInRooms(rooms);
 			
 			return rooms;
+		}
+		
+		private function addActiveObjectsToRoom (room:Level, activeObjectsXML:XMLList) {
+			var currentObject:MovieClip = null,
+				currentObjectClassName:String= null;
+			
+			for each ( var object:XML in activeObjectsXML ) {
+				switch (object.name()) {
+					case "Lever" :
+						currentObject = new Lever();
+						currentObject.x = object.@x;
+						currentObject.y = object.@y;
+						
+						room.addActiveObject(currentObject);
+					break;
+				}
+			}
 		}
 		
 		private function makeDoorsInRooms(rooms:Array):Array {
