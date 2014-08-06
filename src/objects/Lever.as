@@ -38,8 +38,16 @@
 		
 		public function action () {
 			if ( _active ) {
-				Main.cLevel.dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
+				dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
 			}
+		}
+		
+		public function positiveOutCome() {
+			gotoAndPlay("open");
+		}
+		
+		public function negativeOutCome() {
+			gotoAndPlay("break");
 		}
 	}
 

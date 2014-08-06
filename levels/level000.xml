@@ -5,9 +5,9 @@
         <room x="2" y="0" >
             <task type="levers" />
             <active>
-                <lever x="100" y="100"></lever>
-                <lever x="200" y="100"></lever>
-                <lever x="300" y="100"></lever>
+                <lever x="200" y="300"></lever>
+                <lever x="400" y="300"></lever>
+                <lever x="600" y="300"></lever>
             </active>
         </room>>
         <room x="3" y="0" />

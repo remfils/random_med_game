@@ -12,6 +12,8 @@
 	import src.stats.PlayerStat;
 	import src.stats.Map;
 	
+	import src.interfaces.*;
+	
 	import src.objects.*;
 	import src.levels.*;
 	import src.events.*;
@@ -22,6 +24,7 @@
 		private var blockControlls:Boolean = false;
 		
 		public static const EXIT_ROOM_EVENT = "exit_room";
+		public static const OBJECT_ACTIVATE_EVENT = "object_activate";
 
 		var stat:PlayerStat;
 
@@ -129,6 +132,9 @@
 		public function prepareCurrentLevel() {
 			bulletController.changeLevel(cLevel);
 			cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
+			cLevel.addEventListener(OBJECT_ACTIVATE_EVENT, cLevel.completeCurrentTask);
+			
+			cLevel.subscribeGameObjects();
 		}
 
 		public function update (e:Event) {

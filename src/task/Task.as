@@ -1,14 +1,12 @@
 ﻿package src.task {
 	
 	public class Task {
-		private var completeFun:Function;
 
-		public function Task( onComplete:Function ) {
-			completeFun = onComlete;
+		public function Task(type:String) {
 		}
 		
-		public function Complete () {
-			completeFun();
+		public function getAnswer():int {
+			return 2;
 		}
 
 	}

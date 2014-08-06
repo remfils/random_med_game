@@ -7,6 +7,10 @@
 		function getActiveArea ():Collider;
 		
 		function action();
+		
+		function positiveOutCome();
+		
+		function negativeOutCome();
 	}
 
 }

@@ -12,6 +12,7 @@
 	
 	import src.Player;
 	import flash.events.Event;
+	import src.task.Task;
 	
 	public class Level extends MovieClip implements GameObject {
 		var _gameObjects:Array = new Array();
@@ -19,6 +20,8 @@
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
+		
+		var currentTask:Task;
 		
 		var finished:Boolean = true;
 		var _player:Player;
@@ -58,7 +61,17 @@
 		public function addActiveObject(object:ActiveObject) {
 			_activeAreas.push(object.getActiveArea());
 			_colliders.push(object.getCollider());
+			
+			_gameObjects.push(object);
+			
 			addChild(MovieClip(object));
+		}
+		
+		public function addTask(type:String) {
+			currentTask = new Task(type);
+			
+			if ( type != "distant" )
+			finished = false;
 		}
 		
 		public function setNextLevel ( STATE:String, doors:Array ) {
@@ -149,15 +162,16 @@
 			}
 		}
 		
-		public function addTask () {
-		}
-		
 		public function update () {
 			checkCollisions();
 			
-			if (finished) {
+			if ( isThereTasks() ) {
 				checkExitsCollision();
 			}
+		}
+		
+		private function isThereTasks():Boolean {
+			return currentTask == null;
 		}
 		
 		public function checkCollisions () {
@@ -200,6 +214,31 @@
 			}
 			
 			return null;
+		}
+		
+		public function completeCurrentTask (e:Event) {
+			var object:ActiveObject = ActiveObject(e.target);
+			
+			var i = _activeAreas.length;
+			while (i--) {
+				if ( object == _gameObjects[i] ) {
+					
+				}
+			}
+		}
+		
+		public function subscribeGameObjects() {
+			var i = _gameObjects.length;
+			while (i--) {
+				_gameObjects[i].addEventListener(Main.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
+			}
+		}
+		
+		public function unsubscribeGameObjects() {
+			var i = _gameObjects.length;
+			while (i--) {
+				_gameObjects[i].removeEventListener(Main.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
+			}
 		}
 		
 		// ------------------------

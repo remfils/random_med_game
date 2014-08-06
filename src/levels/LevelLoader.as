@@ -61,6 +61,10 @@
 					rooms[room.@x] = new Array();
 				}
 				
+				if ( String(room.task.@type) != "" ) {
+					cRoom.addTask(room.task.@type);
+				}
+				
 				if ( room.@first_level == "true" ) {
 					first_level = {
 						x: room.@x,
@@ -82,7 +86,6 @@
 		private function addActiveObjectsToRoom (room:Level, activeObjectsXML:XMLList) {
 			
 			for each ( var object:XML in activeObjectsXML ) {
-				trace(object.name());
 				switch ( object.name().toString() ) {
 					case "lever" :
 						var currentObject:Lever = new Lever();
