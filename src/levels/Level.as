@@ -14,7 +14,7 @@
 	import flash.events.Event;
 	import src.task.Task;
 	
-	public class Level extends MovieClip implements GameObject {
+	public class Level extends MovieClip {
 		var _gameObjects:Array = new Array();
 		var _activeAreas:Array = new Array();
 		var _colliders:Array = new Array();
@@ -185,14 +185,6 @@
 			while (i--) {
 				_gameObjects[i].removeEventListener(Main.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
 			}
-		}
-		
-		public function active():Boolean {
-			return finished;
-		}
-		
-		public function getCollider ():Collider {
-			return null;
 		}
 		
 		public function addObject ( A:ActiveObject ) {
