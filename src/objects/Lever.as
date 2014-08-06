@@ -2,6 +2,8 @@
 
 	import flash.display.MovieClip;
 	import src.interfaces.ActiveObject;
+	import src.Main;
+	import flash.events.Event;
 
 	public class Lever extends MovieClip implements ActiveObject {
 		
@@ -36,14 +38,7 @@
 		
 		public function action () {
 			if ( _active ) {
-				if ( testFun () ) {
-					gotoAndPlay("open");
-				}
-				else {
-					gotoAndPlay("break");
-				}
-				
-				_active = false;
+				Main.cLevel.dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
 			}
 		}
 	}
