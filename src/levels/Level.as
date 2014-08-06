@@ -187,11 +187,6 @@
 			}
 		}
 		
-		public function addObject ( A:ActiveObject ) {
-			_activeAreas.push ( A.getActiveArea() );
-			_colliders.push ( A.getCollider() );
-		}
-		
 		public function lock () {
 			if ( finished ) return;
 			
