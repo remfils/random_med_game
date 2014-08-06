@@ -187,33 +187,6 @@
 			}
 		}
 		
-		// ------------------------
-		public function getOppositeDoor ( d:Door ):Door {
-			var doorRotation = d.rotation;
-			
-			//trace (doorRotation);
-			
-			switch ( doorRotation ) {
-				case 90:
-					doorRotation = -90;
-					break;
-				case 180:
-				case -180:
-					doorRotation = 0;
-					break;
-				default:
-					doorRotation += 180;
-			}
-				
-			var i = _doors.length;
-			
-			while ( i-- ) {
-				if ( _doors[i].rotation == doorRotation ) return _doors[i];
-			}
-			
-			return new Door();
-		}
-		
 		public function active():Boolean {
 			return finished;
 		}
