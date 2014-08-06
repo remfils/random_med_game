@@ -2,7 +2,14 @@
     <floor>
         
         <room x="1" y="0" />
-        <room x="2" y="0" />
+        <room x="2" y="0" >
+            <task type="levers" />
+            <active>
+                <Lever x="100" y="100"></Lever>
+                <Lever x="200" y="100"></Lever>
+                <Lever x="300" y="100"></Lever>
+            </active>
+        </room>>
         <room x="3" y="0" />
         <room x="4" y="0" />
         <room x="0" y="1" />
