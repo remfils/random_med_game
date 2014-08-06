@@ -1,4 +1,6 @@
 ﻿package src.levels {
+	import flash.display.MovieClip;
+	import src.interfaces.*;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
@@ -78,13 +80,12 @@
 		}
 		
 		private function addActiveObjectsToRoom (room:Level, activeObjectsXML:XMLList) {
-			var currentObject:MovieClip = null,
-				currentObjectClassName:String= null;
 			
 			for each ( var object:XML in activeObjectsXML ) {
-				switch (object.name()) {
-					case "Lever" :
-						currentObject = new Lever();
+				trace(object.name());
+				switch ( object.name().toString() ) {
+					case "lever" :
+						var currentObject:Lever = new Lever();
 						currentObject.x = object.@x;
 						currentObject.y = object.@y;
 						
