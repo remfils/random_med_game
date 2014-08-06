@@ -28,7 +28,7 @@
 		var _player:Player;
 
 		var _LEVEL:Array = new Array();
-		var cLevel:Level;
+		public static var cLevel:Level;
 		
 		var currentRoom:Object = {x:0, y:0, z:0};
 		
