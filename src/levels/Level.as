@@ -204,12 +204,6 @@
 				_doors[i].unlock ();
 			}
 		}
-		
-		public function finish () {
-			unlock();
-			
-			finished = true;
-		}
 
 	}
 	
