@@ -1,7 +1,7 @@
 <level>
     <floor>
         
-        <room x="1" y="0" >
+        <room x="1" y="0" type="normal_room_2">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="200" y="150"></lever>
@@ -9,16 +9,58 @@
                 <lever x="600" y="150"></lever>
             </active>
         </room>
+
         <room x="2" y="0" >
         </room>
         <room x="3" y="0" />
-        <room x="4" y="0" />
-        <room x="0" y="1" />
-        <room x="1" y="1" first_level="true" />
-        <room x="2" y="1" />
-        <room x="4" y="1" />
-        <room x="1" y="2" />
-        <room x="2" y="2" />
+
+        <room x="4" y="0" type="normal_room_3">
+            <task type="levers" id="1"/>
+            <active task_id="1">
+                <lever x="600" y="150"></lever>
+                <lever x="600" y="240"></lever>
+                <lever x="600" y="340"></lever>
+            </active>
+        </room>
+
+        <room x="0" y="1" type="normal_room_6">
+            <task type="levers" id="1"/>
+            <active task_id="1">
+                <lever x="300" y="100"></lever>
+                <lever x="200" y="200"></lever>
+                <lever x="100" y="300"></lever>
+            </active>
+        </room>
+
+        <room x="1" y="1" >
+            <task type="levers" id="1"/>
+            <active task_id="1">
+                <lever x="200" y="150"></lever>
+                <lever x="400" y="200"></lever>
+                <lever x="600" y="150"></lever>
+            </active>
+        </room>
+
+        <room x="2" y="1" type="normal_room_3"/>
+
+        <room x="4" y="1" type="normal_room_4">
+            
+        </room>
+
+        <room x="1" y="2" first_level="true" type="start_room">
+            
+        </room>
+
+        <room x="2" y="2" type="normal_room_5">
+            <task type="levers" id="1"/>
+            <active task_id="1">
+                <lever x="400" y="400"></lever>
+                <lever x="250" y="300"></lever>
+                <lever x="550" y="300"></lever>
+                <lever x="300" y="200"></lever>
+                <lever x="500" y="200"></lever>
+            </active>
+        </room>
 
     </floor>
 </level>

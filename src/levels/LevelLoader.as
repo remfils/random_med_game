@@ -73,6 +73,13 @@
 					};
 				}
 				
+				if ( room.@type.toString() != "" ) {
+					cRoom.gotoAndStop(room.@type);
+				}
+				else {
+					cRoom.gotoAndStop("normal_room_1");
+				}
+				
 				addActiveObjectsToRoom(cRoom, room.active.*);
 				
 				rooms[room.@x][room.@y] = cRoom;

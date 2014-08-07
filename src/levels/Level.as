@@ -86,7 +86,6 @@
 		}
 		
 		public function makeDoorWay (wallName:String) {
-			gotoAndStop ("normal_room_1");
 			switch ( wallName ) {
 				case "left" :
 					_doors[0].show();
