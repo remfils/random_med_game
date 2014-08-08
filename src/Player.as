@@ -5,13 +5,25 @@
 	import flash.geom.Point;
 	
 	import src.bullets.*;
+	import src.stats.PlayerStat;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	
 	/**
 	 * Главный класс игрока
 	 */
 	public class Player extends MovieClip {
-		static public var instance:Player;
+//stats
+		public static var MAX_HEALTH = 6;
+		public static var HEALTH:Number = MAX_HEALTH;
+		public var MANA:Number = 4;
+//invincibility
+		static var immune:Boolean = false;
+		var invincibilityDelay:Number = 140;
+		var invincibilityTimer:Timer;
+		
+		static public var instance:Player = null;
 
 		static public const FRICTION:Number = 0.2; //--
 		static public const MAX_SPEED = 6; //--
@@ -51,8 +63,9 @@
 			px = x;
 			py = y;
 			
+			invincibilityTimer = new Timer(invincibilityDelay,6);
+			
 			currentBullet = Spark;
-			instance = this;
 		}
 		
 		static public function getInstance():Player {
@@ -228,6 +241,45 @@
 
 		public function getCollider () :Collider {
 			return _collider;
+		}
+		
+		public function makeHit (dmg:Number) {
+			if (isImmune()) return;
+			
+			startInvincibilityTimer();
+
+			HEALTH -= dmg;
+			if ( HEALTH <= 0 ) {
+				die();
+				HEALTH = 0;
+			}
+			PlayerStat.getInstance().registerDamage(dmg);
+		}
+		
+		private function startInvincibilityTimer() {
+			invincibilityTimer.addEventListener(TimerEvent.TIMER, blink);
+			invincibilityTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stopInvincibilityTimer);
+			invincibilityTimer.reset();
+			invincibilityTimer.start();
+			immune = true;
+		}
+		
+		private function blink(e:TimerEvent) {
+			visible = !visible;
+		}
+		
+		private function stopInvincibilityTimer (e:TimerEvent) {
+			immune = false;
+			visible = true;
+			invincibilityTimer.stop();
+		}
+		
+		public static function isImmune():Boolean {
+			return immune;
+		}
+		
+		public function die() {
+			trace("Player is dead");
 		}
 	}
 }

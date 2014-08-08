@@ -18,6 +18,7 @@
 	import src.levels.*;
 	import src.events.*;
 	import src.bullets.BulletController;
+	import src.stats.Heart;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -38,7 +39,6 @@
 		var levelMap:MovieClip;
 		
 		var bulletController:BulletController;
-		
 
 		public function Main () {
 			super ();
@@ -50,7 +50,7 @@
 		}
 
 		// FUNCTIONS FOR LEVEL START
-		public function init ( levels:Array ) {
+		public function init () {
 			var levelLoader:LevelLoader = new LevelLoader();
 			levelLoader.addLoadLevelListener(onLoadLevelComplete);
 			
@@ -100,7 +100,7 @@
 		}
 		
 		private function addPlayerStat() {
-			stat = new PlayerStat();
+			stat = PlayerStat.getInstance();
 			stat.x = 0;
 			stat.y = 0;
 			addChild (stat);
@@ -171,7 +171,8 @@
 					activateObject();
 					break;
 				case 32 :
-					stat.nextMenuTheme();
+					//stat.nextMenuTheme();
+					_player.makeHit(2);
 					break;
 				case 74 :
 					bulletController.startBulletSpawn();
