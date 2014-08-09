@@ -1,6 +1,5 @@
 ﻿package src {
 
-	import flash.display.MovieClip;
 	import flash.events.*;
 	import flash.ui.Keyboard;
 	import flash.geom.Point;
@@ -25,6 +24,7 @@
 	import flash.net.URLRequest;
 	import src.ui.GenericLevelButton;
 	import src.util.PlayerPanel;
+	import flash.display.*;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -48,6 +48,7 @@
 		
 		var bulletController:BulletController;
 		
+		var levelButtonPanel:Sprite;
 		var levelLoader:URLLoader;
 
 		public function Main () {
@@ -84,17 +85,38 @@
 		
 		private function addLevelButtons (levels:XMLList) {
 			var btnMap:GenericLevelButton,
-				i:int = 0;
+				i:int = 0,
+				j:int = 0,
+				k:int = 0;
+			
+			levelButtonPanel = new Sprite();
 			
 			for each ( var level:XML in levels ) {
 				btnMap = new GenericLevelButton(level.name, level.@rating);
-				btnMap.y = 200;
-				btnMap.x = 100 + 140*i++;
+				btnMap.y = 200 + j * (btnMap.height + 10);
+				btnMap.x = 110 + stage.width * k + 140*i++;
+				
+				if (level.@locked.toString() == "true") {
+					btnMap.block();
+				}
+				
+				if ( i == 4 ) {
+					i = 0;
+					j++;
+				}
+				
+				if ( j == 2 ) {
+					i = 0;
+					j = 0;
+					k++;
+				}
 				
 				btnMap.addEventListener(MouseEvent.CLICK, createLevelLoadFunction(level.src));
 				
-				addChild(btnMap);
+				levelButtonPanel.addChild(btnMap);
 			}
+			
+			addChild(levelButtonPanel);
 		}
 		
 		private function createLevelLoadFunction (url:String):Function {
@@ -103,6 +125,39 @@
 				init(url);
 			};
 			
+		}
+		
+		public function setUpLeftRightButtons() {
+			var left_btn:SimpleButton = SimpleButton(this.getChildByName("left_btn")),
+				right_btn:SimpleButton = SimpleButton(this.getChildByName("right_btn")),
+				back_to_menu_btn:SimpleButton = SimpleButton(this.getChildByName("back_to_menu_btn"));
+				
+			left_btn.addEventListener(MouseEvent.CLICK, moveLevelButtonPanelLeft);
+			right_btn.addEventListener(MouseEvent.CLICK, moveLevelButtonPanelRight);
+			back_to_menu_btn.addEventListener(MouseEvent.CLICK, backToMainMenu);
+		}
+		
+		private function moveLevelButtonPanelLeft (e:Event) {
+			if (levelButtonPanel.x < -10) {
+				var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x + 750, 18 );
+			}
+		}
+		
+		private function moveLevelButtonPanelRight (e:Event) {
+			if (Math.abs(levelButtonPanel.x - 750) <= levelButtonPanel.width) {
+				var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x - 750, 18 );
+			}
+		}
+		
+		private function backToMainMenu (e:Event) {
+			removeLevelButtons();
+			gotoAndStop("main");
+		}
+		
+		private function removeLevelButtons() {
+			while (levelButtonPanel.numChildren > 0) {
+				levelButtonPanel.removeChild(levelButtonPanel.getChildAt(levelButtonPanel.numChildren-1));
+			}
 		}
 
 		// FUNCTIONS FOR LEVEL START

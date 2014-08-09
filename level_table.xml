@@ -4,7 +4,7 @@
         <src>levels/level000.xml</src>
     </level>
     <level rating="1">
-        <name>Уровень 2</name>
+        <name>Максимальная ширина</name>
         <src>levels/level001.xml</src>
     </level>
     <level rating="0" locked="true">
@@ -20,7 +20,19 @@
         <src>levels/level001.xml</src>
     </level>
     <level rating="0" locked="true">
+        <name>Закрытый уровень 5</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
         <name>Закрытый уровень 4</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 5</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 5</name>
         <src>levels/level001.xml</src>
     </level>
 </table>

@@ -9,11 +9,14 @@
 	
 	public class GenericLevelButton extends MovieClip {
 		var levelName:String,
-			rating:int;
+			rating:int,
+			mapHeight:Number;
 		
 		public function GenericLevelButton(levelLabel:String, rating:int) {
 			this.levelName = levelLabel;
 			this.rating = rating;
+			
+			mapHeight = height;
 			
 			addLabel();
 			addStars();
@@ -48,7 +51,7 @@
 		private function addStars() {
 			var star:Star=new Star(),
 				ammendX:Number = (width - star.width*3)-4,
-				ammendY:Number = height;
+				ammendY:Number = mapHeight;
 			
 			for ( var i=0; i<3; i++ ) {
 				star = new Star();
@@ -72,6 +75,16 @@
 		private function makeNormal(e:MouseEvent) {
 			this.transform.colorTransform = new ColorTransform();
 			Mouse.cursor = "auto";
+		}
+		
+		public function block () {
+			removeEventListener(MouseEvent.MOUSE_OVER, makeDarker);
+			removeEventListener(MouseEvent.MOUSE_OUT, makeNormal);
+			
+			mouseChildren = false;
+			mouseEnabled = false;
+			
+			this.transform.colorTransform = new ColorTransform(0.3,0.3,0.3);
 		}
 	}
 	
