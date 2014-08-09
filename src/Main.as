@@ -21,6 +21,9 @@
 	import src.stats.Heart;
 	import src.util.GlassPanel;
 	import flash.display.Sprite;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import src.ui.GenericLevelButton;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -42,6 +45,8 @@
 		var levelMap:MovieClip;
 		
 		var bulletController:BulletController;
+		
+		var levelLoader:URLLoader;
 
 		public function Main () {
 			super ();
@@ -65,13 +70,47 @@
 			
 			trace(ar);
 		}
+		
+		public function loadLevelsData () {
+			levelLoader = new URLLoader(new URLRequest("level_table.xml"));
+			levelLoader.addEventListener(Event.COMPLETE, levelDataLoaded);
+		}
+		
+		private function levelDataLoaded(e:Event) {
+			var xmlLevels:XMLList = new XMLList(levelLoader.data);
+			
+			addLevelButtons(xmlLevels.level);
+		}
+		
+		private function addLevelButtons (levels:XMLList) {
+			var btnMap:GenericLevelButton,
+				i:int = 0;
+			
+			for each ( var level:XML in levels ) {
+				btnMap = new GenericLevelButton(level.name, level.@rating);
+				btnMap.y = 200;
+				btnMap.x = 100 + 140*i++;
+				
+				btnMap.addEventListener(MouseEvent.CLICK, createLevelLoadFunction(level.src));
+				
+				addChild(btnMap);
+			}
+		}
+		
+		private function createLevelLoadFunction (url:String):Function {
+			return function (e:Event) {
+				gotoAndStop(1, "Scene 3");
+				init(url);
+			};
+			
+		}
 
 		// FUNCTIONS FOR LEVEL START
-		public function init () {
+		public function init (levelUrl:String) {
 			var levelLoader:LevelLoader = new LevelLoader();
 			levelLoader.addLoadLevelListener(onLoadLevelComplete);
 			
-			levelLoader.startLevelLoad("level000");
+			levelLoader.startLevelLoad(levelUrl);
 		}
 		
 		private function onLoadLevelComplete(e:LevelLoadedEvent) {

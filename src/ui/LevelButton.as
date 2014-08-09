@@ -5,67 +5,60 @@
 	import flash.display.DisplayObject;
 	import flash.text.TextFormat;
 	import flash.display.MovieClip;
+	import flash.geom.ColorTransform;
+	import flash.events.MouseEvent;
 	
 	public class LevelButton extends SimpleButton {
+		/*var container:Sprite = new Sprite();
 		var _label:String;
 		var _rating:Number;
 		var _stars:Array = new Array();
-		var map:Sprite;
+		var map:GenericLevelButton = new GenericLevelButton();
 
 		public function LevelButton(levelName:String, rating:Number = 0) {
 			super();
 			_label = levelName;
 			_rating = rating;
 			
-			setUpStars();
+			createButton();
 			
-			upState = getUpState();
+			hitTestState = upState = container;
 			overState = getOverState();
 		}
 		
-		private function setUpStars() {
+		private function createButton() {
+			container.addChild(map);
+			
+			var tf = getLevelLabel();
+			container.addChild(tf);
+			
+			addStars();
+			rateLevel();
+		}
+		
+		private function addStars() {
 			var star:Star=new Star(),
-				ammendX:Number = (width - star.width*3)-4;
+				ammendX:Number = (map.width - star.width*3)-4;
 			
 			for ( var i=0; i<3; i++ ) {
 				star = new Star();
+				star.gotoAndStop(1);
 				star.x = ammendX + star.width * i;
-				star.y = height;
+				star.y = map.height;
 				_stars.push(star);
+				container.addChild(star);
 			}
 		}
 		
-		private function getUpState():Sprite {
-			var container:Sprite = new Sprite();
-			container.addChild(map);
-			addLevelLabel(container);
+		private function getLevelLabel():TextField {
+			var tf:TextField = new TextField();
+			tf.text = _label;
+			tf.x = 0;
+			tf.y = -20;
 			
-			addRatingStars(container);
-			return container;
-		}
-		
-		private function getOverState():Sprite {
-			var container:Sprite = new Sprite();
-			container.addChild(hitTestState);
-			addLevelLabel(container);
+			tf.setTextFormat(getLevelNameFormat());
 			
-			addRatingStars(container);
-			return container;
-		}
-		
-		private function addLevelLabel(container:Sprite) {
-			var text:TextField = new TextField();
-			text.text = _label;
-			text.x = 0;
-			text.y = -20;
-			
-			text.width = width;
-			
-			text.setTextFormat(getLevelNameFormat());
-			
-			container.addChild(text);
-			
-			var mc:MovieClip = new MovieClip();
+			return tf;
 		}
 		
 		private function getLevelNameFormat():TextFormat {
@@ -78,16 +71,17 @@
 			return tf;
 		}
 		
-		private function addRatingStars(container:Sprite) {
-			for (i=0; i<_rating; i++) {
+		private function rateLevel() {
+			for (var i=0; i<_rating; i++) {
 				_stars[i].setScore();
 			}
-			
-			var i = _stars.length;
-			while (i--) {
-				container.addChild(_stars[i]);
-			}
 		}
+		
+		private function getOverState():Sprite {
+			var sp:Sprite = container;
+			//sp.transform.colorTransform = new ColorTransform(1,1,1);
+			return sp;
+		}*/
 
 	}
 	

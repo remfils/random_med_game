@@ -23,8 +23,8 @@
 			urlLoader.addEventListener("LevelLoaded", onLoadComplete);
 		}
 		
-		public function startLevelLoad (levelName:String) {
-			var urlRequest:URLRequest = new URLRequest("levels/" + levelName + ".xml");
+		public function startLevelLoad (levelUrl:String) {
+			var urlRequest:URLRequest = new URLRequest(levelUrl);
 			//urlLoader.
 			urlLoader.load(urlRequest);
 		}

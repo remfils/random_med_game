@@ -1,18 +1,11 @@
 <table>
     <level rating="2">
         <name>level 1</name>
-        <src>level/level000.xml</src>
+        <src>levels/level000.xml</src>
     </level>
     <level rating="1">
         <name>Уровень 2</name>
-        <src>level/level001.xml</src>
+        <src>levels/level001.xml</src>
     </level>
-    <level rating="0">
-        <name>замок 3</name>
-        <src>level/level002.xml</src>
-    </level>
-    <level rating="0">
-        <name>поместье 4</name>
-        <src>level/level003.xml</src>
-    </level>
+    
 </table>

@@ -7,7 +7,6 @@
 		
 		
 		public function Star() {
-			super();
 			gotoAndStop(1);
 		}
 		
