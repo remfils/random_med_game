@@ -7,5 +7,20 @@
         <name>Уровень 2</name>
         <src>levels/level001.xml</src>
     </level>
-    
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 1</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 2</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 3</name>
+        <src>levels/level001.xml</src>
+    </level>
+    <level rating="0" locked="true">
+        <name>Закрытый уровень 4</name>
+        <src>levels/level001.xml</src>
+    </level>
 </table>

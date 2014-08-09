@@ -26,9 +26,11 @@
 			var tf:TextField = new TextField();
 			tf.text = levelName;
 			tf.x = 0;
-			tf.y = -20;
+			
+			tf.wordWrap = true;
 			
 			tf.setTextFormat(getLevelNameFormat());
+			tf.y = -20*(Math.floor(tf.length/10)+1);
 			
 			addChild(tf);
 		}
