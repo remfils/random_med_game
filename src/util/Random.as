@@ -17,7 +17,6 @@
 			var t_ms:Number = d.milliseconds,
 				r:Number = t_ms % 3;
 				
-			trace (t_ms);
 			return r;
 		}
 	}

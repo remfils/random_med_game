@@ -56,6 +56,10 @@
 			
 		}
 		
+		public function getGameObjects():Array {
+			return _gameObjects;
+		}
+		
 		public function addActiveObject(object:ActiveObject) {
 			_activeAreas.push(object.getActiveArea());
 			_colliders.push(object.getCollider());

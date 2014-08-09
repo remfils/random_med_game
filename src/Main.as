@@ -19,6 +19,8 @@
 	import src.events.*;
 	import src.bullets.BulletController;
 	import src.stats.Heart;
+	import src.util.GlassPanel;
+	import flash.display.Sprite;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -28,6 +30,7 @@
 		public static const OBJECT_ACTIVATE_EVENT = "object_activate";
 
 		var stat:PlayerStat;
+		var glassPanel:GlassPanel;
 
 		var _player:Player;
 
@@ -47,6 +50,20 @@
 			_player.move (385,400);
 			
 			bulletController = new BulletController(stage);
+		}
+		
+		private function testFun() {
+			var ar:Array = new Array(1,2,3,4,5,6);
+			var i = ar.length;
+			
+			while (i--) {
+				trace(ar[i]);
+				if (ar[i]==5) {
+					ar.splice(i,1);
+				}
+			}
+			
+			trace(ar);
 		}
 
 		// FUNCTIONS FOR LEVEL START
@@ -78,9 +95,13 @@
 		private function addObjectsToStage() {
 			addLevel();
 			
+			cLevel = getCurrentLevel();
+			
 			addPlayerStat();
 			
 			addPlayer();
+			
+			addGlassPanel();
 		}
 		
 		private function addLevel() {
@@ -111,9 +132,15 @@
 			addChild(_player);
 		}
 		
+		private function addGlassPanel() {
+			glassPanel = new GlassPanel();
+			glassPanel.y += stat.height;
+			glassPanel.setGameObjects(cLevel.getGameObjects());
+			glassPanel.setCurrentLevel(cLevel);
+			addChild(glassPanel);
+		}
+		
 		private function setUpLevelMapPosition() {
-			cLevel = getCurrentLevel();
-			
 			levelMap.y += stat.height;
 			levelMap.x -= _player.currentRoom.x * cLevel.width;
 			levelMap.y -= _player.currentRoom.y * cLevel.height;
@@ -140,7 +167,10 @@
 		public function update (e:Event) {
 			_player.update ();
 			
-			if ( !blockControlls ) cLevel.update();
+			if (!blockControlls) {
+				cLevel.update();
+				glassPanel.update();
+			}
 			
 			bulletController.update();
 		}
@@ -210,6 +240,8 @@
 		}
 		// по возможности удалить RoomEvent
 		public function nextRoom (e:Event) {
+			var tweenX:Tween = null;
+			glassPanel.clear();
 			cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
 			
 			var endDoor:Door = null;
@@ -233,8 +265,9 @@
 			
 			var correctY = stat.height;
 			
-			var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
+			tweenX = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
 			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 18);
+			tweenX.start();
 			
 			blockControlls = true;
 			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 18 );
@@ -242,7 +275,7 @@
 			
 			var map = stat.getMapMC();
 			map.update(_LEVEL);
-			
+
 			tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
 		}
 		
@@ -251,6 +284,7 @@
 			blockControlls = false;
 			
 			prepareCurrentLevel();
+			glassPanel.setCurrentLevel(cLevel);
 			
 			var tween:Tween = Tween(e.target);
 			tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
