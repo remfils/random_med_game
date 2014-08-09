@@ -279,6 +279,7 @@
 		}
 		// по возможности удалить RoomEvent
 		public function nextRoom (e:Event) {
+			blockControlls = true;
 			var tweenX:Tween = null;
 			glassPanel.clear();
 			cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
@@ -308,7 +309,7 @@
 			var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 18);
 			tweenX.start();
 			
-			blockControlls = true;
+			
 			var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 18 );
 			var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 18 );
 			

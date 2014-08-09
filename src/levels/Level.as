@@ -57,6 +57,7 @@
 		}
 		
 		public function getGameObjects():Array {
+			trace(_gameObjects.length);
 			return _gameObjects;
 		}
 		

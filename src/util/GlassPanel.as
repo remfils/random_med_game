@@ -12,6 +12,7 @@
 		var _level:Level;
 		var i:int;
 		var deltaY:Number;
+		var active = true;
 
 		public function GlassPanel() {
 			deltaY = PlayerStat.getInstance().height;
@@ -22,6 +23,7 @@
 		
 		public function setCurrentLevel(cLevel:Level) {
 			//clear();
+			active = true;
 			_level = cLevel;
 			_gameObjects = cLevel.getGameObjects();
 		}
@@ -31,6 +33,8 @@
 		}
 		
 		public function update() {
+			if (!active) return;
+			
 			i = _gameObjects.length;
 			
 			while(i--){
@@ -65,13 +69,11 @@
 				displayObjects.pop();
 			}
 			
-			while (_gameObjects.length) {
-				_gameObjects.pop();
-			}
-			
 			while (numChildren > 0) {
 				_level.addChild(getChildAt(numChildren-1));
 			}
+			
+			active = false;
 		}
 
 	}
