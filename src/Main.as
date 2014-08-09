@@ -24,6 +24,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import src.ui.GenericLevelButton;
+	import src.util.PlayerPanel;
 
 	public class Main extends MovieClip {
 		// true если уровень закончен
@@ -33,6 +34,7 @@
 		public static const OBJECT_ACTIVATE_EVENT = "object_activate";
 
 		var stat:PlayerStat;
+		var playerPanel:PlayerPanel;
 		var glassPanel:GlassPanel;
 
 		var _player:Player;
@@ -53,8 +55,6 @@
 
 			_player = Player.getInstance();
 			_player.move (385,400);
-			
-			bulletController = new BulletController(stage);
 		}
 		
 		private function testFun() {
@@ -140,6 +140,8 @@
 			
 			addPlayer();
 			
+			addBulletController();
+			
 			addGlassPanel();
 		}
 		
@@ -167,8 +169,17 @@
 		}
 		
 		private function addPlayer() {
+			playerPanel = new PlayerPanel();
+			
 			_player = Player.getInstance();
-			addChild(_player);
+			
+			playerPanel.addChild(_player);
+			
+			addChild(playerPanel);
+		}
+		
+		private function addBulletController() {
+			bulletController = new BulletController(playerPanel);
 		}
 		
 		private function addGlassPanel() {
