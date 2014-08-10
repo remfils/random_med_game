@@ -59,17 +59,9 @@
 		}
 		
 		private function testFun() {
-			var ar:Array = new Array(1,2,3,4,5,6);
-			var i = ar.length;
-			
-			while (i--) {
-				trace(ar[i]);
-				if (ar[i]==5) {
-					ar.splice(i,1);
-				}
-			}
-			
-			trace(ar);
+			var o:Object = new Object();
+			o["x"] = 1;
+			trace(o);
 		}
 		
 		public function loadLevelsData () {

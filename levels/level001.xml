@@ -1,11 +1,9 @@
 <level>
     <floor>
 
-        <room x="0" y="0" first_level="true" type="start_room">
-            
-        </room>
+        <room x="0" y="0" first_level="true" type="start_room" color="0xFFFCE9"/>
 
-        <room x="1" y="0" type="normal_room_2">
+        <room x="1" y="0" type="normal_room" color="0xFFFCE9">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="400" y="400"></lever>
@@ -16,11 +14,9 @@
             </active>
         </room>
 
-        <room x="2" y="0" type="normal_room_2">
-            
-        </room>
+        <room x="2" y="0" type="normal_room" color="0xFFFCE9"/>
         
-        <room x="3" y="0" type="normal_room_2">
+        <room x="3" y="0" type="normal_room" color="0xFFFCE9">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="200" y="150"></lever>
@@ -29,11 +25,10 @@
             </active>
         </room>
 
-        <room x="4" y="0" >
-        </room>
-        <room x="5" y="0" />
+        <room x="4" y="0" type="normal_room" color="0xFFFCE9"/>
+        <room x="5" y="0" type="normal_room" color="0xFFFCE9"/>
 
-        <room x="6" y="0" type="normal_room_2">
+        <room x="6" y="0" type="normal_room" color="0xFFFCE9">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="600" y="150"></lever>
@@ -42,7 +37,7 @@
             </active>
         </room>
 
-        <room x="7" y="0" type="normal_room_2">
+        <room x="7" y="0" type="normal_room" color="0xFFFCE9">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="300" y="100"></lever>
@@ -51,7 +46,7 @@
             </active>
         </room>
 
-        <room x="8" y="0" type="normal_room_2">
+        <room x="8" y="0" type="normal_room" color="0xFFFCE9">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="200" y="150"></lever>
@@ -60,11 +55,9 @@
             </active>
         </room>
 
-        <room x="9" y="0" type="normal_room_2"/>
+        <room x="9" y="0" type="normal_room" color="0xFFFCE9"/>
 
-        <room x="10" y="0" type="normal_room_2">
-            
-        </room>
+        <room x="10" y="0" type="normal_room" color="0xFFFCE9"/>
 
         
 

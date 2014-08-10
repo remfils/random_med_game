@@ -219,6 +219,13 @@
 				_doors[i].unlock ();
 			}
 		}
+		
+		public function setParameters (param:Object):void {
+			if ( param.hasOwnProperty("type") ) {
+				gotoAndStop(param.type);
+				trace(param.type);
+			}
+		}
 
 	}
 	

@@ -1,7 +1,6 @@
 <level>
     <floor>
-        
-        <room x="1" y="0" type="normal_room_2">
+        <room x="1" y="0" color="0xC6C6C6" type="normal_room">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="200" y="150"></lever>
@@ -10,11 +9,11 @@
             </active>
         </room>
 
-        <room x="2" y="0" >
+        <room x="2" y="0" color="0xC6C6C6" type="normal_room">
         </room>
-        <room x="3" y="0" />
+        <room x="3" y="0" color="0xC6C6C6" type="normal_room"/>
 
-        <room x="4" y="0" type="normal_room_3">
+        <room x="4" y="0" color="0xC6C6C6" type="normal_room">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="600" y="150"></lever>
@@ -23,7 +22,7 @@
             </active>
         </room>
 
-        <room x="0" y="1" type="normal_room_6">
+        <room x="0" y="1" color="0xC6C6C6" type="normal_room">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="300" y="100"></lever>
@@ -32,7 +31,7 @@
             </active>
         </room>
 
-        <room x="1" y="1" >
+        <room x="1" y="1" color="0xC6C6C6" type="normal_room">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="200" y="150"></lever>
@@ -41,17 +40,17 @@
             </active>
         </room>
 
-        <room x="2" y="1" type="normal_room_3"/>
+        <room x="2" y="1" type="normal_room" color="0xC6C6C6"/>
 
-        <room x="4" y="1" type="normal_room_4">
+        <room x="4" y="1" type="normal_room" color="0xC6C6C6">
             
         </room>
 
-        <room x="1" y="2" first_level="true" type="start_room">
+        <room x="1" y="2" first_level="true" type="start_room" color="0xC6C6C6">
             
         </room>
 
-        <room x="2" y="2" type="normal_room_5">
+        <room x="2" y="2" type="normal_room" color="0xC6C6C6">
             <task type="levers" id="1"/>
             <active task_id="1">
                 <lever x="400" y="400"></lever>

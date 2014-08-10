@@ -73,14 +73,9 @@
 					};
 				}
 				
-				if ( room.@type.toString() != "" ) {
-					cRoom.gotoAndStop(room.@type);
-				}
-				else {
-					cRoom.gotoAndStop("normal_room_1");
-				}
-				
 				addActiveObjectsToRoom(cRoom, room.active.*);
+				
+				cRoom.setParameters(createParameters(room.@*));
 				
 				rooms[room.@x][room.@y] = cRoom;
 			}
@@ -103,6 +98,14 @@
 					break;
 				}
 			}
+		}
+		
+		private function createParameters(roomParams):Object {
+			var paramObj:Object = new Object();
+			for (var N in roomParams) {
+				paramObj[roomParams[N].name().toString()] = roomParams[N].toString();
+			}
+			return paramObj;
 		}
 		
 		private function makeDoorsInRooms(rooms:Array):Array {
