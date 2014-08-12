@@ -6,6 +6,7 @@
 	import flash.events.Event;
 	import flash.utils.*;
 	import src.objects.Lever;
+	import src.enemy.FlyingEnemy;
 	
 	public class LevelLoader {
 		private var urlLoader:URLLoader;
@@ -75,6 +76,8 @@
 				
 				addActiveObjectsToRoom(cRoom, room.active.*);
 				
+				addEnemiesToRoom(cRoom, room.enemy);
+				
 				cRoom.setParameters(createParameters(room.@*));
 				
 				rooms[room.@x][room.@y] = cRoom;
@@ -97,6 +100,16 @@
 						room.addActiveObject(currentObject);
 					break;
 				}
+			}
+		}
+		
+		private function addEnemiesToRoom (room:Level, enemiesXML:XMLList) {
+			for each ( var object:XML in enemiesXML ) {
+				var enemy:FlyingEnemy = new FlyingEnemy();
+				enemy.x = object.@x;
+				enemy.y = object.@y;
+				
+				room.addEnenemy(enemy);
 			}
 		}
 		

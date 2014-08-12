@@ -51,7 +51,7 @@
 		}
 		
 		// gameobjct methods
-		public function active ():Boolean {
+		public function isActive ():Boolean {
 			return locked;
 		}
 		

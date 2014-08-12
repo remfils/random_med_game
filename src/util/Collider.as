@@ -2,6 +2,7 @@
 
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import src.Main;
 
 
 	public class Collider extends MovieClip {
@@ -13,7 +14,7 @@
 		//создаём коллайдер
 		public function Collider () {
 
-			this.visible = false;
+			this.visible = Main.TEST_MODE;
 			
 			var w2:Number = width/2,
 				h2:Number = height/2;

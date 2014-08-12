@@ -7,7 +7,7 @@
 		function update ();
 		
 		// проверяет активен ли элемент
-		function active ():Boolean;
+		function isActive ():Boolean;
 		
 		function getCollider ():Collider;
 

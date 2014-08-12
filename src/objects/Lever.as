@@ -18,7 +18,7 @@
 			_activeArea = getChildByName( "activeArea" ) as Collider ;
 		}
 		
-		public function active ():Boolean {
+		public function isActive ():Boolean {
 			return _active;
 		}
 		

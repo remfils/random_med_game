@@ -9,6 +9,7 @@
 	import src.events.RoomEvent;
 	import src.util.Collider;
 	import src.Main;
+	import src.enemy.*;
 	
 	import src.Player;
 	import flash.events.Event;
@@ -20,6 +21,8 @@
 		var _colliders:Array = new Array();
 		var _doors:Array = new Array();
 		var _exits:Array = new Array();
+		
+		var _enemies:Array = new Array();
 		
 		var _tasks:Array = new Array();
 		var currentTask:Task = null;
@@ -56,11 +59,6 @@
 			
 		}
 		
-		public function getGameObjects():Array {
-			trace(_gameObjects.length);
-			return _gameObjects;
-		}
-		
 		public function addActiveObject(object:ActiveObject) {
 			_activeAreas.push(object.getActiveArea());
 			_colliders.push(object.getCollider());
@@ -73,6 +71,17 @@
 		public function addTask(type:String) {
 			_tasks.push(currentTask);
 			currentTask = new Task(type);
+		}
+		
+		public function addEnenemy(object:Enemy) {
+			_enemies.push(object);
+			addChild(object as FlyingEnemy);
+			trace("enemy added", object.x);
+		}
+		
+		public function getGameObjects():Array {
+			trace(_gameObjects.length);
+			return _gameObjects;
 		}
 		
 		public function getDoor(dir:String):Door {
@@ -112,6 +121,8 @@
 		}
 		
 		public function update () {
+			updateEnemies();
+			
 			checkCollisions();
 			
 			if ( isThereTasks() ) {
@@ -119,8 +130,11 @@
 			}
 		}
 		
-		private function isThereTasks():Boolean {
-			return currentTask == null;
+		private function updateEnemies() {
+			var i = _enemies.length;
+			while (i--) {
+				_enemies[i].update();
+			}
 		}
 		
 		public function checkCollisions () {
@@ -132,6 +146,10 @@
 				}
 			}
 			
+		}
+		
+		private function isThereTasks():Boolean {
+			return currentTask == null;
 		}
 		
 		private function checkExitsCollision() {
