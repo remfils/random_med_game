@@ -80,6 +80,14 @@
 		public function getVY ():Number {
 			return y - py;
 		}
+		
+		public function getX ():Number {
+			return x;
+		}
+		
+		public function getYInRoom() :Number {
+			return y - PlayerStat.getInstance().height;
+		}
 		/**
 		 * задает движение персонажа и определяет его направление
 		 * @param State куда нажата клавиша

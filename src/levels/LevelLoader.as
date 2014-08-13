@@ -106,8 +106,7 @@
 		private function addEnemiesToRoom (room:Level, enemiesXML:XMLList) {
 			for each ( var object:XML in enemiesXML ) {
 				var enemy:FlyingEnemy = new FlyingEnemy();
-				enemy.x = object.@x;
-				enemy.y = object.@y;
+				enemy.setPosition(object.@x,object.@y);
 				
 				room.addEnenemy(enemy);
 			}
