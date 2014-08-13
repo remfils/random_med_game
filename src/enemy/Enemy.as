@@ -10,7 +10,7 @@
 		var player:Player;
 		var px:Number;
 		var py:Number;
-		var agroDistance:Number = 300;
+		var agroDistance:Number = 150;
 		var playerDistance:Number;
 
 		public function Enemy() {
@@ -71,7 +71,7 @@
 		
 		protected function calculatePlayerDistance() {
 			var dx = player.x - x,
-				dy = player.y - y;
+				dy = player.getYInRoom() - y;
 			playerDistance = Math.sqrt(dx*dx + dy*dy);
 		}
 
