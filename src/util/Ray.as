@@ -6,6 +6,8 @@ package src.util {
 	 */
 	public class Ray {
 		
+		public static var instace:Ray;
+		
 		public var x:Number;
 		public var y:Number;
 		
@@ -16,16 +18,31 @@ package src.util {
 		private var end_distance:Number;
 
 		public function Ray( X:Number, Y:Number, DX:Number, DY:Number, END_DISTANCE:Number=1 ) {
+			setStartPoint(X, Y);
+			
+			setDirection (DX,DY);
+			
+			setEndDistance(END_DISTANCE);
+		}
+		
+		public function setStartPoint(X:Number, Y:Number):void {
 			x = X;
 			y = Y;
-			
-			ds = 0;
-			
-			end_distance = END_DISTANCE;
-			
+		}
+		
+		public function setDirection(DX:Number, DY:Number):void {
 			var d = Math.sqrt( DX*DX + DY*DY );
 			dx = DX/d/3;
 			dy = DY/d/3;
+		}
+		
+		public function setEndDistance (END_DISTANCE:Number):void {
+			end_distance = END_DISTANCE;
+		}
+		
+		public function getInstance():Ray {
+			if ( instace == null ) instance = new Ray();
+			return instance;
 		}
 		
 		/**

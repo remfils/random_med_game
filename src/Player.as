@@ -128,16 +128,45 @@
 		 * @param  C коллайдер
 		 */
 		public function push ( C:Collider ) {
-			var X:Number = x + _collider.x;
-			var Y:Number = y + _collider.y;
 			
-			if ( C.hitTestPoint ( X - _collider.width/2 , Y ) || C.hitTestPoint ( X + _collider.width/2 , Y ) ) {
-				x -= x - px;
+			trace("Player pushed");
+			var X:Number = x + _collider.x;
+			var Y:Number = this.getYInRoom() + _collider.y;
+			
+			
+			/*if ( X + _collider.width/2 > C.x - C.width/2 ) {
+				//x -=  _collider.width/2 - ( x - C.x - C.width/2 );
+				while (C.checkObjectCollision(_collider)) {
+					x -= 0.3;
+				}
+			}
+			
+			if  ( X - _collider.width/2 < C.x + C.width/2 ) {
+				while (C.checkObjectCollision(_collider)) {
+					x += 0.3;
+				}
+			}
+			
+			if  ( Y > C.y ) {
+				while (C.checkObjectCollision(_collider)) {
+					y -= 0.3;
+				}
+			}
+			
+			if  ( Y < C.y ) {
+				while (C.checkObjectCollision(_collider)) {
+					y += 0.3;
+				}
+			}
+			
+			if (  || C.hitTestPoint ( X + _collider.width/2 , Y ) ) {
+				trace(C.x - X);
+				x -= C.x - X - _collider.width/2;
 			}
 
 			if ( C.hitTestPoint ( X , Y + _collider.height/2 ) || C.hitTestPoint ( X , Y - _collider.height/2 ) ) {
 				y -= y - py;
-			}
+			}*/
 		}
 		/**
 		 * берем точку для каста лучей в зависимости от направления

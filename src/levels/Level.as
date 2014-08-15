@@ -75,6 +75,7 @@
 		
 		public function addEnenemy(object:Enemy) {
 			_enemies.push(object);
+			_colliders.push(object.getCollider());
 			addChild(object as FlyingEnemy);
 			trace("enemy added", object.x);
 		}
@@ -141,7 +142,7 @@
 			
 			var i = _colliders.length;
 			while ( i-- ) {
-				if ( _colliders[i].checkCollision ( _player.x, _player.y ) ) {
+				if ( _colliders[i].checkObjectCollision ( _player.getCollider() ) ) {
 					_player.push(_colliders[i]);
 				}
 			}

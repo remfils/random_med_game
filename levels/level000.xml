@@ -48,9 +48,9 @@
 
         <room x="1" y="2" first_level="true" type="start_room" color="0xC6C6C6">
 
-            <enemy x="200" y="200">
+            <!-- <enemy x="200" y="200">
                 
-            </enemy>
+            </enemy> -->
             
         </room>
 

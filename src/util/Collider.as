@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import src.Main;
+	import flash.display.DisplayObject;
 
 
 	public class Collider extends MovieClip {
@@ -32,6 +33,10 @@
 		// блокируем коллайдер
 		public function lock () {
 			unlocked = true;
+		}
+		
+		public function checkObjectCollision (O:DisplayObject):Boolean {
+			return unlocked && this.hitTestObject(O);
 		}
 
 		// проверка столкновений

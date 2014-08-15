@@ -35,16 +35,6 @@
 					deactivate();
 				}
 			}
-			
-			//if ( !isActive() ) return;
-			
-			var temp_coordinate:Number = x;
-			x += (x - px) * 0.3;
-			px = temp_coordinate;
-			
-			temp_coordinate = y;
-			y += (y - py) * 0.3;
-			py = temp_coordinate;
 		}
 
 		public function isActive ():Boolean {
