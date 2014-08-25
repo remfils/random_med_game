@@ -38,7 +38,7 @@
 		
 		public function action () {
 			if ( _active ) {
-				dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
+				//dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
 			}
 		}
 		

@@ -15,7 +15,7 @@
 		//создаём коллайдер
 		public function Collider () {
 
-			this.visible = Main.TEST_MODE;
+			//this.visible = Main.TEST_MODE;
 			
 			var w2:Number = width/2,
 				h2:Number = height/2;

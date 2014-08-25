@@ -8,7 +8,7 @@
 	import src.objects.*;
 	import src.events.RoomEvent;
 	import src.util.Collider;
-	import src.Main;
+	import src.Game;
 	import src.enemy.*;
 	
 	import src.Player;
@@ -157,7 +157,7 @@
 			i = _exits.length;
 			while (i--) {
 				if ( _exits[i].checkCollision(_player.x, _player.y) ) {
-					dispatchEvent(new Event(Main.EXIT_ROOM_EVENT));
+					dispatchEvent(new Event(Game.EXIT_ROOM_EVENT));
 				}
 			}
 		}
@@ -210,14 +210,14 @@
 		public function subscribeGameObjects() {
 			var i = _gameObjects.length;
 			while (i--) {
-				_gameObjects[i].addEventListener(Main.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
+				_gameObjects[i].addEventListener(Game.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
 			}
 		}
 		
 		public function unsubscribeGameObjects() {
 			var i = _gameObjects.length;
 			while (i--) {
-				_gameObjects[i].removeEventListener(Main.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
+				_gameObjects[i].removeEventListener(Game.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
 			}
 		}
 		
