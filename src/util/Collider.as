@@ -7,7 +7,7 @@
 
 
 	public class Collider extends MovieClip {
-		protected var unlocked:Boolean = true;
+		public var unlocked:Boolean = true;
 		
 		protected var top_left:Point;
 		protected var bottom_right:Point;
@@ -46,6 +46,14 @@
 		
 		public function getCollider ():Collider {
 			return this;
+		}
+		
+		public function getGlobalX():Number {
+			return localToGlobal(new Point(0,0)).x;
+		}
+		
+		public function getGlobalY():Number {
+			return localToGlobal(new Point(0,0)).y;
 		}
 
 	}
