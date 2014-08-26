@@ -9,6 +9,7 @@ package src {
     import flash.events.MouseEvent;
     import flash.text.TextField;
     import flash.text.TextFormat;
+    import src.events.MenuItemSelectedEvent;
     import src.ui.GenericLevelButton;
     
     import flash.utils.getQualifiedClassName;
@@ -191,6 +192,10 @@ package src {
                 case "MoveLeft":
                     moveAllLevelsContainerLeft();
                     break;
+            }
+            
+            if ( target is GenericLevelButton ) {
+                dispatchEvent(new MenuItemSelectedEvent(MenuItemSelectedEvent.LEVEL_SELECTED, GenericLevelButton(target).levelSRC));
             }
         }
         

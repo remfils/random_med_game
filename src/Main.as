@@ -32,9 +32,13 @@
     public class Main extends MovieClip {
         var mainMenu:MainMenu;
         var loader:URLLoader;
+        var game:Game;
+        
         public function Main () {
             super ();
             startDataLoading();
+            
+            addEventListener(MenuItemSelectedEvent.LEVEL_SELECTED, startLevelLoading);
         }
         
         private function startDataLoading():void {
@@ -43,6 +47,8 @@
         }
         
         private function loadCompleteListener(e:Event):void {
+            loader.removeEventListener(Event.COMPLETE, loadCompleteListener);
+            
             createMainMenu();
             mainMenu.importExternalData(new XMLList(loader.data));
             mainMenu.switchToMenu("title");
@@ -51,6 +57,22 @@
         private function createMainMenu():void {
             mainMenu = new MainMenu();
             addChild(mainMenu);
+        }
+        
+        private function startLevelLoading(e:MenuItemSelectedEvent):void {
+            loader = new URLLoader(new URLRequest(e.URL));
+            loader.addEventListener(Event.COMPLETE, levelDataLoadListener);
+        }
+        
+        private function levelDataLoadListener(e:Event) {
+            loader.removeEventListener(Event.COMPLETE, loadCompleteListener);
+            
+            game = new Game();
+            game.importExternalData(new XMLList(loader.data));
+            addChild(game);
+            
+            mainMenu.destroy();
+            removeChild(mainMenu);
         }
     }
 
