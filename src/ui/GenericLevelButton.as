@@ -12,6 +12,7 @@
         var mapHeight:Number;
         
         public function GenericLevelButton() {
+            mouseChildren = false;
             mapHeight = height;
 
             this.addEventListener(MouseEvent.MOUSE_OVER, makeDarker);

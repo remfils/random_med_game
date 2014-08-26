@@ -6,6 +6,7 @@ package src {
     import flash.display.SimpleButton;
     import flash.display.Sprite;
     import flash.events.Event;
+    import flash.events.EventPhase;
     import flash.events.MouseEvent;
     import flash.text.TextField;
     import flash.text.TextFormat;
@@ -47,7 +48,6 @@ package src {
             
             addUserData();
             addTitleMenuButtons();
-            titleMenuContainer.addEventListener(MouseEvent.CLICK, menuItemClickListener);
             
             titleMenuContainer.visible = false;
             addChild(titleMenuContainer);
@@ -111,8 +111,6 @@ package src {
             createMoveRigthButton();
             createGotoMenuButton();
             createLevelsButtons();
-            
-            addEventListener(MouseEvent.CLICK, levelItemClickListener);
             
             levelsMenuContainer.visible = false;
             addChild(levelsMenuContainer);
@@ -194,8 +192,8 @@ package src {
                     break;
             }
             
-            if ( target is GenericLevelButton ) {
-                dispatchEvent(new MenuItemSelectedEvent(MenuItemSelectedEvent.LEVEL_SELECTED, GenericLevelButton(target).levelSRC));
+            if ( e.target is GenericLevelButton ) {
+                dispatchEvent(new MenuItemSelectedEvent(MenuItemSelectedEvent.LEVEL_SELECTED, GenericLevelButton(e.target).levelSRC));
             }
         }
         
@@ -216,13 +214,13 @@ package src {
         }
         
         private function removeAllEventListeners():void {
-            levelsMenuContainer.removeEventListener(MouseEvent.CLICK, levelItemClickListener);
-            titleMenuContainer.removeEventListener(MouseEvent.CLICK, menuItemClickListener);
+            levelsMenuContainer.removeEventListener(MouseEvent.MOUSE_UP, levelItemClickListener);
+            titleMenuContainer.removeEventListener(MouseEvent.MOUSE_UP, menuItemClickListener);
         }
         
         private function displayMenu(menu:Sprite, clickListener:Function=null):void {
             currentMenu = menu;
-            menu.addEventListener(MouseEvent.CLICK, clickListener);
+            menu.addEventListener(MouseEvent.MOUSE_UP, clickListener);
             menu.visible = true;
         }
         
@@ -281,7 +279,9 @@ package src {
         }
         
         public function destroy():void {
-            removeEventListener(MouseEvent.CLICK, menuItemClickListener);
+            removeEventListener(MouseEvent.MOUSE_DOWN, menuItemClickListener);
+            
+            if (parent) parent.removeChild(this);
         }
     }
 

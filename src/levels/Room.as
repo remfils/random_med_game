@@ -81,7 +81,6 @@
 		}
 		
 		public function getGameObjects():Array {
-			trace(_gameObjects.length);
 			return _gameObjects;
 		}
 		
@@ -242,7 +241,6 @@
 		public function setParameters (param:Object):void {
 			if ( param.hasOwnProperty("type") ) {
 				gotoAndStop(param.type);
-				trace(param.type);
 			}
 		}
 

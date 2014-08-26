@@ -57,9 +57,9 @@ package src {
             _player.move (385,400);
         }
         
-        public function init(level:Array, firstRoom:Room) {
+        public function init(level:Array) {
+            level.length;
             _LEVEL = level;
-            _player.currentRoom = firstRoom;
             
             this.stage.focus = this;
             

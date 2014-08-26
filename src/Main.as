@@ -3,6 +3,7 @@
     import flash.events.*;
     import flash.ui.Keyboard;
     import flash.geom.Point;
+    import src.util.LevelCreator;
     
     import src.levels.CastleLevel;
     import fl.transitions.Tween;
@@ -60,17 +61,28 @@
         }
         
         private function startLevelLoading(e:MenuItemSelectedEvent):void {
-            var levelLoader:LevelLoader = new LevelLoader();
-            levelLoader.addLoadLevelListener(levelDataLoaded);
+            var levelLoader = new URLLoader();
+            levelLoader.addEventListener(Event.COMPLETE, levelDataLoaded);
+            
+            levelLoader.load(new URLRequest(e.URL));
         }
         
-        private function levelDataLoaded(e:LevelLoadedEvent) {
+        private function levelDataLoaded(e:Event) {
+            var levelLoader:URLLoader = e.target as URLLoader;
+            
+            levelLoader.removeEventListener(Event.COMPLETE, levelDataLoaded);
+            
+            var levelCreator:LevelCreator = new LevelCreator();
+            levelCreator.createLevelFromXML(XML(levelLoader.data));
+            
             game = new Game();
-            game.init(e.getLevel(), e.first_level);
+            addChild(game);
+            game.init(levelCreator._level);
             
             mainMenu.destroy();
-            removeChild(mainMenu);
         }
     }
 
 }
+
+

@@ -6,14 +6,13 @@ package src.events {
             
         static public const LEVEL_SELECTED:String = "MenuLevelSelectedEvent"
         
-        public function LevelSelectedEvent(type:String, data:Object, bubbles:Boolean=false, cancelable:Boolean=false) { 
+        public function MenuItemSelectedEvent(type:String, url:String, bubbles:Boolean=true, cancelable:Boolean=false) { 
             super(type, bubbles, cancelable);
-            
-            URL = data.url;
+            URL = url;
         } 
         
         public override function clone():Event { 
-            return new LevelSelectedEvent(type, bubbles, cancelable);
+            return new MenuItemSelectedEvent(type, URL, bubbles, cancelable);
         } 
         
         public override function toString():String { 
