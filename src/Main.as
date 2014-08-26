@@ -1,36 +1,14 @@
 ﻿package src {
-
     import flash.events.*;
-    import flash.ui.Keyboard;
-    import flash.geom.Point;
-    import src.util.LevelCreator;
-    
-    import src.levels.CastleLevel;
-    import fl.transitions.Tween;
-    import fl.transitions.TweenEvent;
-    import fl.transitions.easing.*;
-    import src.stats.PlayerStat;
-    import src.stats.Map;
-    
-    import src.interfaces.*;
-    
-    import src.objects.*;
-    import src.levels.*;
-    import src.events.*;
-    import src.bullets.BulletController;
-    import src.stats.Heart;
-    import src.util.GlassPanel;
     import flash.display.Sprite;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
-    import src.ui.GenericLevelButton;
-    import src.util.PlayerPanel;
-    import flash.display.*;
-    ////////////////
+    import src.Game;
     import src.MainMenu;
-    
+    import src.util.LevelCreator;
+    import src.events.*;
 
-    public class Main extends MovieClip {
+    public class Main extends Sprite {
         var mainMenu:MainMenu;
         var loader:URLLoader;
         var game:Game;
