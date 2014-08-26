@@ -45,6 +45,7 @@
         private function loadCompleteListener(e:Event):void {
             createMainMenu();
             mainMenu.importExternalData(new XMLList(loader.data));
+            mainMenu.switchToMenu("title");
         }
         
         private function createMainMenu():void {

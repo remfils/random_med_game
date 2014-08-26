@@ -1,4 +1,5 @@
 package src {
+    import fl.transitions.easing.Strong;
     import fl.transitions.Tween;
     import flash.display.DisplayObject;
     import flash.display.MovieClip;
@@ -26,8 +27,6 @@ package src {
             
             setTitleMenu();
             setLevelsMenu();
-            
-            switchToMenu("title");
         }
         
         private function createBG():void {
@@ -105,7 +104,7 @@ package src {
             levelsMenuContainer = new Sprite();
             
             allLevelsContainer = new Sprite();
-            addChild(allLevelsContainer);
+            levelsMenuContainer.addChild(allLevelsContainer);
             
             createMoveLeftButton();
             createMoveRigthButton();
@@ -179,18 +178,6 @@ package src {
             
         }
         
-        private function moveLevelButtonPanelLeft (e:Event) {
-            /*if (levelButtonPanel.x < -10) {
-                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x + 750, 18 );
-            }*/
-        }
-        
-        private function moveLevelButtonPanelRight (e:Event) {
-            /*if (Math.abs(levelButtonPanel.x - 750) <= levelButtonPanel.width) {
-                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x - 750, 18 );
-            }*/
-        }
-        
         private function levelItemClickListener(e:MouseEvent):void {
             var target:Sprite = e.target.parent;
             
@@ -199,11 +186,15 @@ package src {
                     switchToMenu("title");
                     break;
                 case "MoveRight":
+                    moveAllLevelsContainerRight();
+                    break;
                 case "MoveLeft":
+                    moveAllLevelsContainerLeft();
+                    break;
             }
         }
         
-        private function switchToMenu(menuName:String):void {
+        public function switchToMenu(menuName:String):void {
             removeAllEventListeners();
             if (currentMenu != null) {
                 currentMenu.visible = false; 
@@ -230,6 +221,18 @@ package src {
             menu.visible = true;
         }
         
+        private function moveAllLevelsContainerLeft () {
+            if (allLevelsContainer.x < -10) {
+                var tween:Tween = new Tween (allLevelsContainer, "x", Strong.easeInOut, allLevelsContainer.x, allLevelsContainer.x + 750, 18 );
+            }
+        }
+        
+        private function moveAllLevelsContainerRight () {
+            if (Math.abs(allLevelsContainer.x - 750) <= allLevelsContainer.width) {
+                var tween:Tween = new Tween (allLevelsContainer, "x", Strong.easeInOut, allLevelsContainer.x, allLevelsContainer.x - 750, 18 );
+            }
+        }
+        
 // ANALAZING EXTERNAL DATA
         public function importExternalData (levels:XMLList) {
             // TODO: make level_table to more complex form
@@ -243,12 +246,11 @@ package src {
                 k:int = 0;
             
             for each ( var level:XML in levels.* ) {
-                trace("asd");
                 btnLevel = new GenericLevelButton();
                 btnLevel.y = 200 + j * (btnLevel.height + 10);
                 btnLevel.x = 110 + stage.width * k + 140 * i++;
                 btnLevel.setLabel(level.name);
-                btnLevel.setRating(level.rating)
+                btnLevel.setRating(level.rating);
                 
                 if (level.@locked.toString() == "true") {
                     btnLevel.block();
