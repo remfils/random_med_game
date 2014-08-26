@@ -88,7 +88,7 @@
 			return rooms;
 		}
 		
-		private function addActiveObjectsToRoom (room:Level, activeObjectsXML:XMLList) {
+		private function addActiveObjectsToRoom (room:Room, activeObjectsXML:XMLList) {
 			
 			for each ( var object:XML in activeObjectsXML ) {
 				switch ( object.name().toString() ) {
@@ -103,7 +103,7 @@
 			}
 		}
 		
-		private function addEnemiesToRoom (room:Level, enemiesXML:XMLList) {
+		private function addEnemiesToRoom (room:Room, enemiesXML:XMLList) {
 			for each ( var object:XML in enemiesXML ) {
 				var enemy:FlyingEnemy = new FlyingEnemy();
 				enemy.setPosition(object.@x,object.@y);

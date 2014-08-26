@@ -2,7 +2,7 @@
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	
-	import src.levels.Level;
+	import src.levels.Room;
 	import src.Player;
 	
 	public class BulletController {
@@ -14,7 +14,7 @@
 		var bulletDelay:Timer;
 		var block:Boolean = false;
 		
-		var currentLevel:Level = null;
+		var currentLevel:Room = null;
 		
 		var stage;
 		var i:int = 0;
@@ -30,7 +30,7 @@
 			bulletDelay.addEventListener(TimerEvent.TIMER, unlockSpawn);
 		}
 		
-		public function changeLevel (level:Level) {
+		public function changeLevel (level:Room) {
 			currentLevel = level;
 		}
 		

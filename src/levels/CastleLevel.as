@@ -1,13 +1,13 @@
 ﻿package src.levels {
 	
 	import flash.display.MovieClip;
-	import src.levels.Level;
+	import src.levels.Room;
 	import src.Player;
 	import flash.display.Sprite;
 	import fl.motion.Color;
 	
 	
-	public class CastleLevel extends Level {
+	public class CastleLevel extends Room {
 		var wall_color:uint;
 		var walls:Sprite;
 		

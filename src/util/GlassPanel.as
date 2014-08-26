@@ -2,14 +2,14 @@
 	import src.stats.PlayerStat;
 	import src.Player;
 	import flash.display.Sprite;
-	import src.levels.Level;
+	import src.levels.Room;
 	
 	public class GlassPanel extends Sprite {
 		var _gameObjects:Array;
 		var displayObjects:Array;
 		var newObjects:Array;
 		var _player:Player;
-		var _level:Level;
+		var _level:Room;
 		var i:int;
 		var deltaY:Number;
 		var active = true;
@@ -21,7 +21,7 @@
 			newObjects = new Array();
 		}
 		
-		public function setCurrentLevel(cLevel:Level) {
+		public function setCurrentLevel(cLevel:Room) {
 			//clear();
 			active = true;
 			_level = cLevel;

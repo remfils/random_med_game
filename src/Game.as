@@ -39,7 +39,7 @@ package src {
         var _player:Player;
 
         var _LEVEL:Array = new Array();
-        public static var cLevel:Level;
+        public static var cLevel:Room;
         
         var currentRoom:Object = {x:0, y:0, z:0};
         
@@ -57,16 +57,9 @@ package src {
             _player.move (385,400);
         }
         
-        public function init (levelUrl:String) {
-            var levelLoader:LevelLoader = new LevelLoader();
-            levelLoader.addLoadLevelListener(onLoadLevelComplete);
-            
-            levelLoader.startLevelLoad(levelUrl);
-        }
-        
-        private function onLoadLevelComplete(e:LevelLoadedEvent) {
-            _LEVEL = e.getLevel();
-            _player.currentRoom = e.first_level;
+        public function init(level:Array, firstRoom:Room) {
+            _LEVEL = level;
+            _player.currentRoom = firstRoom;
             
             this.stage.focus = this;
             
@@ -147,7 +140,7 @@ package src {
             levelMap.y -= _player.currentRoom.y * cLevel.height;
         }
         
-        private function getCurrentLevel ():Level {
+        private function getCurrentLevel ():Room {
             return _LEVEL[ _player.currentRoom.z ][ _player.currentRoom.x ][ _player.currentRoom.y ]
         }
         

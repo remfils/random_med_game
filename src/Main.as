@@ -60,16 +60,13 @@
         }
         
         private function startLevelLoading(e:MenuItemSelectedEvent):void {
-            loader = new URLLoader(new URLRequest(e.URL));
-            loader.addEventListener(Event.COMPLETE, levelDataLoadListener);
+            var levelLoader:LevelLoader = new LevelLoader();
+            levelLoader.addLoadLevelListener(levelDataLoaded);
         }
         
-        private function levelDataLoadListener(e:Event) {
-            loader.removeEventListener(Event.COMPLETE, loadCompleteListener);
-            
+        private function levelDataLoaded(e:LevelLoadedEvent) {
             game = new Game();
-            game.importExternalData(new XMLList(loader.data));
-            addChild(game);
+            game.init(e.getLevel(), e.first_level);
             
             mainMenu.destroy();
             removeChild(mainMenu);
