@@ -247,10 +247,12 @@ package src {
             
             for each ( var level:XML in levels.* ) {
                 btnLevel = new GenericLevelButton();
-                btnLevel.y = 200 + j * (btnLevel.height + 10);
-                btnLevel.x = 110 + stage.width * k + 140 * i++;
+                // IMPORTANT: add label and rating first to increase btnLevel height for y alignment
                 btnLevel.setLabel(level.name);
                 btnLevel.setRating(level.rating);
+                
+                btnLevel.y = 200 + j * (btnLevel.height + 10);
+                btnLevel.x = 110 + stage.width * k + 140 * i++;
                 
                 if (level.@locked.toString() == "true") {
                     btnLevel.block();
