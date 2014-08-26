@@ -1,11 +1,14 @@
 package src {
+    import fl.transitions.Tween;
     import flash.display.DisplayObject;
     import flash.display.MovieClip;
     import flash.display.SimpleButton;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.text.TextField;
     import flash.text.TextFormat;
+    import src.ui.GenericLevelButton;
     
     import flash.utils.getQualifiedClassName;
 
@@ -43,6 +46,9 @@ package src {
             addUserData();
             addTitleMenuButtons();
             titleMenuContainer.addEventListener(MouseEvent.CLICK, menuItemClickListener);
+            
+            titleMenuContainer.visible = false;
+            addChild(titleMenuContainer);
         }
         
         private function addUserData():void {
@@ -102,6 +108,9 @@ package src {
             createLevelsButtons();
             
             addEventListener(MouseEvent.CLICK, levelItemClickListener);
+            
+            levelsMenuContainer.visible = false;
+            addChild(levelsMenuContainer);
         }
         
         private function getCustomButtonAt(ButtonClass:Class, x:Number, y:Number):Sprite {
@@ -165,6 +174,18 @@ package src {
             
         }
         
+        private function moveLevelButtonPanelLeft (e:Event) {
+            /*if (levelButtonPanel.x < -10) {
+                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x + 750, 18 );
+            }*/
+        }
+        
+        private function moveLevelButtonPanelRight (e:Event) {
+            /*if (Math.abs(levelButtonPanel.x - 750) <= levelButtonPanel.width) {
+                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x - 750, 18 );
+            }*/
+        }
+        
         private function levelItemClickListener(e:MouseEvent):void {
             var target:Sprite = e.target.parent;
             
@@ -180,8 +201,7 @@ package src {
         private function switchToMenu(menuName:String):void {
             removeAllEventListeners();
             if (currentMenu != null) {
-                resetSpritesInMenu();
-                removeChild(currentMenu); 
+                currentMenu.visible = false; 
             }
             
             switch(menuName) {
@@ -199,53 +219,36 @@ package src {
             titleMenuContainer.removeEventListener(MouseEvent.CLICK, menuItemClickListener);
         }
         
-        private function resetSpritesInMenu():void {
-            var i:int = currentMenu.numChildren;
-            while (i--) {
-                if (currentMenu.getChildAt(i) is MovieClip) {
-                    MovieClip(currentMenu.getChildAt(i)).gotoAndStop(1);
-                }
-                if (currentMenu.getChildAt(i) is SimpleButton) {
-                    var sb:SimpleButton = currentMenu.getChildAt(i) as SimpleButton;
-                    var tmp_x:Number = sb.x;
-                    sb.x = -100;
-                }
-            }
-        }
-        
         private function displayMenu(menu:Sprite, clickListener:Function=null):void {
             currentMenu = menu;
             menu.addEventListener(MouseEvent.CLICK, clickListener);
-            addChild(menu);
+            menu.visible = true;
         }
         
-        
-        /*public function loadLevelsData () {
-            levelLoader = new URLLoader(new URLRequest("level_table.xml"));
-            levelLoader.addEventListener(Event.COMPLETE, levelDataLoaded);
+// ANALAZING EXTERNAL DATA
+        public function importExternalData (levels:XMLList) {
+            // TODO: make level_table to more complex form
+            createLevelSelectButtons(levels);
         }
         
-        private function levelDataLoaded(e:Event) {
-            var xmlLevels:XMLList = new XMLList(levelLoader.data);
-            
-            addLevelButtons(xmlLevels.level);
-        }
-        
-        private function addLevelButtons (levels:XMLList) {
-            var btnMap:GenericLevelButton,
+        private function createLevelSelectButtons(levels:XMLList):void {
+            var btnLevel:GenericLevelButton,
                 i:int = 0,
                 j:int = 0,
                 k:int = 0;
             
-            levelButtonPanel = new Sprite();
+            var levelButtonPanel:Sprite = new Sprite();
             
-            for each ( var level:XML in levels ) {
-                btnMap = new GenericLevelButton(level.name, level.@rating);
-                btnMap.y = 200 + j * (btnMap.height + 10);
-                btnMap.x = 110 + stage.width * k + 140*i++;
+            for each ( var level:XML in levels.* ) {
+                trace("asd");
+                btnLevel = new GenericLevelButton();
+                btnLevel.y = 200 + j * (btnLevel.height + 10);
+                btnLevel.x = 110 + stage.width * k + 140 * i++;
+                btnLevel.setLabel(level.name);
+                btnLevel.setRating(level.rating)
                 
                 if (level.@locked.toString() == "true") {
-                    btnMap.block();
+                    btnLevel.block();
                 }
                 
                 if ( i == 4 ) {
@@ -259,53 +262,13 @@ package src {
                     k++;
                 }
                 
-                btnMap.addEventListener(MouseEvent.CLICK, createLevelLoadFunction(level.src));
+                btnLevel.levelSRC = level.src;
                 
-                levelButtonPanel.addChild(btnMap);
+                levelButtonPanel.addChild(btnLevel);
             }
             
-            addChild(levelButtonPanel);
+            levelsMenuContainer.addChild(levelButtonPanel);
         }
-        
-        private function createLevelLoadFunction (url:String):Function {
-            return function (e:Event) {
-                gotoAndStop(1, "Scene 3");
-                init(url);
-            };
-        }
-        
-        public function setUpLeftRightButtons() {
-            var left_btn:SimpleButton = SimpleButton(this.getChildByName("left_btn")),
-                right_btn:SimpleButton = SimpleButton(this.getChildByName("right_btn")),
-                back_to_menu_btn:SimpleButton = SimpleButton(this.getChildByName("back_to_menu_btn"));
-                
-            left_btn.addEventListener(MouseEvent.CLICK, moveLevelButtonPanelLeft);
-            right_btn.addEventListener(MouseEvent.CLICK, moveLevelButtonPanelRight);
-            back_to_menu_btn.addEventListener(MouseEvent.CLICK, backToMainMenu);
-        }
-        
-        private function moveLevelButtonPanelLeft (e:Event) {
-            if (levelButtonPanel.x < -10) {
-                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x + 750, 18 );
-            }
-        }
-        
-        private function moveLevelButtonPanelRight (e:Event) {
-            if (Math.abs(levelButtonPanel.x - 750) <= levelButtonPanel.width) {
-                var tween:Tween = new Tween (levelButtonPanel, "x", Strong.easeInOut, levelButtonPanel.x, levelButtonPanel.x - 750, 18 );
-            }
-        }
-        
-        private function backToMainMenu (e:Event) {
-            removeLevelButtons();
-            gotoAndStop("main");
-        }
-        
-        private function removeLevelButtons() {
-            while (levelButtonPanel.numChildren > 0) {
-                levelButtonPanel.removeChild(levelButtonPanel.getChildAt(levelButtonPanel.numChildren-1));
-            }
-        }*/
         
         public function destroy():void {
             removeEventListener(MouseEvent.CLICK, menuItemClickListener);
