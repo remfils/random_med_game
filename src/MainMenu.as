@@ -16,6 +16,8 @@ package src {
         private var currentMenu:Sprite;
         private var titleMenuContainer:Sprite;
         private var levelsMenuContainer:Sprite;
+		
+		private var allLevelsContainer:Sprite;
         
         public function MainMenu() {
             super();
@@ -101,6 +103,9 @@ package src {
 // LEVELS MENU
         private function setLevelsMenu():void {
             levelsMenuContainer = new Sprite();
+            
+            allLevelsContainer = new Sprite();
+            addChild(allLevelsContainer);
             
             createMoveLeftButton();
             createMoveRigthButton();
@@ -237,8 +242,6 @@ package src {
                 j:int = 0,
                 k:int = 0;
             
-            var levelButtonPanel:Sprite = new Sprite();
-            
             for each ( var level:XML in levels.* ) {
                 trace("asd");
                 btnLevel = new GenericLevelButton();
@@ -264,10 +267,8 @@ package src {
                 
                 btnLevel.levelSRC = level.src;
                 
-                levelButtonPanel.addChild(btnLevel);
+                allLevelsContainer.addChild(btnLevel);
             }
-            
-            levelsMenuContainer.addChild(levelButtonPanel);
         }
         
         public function destroy():void {
