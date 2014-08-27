@@ -41,14 +41,9 @@ package src {
         var _LEVEL:Array = new Array();
         public static var cLevel:Room;
         
-        var currentRoom:Object = {x:0, y:0, z:0};
-        
         var levelMap:MovieClip;
         
         var bulletController:BulletController;
-        
-        var levelButtonPanel:Sprite;
-        var levelLoader:URLLoader;
         
         public function Game() {
             super();

@@ -19,8 +19,8 @@ package src {
         private var currentMenu:Sprite;
         private var titleMenuContainer:Sprite;
         private var levelsMenuContainer:Sprite;
-		
-		private var allLevelsContainer:Sprite;
+
+        private var allLevelsContainer:Sprite;
         
         public function MainMenu() {
             super();
@@ -29,6 +29,47 @@ package src {
             
             setTitleMenu();
             setLevelsMenu();
+        }
+        
+        public function importExternalData (levels:XMLList) {
+            // TODO: make level_table to more complex form
+            createLevelSelectButtons(levels);
+        }
+        
+        private function createLevelSelectButtons(levels:XMLList):void {
+            var btnLevel:GenericLevelButton,
+                i:int = 0,
+                j:int = 0,
+                k:int = 0;
+            
+            for each ( var level:XML in levels.* ) {
+                btnLevel = new GenericLevelButton();
+                // IMPORTANT: add label and rating first to increase btnLevel height for y alignment
+                btnLevel.setLabel(level.name);
+                btnLevel.setRating(level.rating);
+                
+                btnLevel.y = 200 + j * (btnLevel.height + 10);
+                btnLevel.x = 110 + stage.width * k + 140 * i++;
+                
+                if (level.@locked.toString() == "true") {
+                    btnLevel.block();
+                }
+                
+                if ( i == 4 ) {
+                    i = 0;
+                    j++;
+                }
+                
+                if ( j == 2 ) {
+                    i = 0;
+                    j = 0;
+                    k++;
+                }
+                
+                btnLevel.levelSRC = level.src;
+                
+                allLevelsContainer.addChild(btnLevel);
+            }
         }
         
         private function createBG():void {
@@ -110,7 +151,6 @@ package src {
             createMoveLeftButton();
             createMoveRigthButton();
             createGotoMenuButton();
-            createLevelsButtons();
             
             levelsMenuContainer.visible = false;
             addChild(levelsMenuContainer);
@@ -173,10 +213,6 @@ package src {
             levelsMenuContainer.addChild(btnContainer);
         }
         
-        private function createLevelsButtons():void {
-            
-        }
-        
         private function levelItemClickListener(e:MouseEvent):void {
             var target:Sprite = e.target.parent;
             
@@ -236,50 +272,12 @@ package src {
             }
         }
         
-// ANALAZING EXTERNAL DATA
-        public function importExternalData (levels:XMLList) {
-            // TODO: make level_table to more complex form
-            createLevelSelectButtons(levels);
-        }
-        
-        private function createLevelSelectButtons(levels:XMLList):void {
-            var btnLevel:GenericLevelButton,
-                i:int = 0,
-                j:int = 0,
-                k:int = 0;
-            
-            for each ( var level:XML in levels.* ) {
-                btnLevel = new GenericLevelButton();
-                // IMPORTANT: add label and rating first to increase btnLevel height for y alignment
-                btnLevel.setLabel(level.name);
-                btnLevel.setRating(level.rating);
-                
-                btnLevel.y = 200 + j * (btnLevel.height + 10);
-                btnLevel.x = 110 + stage.width * k + 140 * i++;
-                
-                if (level.@locked.toString() == "true") {
-                    btnLevel.block();
-                }
-                
-                if ( i == 4 ) {
-                    i = 0;
-                    j++;
-                }
-                
-                if ( j == 2 ) {
-                    i = 0;
-                    j = 0;
-                    k++;
-                }
-                
-                btnLevel.levelSRC = level.src;
-                
-                allLevelsContainer.addChild(btnLevel);
-            }
-        }
-        
         public function destroy():void {
-            removeEventListener(MouseEvent.MOUSE_DOWN, menuItemClickListener);
+            removeAllEventListeners();
+            
+            while (numChildren > 0) {
+                removeChildAt(numChildren-1);
+            }
             
             if (parent) parent.removeChild(this);
         }
