@@ -1,4 +1,8 @@
 ﻿package src.levels {
+    import Box2D.Common.Math.b2Vec2;
+    import Box2D.Dynamics.b2DebugDraw;
+    import Box2D.Dynamics.b2World;
+    import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.MovieClip;
 	import src.objects.Lever;
@@ -16,6 +20,9 @@
 	import src.task.Task;
 	
 	public class Room extends MovieClip {
+        private var world:b2World;
+        private static var gravity:b2Vec2 = new b2Vec2(0, 0);
+        
 		var _gameObjects:Array = new Array();
 		var _activeAreas:Array = new Array();
 		var _colliders:Array = new Array();
@@ -35,14 +42,17 @@
 
 		public function Room() {
 			// adding stuff ti level
+            world = new b2World(gravity, true);
 
 			// player
 			_player = Player.getInstance();
 			
 			// walls
 			i = 8;
+            var collider:Collider = new Collider();
 			while ( i-- ) {
-				_colliders.push ( getChildByName ( "wall" + i ) as Collider );
+                collider = getChildByName ( "wall" + i ) as Collider
+				collider.replaceWithB2Body(world);
 			}
 			
 			// doors
@@ -56,8 +66,19 @@
 				_colliders.push( door.getCollider() );
 				_exits.push ( door.getExit() );
 			}
-			
+            if (Game.TEST_MODE) setDebugDraw();
 		}
+        
+        private function setDebugDraw():void {
+            var debugSprite:Sprite = new Sprite();
+            
+            var debugDraw:b2DebugDraw = new b2DebugDraw();
+            debugDraw.SetSprite(debugSprite);
+            debugDraw.SetDrawScale(Game.WORLD_SCALE);
+            
+            world.SetDebugDraw(debugDraw);
+            addChild(debugSprite);
+        }
 		
 		public function addActiveObject(object:ActiveObject) {
 			_activeAreas.push(object.getActiveArea());
@@ -121,13 +142,18 @@
 		}
 		
 		public function update () {
+            world.Step(Game.TIME_STEP, 5, 5);
+
 			updateEnemies();
+            
 			
 			checkCollisions();
 			
 			if ( isThereTasks() ) {
 				checkExitsCollision();
 			}
+            
+            if (Game.TEST_MODE) world.DrawDebugData();
 		}
 		
 		private function updateEnemies() {

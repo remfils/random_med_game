@@ -1,6 +1,7 @@
 package src {
     import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2DebugDraw;
     import Box2D.Dynamics.b2World;
     import flash.display.Sprite;
     import flash.events.*;
@@ -36,7 +37,7 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = false;
+        public static const TEST_MODE:Boolean = true;
 
         var stat:PlayerStat;
         var playerPanel:PlayerPanel;
@@ -47,9 +48,6 @@ package src {
         var _LEVEL:Array = new Array();
         public static var cLevel:Room;
         
-        private static var world:b2World;
-        private static var gravity:b2Vec2 = new b2Vec2(0, 0);
-        
         var levelMap:MovieClip;
         
         var bulletController:BulletController;
@@ -59,11 +57,6 @@ package src {
             
             _player = Player.getInstance();
             _player.move (385,400);
-        }
-        
-        public static function getWolrdInstance():b2World {
-            if ( world == null ) world = new b2World(gravity, false);
-            return world;
         }
         
         public function init(level:Array) {

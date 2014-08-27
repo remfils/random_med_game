@@ -1,7 +1,14 @@
 ﻿package src.util {
 
+    import Box2D.Collision.Shapes.b2PolygonShape;
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2BodyDef;
+    import Box2D.Dynamics.b2Fixture;
+    import Box2D.Dynamics.b2FixtureDef;
+    import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
     import flash.geom.Point;
+    import src.Game;
     import src.Main;
     import flash.display.DisplayObject;
 
@@ -14,15 +21,24 @@
 
         //создаём коллайдер
         public function Collider () {
-
-            //this.visible = Main.TEST_MODE;
+        }
+        
+        public function replaceWithB2Body(world:b2World):b2Body {
+            var bodyDef:b2BodyDef = new b2BodyDef();
+            bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
             
-            var w2:Number = width/2,
-                h2:Number = height/2;
+            var shape:b2PolygonShape = new b2PolygonShape();
+            shape.SetAsBox(width/2, height/2);
             
-            // здесь мы берем область больше, чем оригинал, для простых столкновений
-            top_left = new Point (parent.x + x -w2 - 20, parent.y + y - h2 - 20);
-            bottom_right = new Point (parent.x + x + w2 + 20, parent.y + y + h2 + 20);
+            var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            fixtureDef.shape = shape;
+            
+            var body:b2Body = world.CreateBody(bodyDef);
+            body.CreateFixture(fixtureDef);
+            
+            parent.removeChild(this);
+            
+            return body;
         }
 
         // разблокирываем коллайдер
