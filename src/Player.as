@@ -2,6 +2,7 @@
     
     import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2FixtureDef;
     import flash.display.MovieClip;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
@@ -23,6 +24,8 @@
         
         private var body:b2Body;
         
+        
+        public static var fixtureDef:b2FixtureDef;
 //invincibility
         static var immune:Boolean = false;
         var invincibilityDelay:Number = 140;
@@ -32,7 +35,7 @@
         
         // переменные движения
         private var inputForce:b2Vec2 = new b2Vec2();
-        private const SPEED:uint = 10;
+        private const SPEED:uint = 15;
         public var MOVE_RIGHT:Boolean = false;
         public var MOVE_LEFT:Boolean = false;
         public var MOVE_UP:Boolean = false;
@@ -60,6 +63,14 @@
             invincibilityTimer = new Timer(invincibilityDelay,6);
             
             currentBullet = Spark;
+            
+            definePlayerFixture();
+        }
+        
+        private function definePlayerFixture():void {
+            fixtureDef = new b2FixtureDef();
+            fixtureDef.density = 1;
+            fixtureDef.friction = 0.3;
         }
         
         static public function getInstance():Player {
@@ -80,7 +91,6 @@
         }
         
         public function handleInput(keyCode:uint):void {
-            trace(keyCode);
             switch (keyCode) {
                 case 37 :
                 case 65 :
@@ -112,22 +122,31 @@
             switch (State) {
                 case "east" :
                     MOVE_RIGHT = max;
+                    if (MOVE_RIGHT) dir_x = 1;
+                    else dir_x = 0;
                     break;
                 case "west" :
                     MOVE_LEFT = max;
+                    if (MOVE_LEFT) dir_x = -1;
+                    else dir_x = 0;
                     break;
                 case "south" :
                     MOVE_DOWN = max;
+                    if (MOVE_DOWN) dir_y = 1;
+                    else dir_y = 0;
                     break;
                 case "north" :
                     MOVE_UP = max;
+                    if (MOVE_UP) dir_y = -1;
+                    else dir_y = 0;
                     break;
             }
         }
         
         /** проверяет стоит ли персонаж */
         public function isStopped () :Boolean {
-            return false;
+            return body.GetLinearVelocity().LengthSquared() < 0.3;
+            //return false;
         }
         
         /** обновляет положение персонажа */
@@ -139,14 +158,16 @@
             inputForce.SetZero();
             
             if (MOVE_DOWN) inputForce.y += SPEED;
-            if (MOVE_LEFT) inputForce.x += SPEED;
-            if (MOVE_RIGHT) inputForce.x -= SPEED;
+            if (MOVE_LEFT) inputForce.x -= SPEED;
+            if (MOVE_RIGHT) inputForce.x += SPEED;
             if (MOVE_UP) inputForce.y -= SPEED;
             
             body.ApplyForce(inputForce, body.GetLocalCenter());
         }
         
         public function update():void {
+            x = body.GetPosition().x * Game.WORLD_SCALE;
+            y = body.GetPosition().y * Game.WORLD_SCALE;
             
             if ( isStopped() ) {
                 if ( dir_x == 0 ) {

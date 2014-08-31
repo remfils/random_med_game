@@ -22,6 +22,8 @@
     
     public class Room extends MovieClip {
         protected static const directions:Array = ["left", "right", "up", "down"];
+
+        protected var ROOM_FRICTION:Number = 2.4;
         private var world:b2World;
         private static var gravity:b2Vec2 = new b2Vec2(0, 0);
         
@@ -68,8 +70,10 @@
         
         private function createPlayerBody():void {
             var collider:Collider = _player.getCollider().copy();
-            playerBody = collider.replaceWithStaticB2Body(world);
+            playerBody = collider.replaceWithDynamicB2Body(world, Player.fixtureDef);
             playerBody.SetPosition(new b2Vec2(300 / Game.WORLD_SCALE, 200 / Game.WORLD_SCALE));
+            playerBody.SetLinearDamping(ROOM_FRICTION);
+            playerBody.SetFixedRotation(true);
         }
         
         private function setDebugDraw():void {

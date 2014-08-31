@@ -25,19 +25,30 @@
         
         public function replaceWithStaticB2Body(world:b2World):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
+            var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            
+            return replaceThisWithBody(world, bodyDef, fixtureDef);
+        }
+        
+        public function replaceWithDynamicB2Body(world:b2World, fixtureDef:b2FixtureDef):b2Body {
+            var bodyDef:b2BodyDef = new b2BodyDef();
+            bodyDef.type = b2Body.b2_dynamicBody;
+            
+            return replaceThisWithBody(world, bodyDef, fixtureDef);
+        }
+        
+        private function replaceThisWithBody(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
             bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
             
             var shape:b2PolygonShape = new b2PolygonShape();
             shape.SetAsBox(width / 2 / Game.WORLD_SCALE, height / 2 / Game.WORLD_SCALE);
             
-            var fixtureDef:b2FixtureDef = new b2FixtureDef();
             fixtureDef.shape = shape;
             
             var body:b2Body = world.CreateBody(bodyDef);
             body.CreateFixture(fixtureDef);
             
             if (parent != null) parent.removeChild(this);
-            
             return body;
         }
         
