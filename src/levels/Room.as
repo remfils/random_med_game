@@ -1,5 +1,6 @@
 ﻿package src.levels {
     import Box2D.Common.Math.b2Vec2;
+    import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2DebugDraw;
     import Box2D.Dynamics.b2World;
     import flash.display.Sprite;
@@ -51,7 +52,12 @@
             for each ( var direction:String in directions) {
                 var name:String = "door_collider_" + direction;
                 collider = getChildByName(name) as Collider;
-                collider.replaceWithB2Body(world);
+                var wall:b2Body = collider.replaceWithB2Body(world);
+                
+                name = "door_" + direction;
+                var door:Door = getChildByName(name) as Door;
+                door.setWall(wall);
+                _doors.push(door);
             }
             
             if (Game.TEST_MODE) setDebugDraw();
@@ -112,7 +118,7 @@
         }
         
         public function makeDoorWay (wallName:String) {
-            /*switch ( wallName ) {
+            switch ( wallName ) {
                 case "left" :
                     _doors[0].show();
                     _doors[0].unlock();
@@ -129,7 +135,7 @@
                     _doors[1].show();
                     _doors[1].unlock();
                     break;
-            }*/
+            }
         }
         
         public function update () {

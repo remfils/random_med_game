@@ -1,5 +1,6 @@
 ﻿package src.objects {
     
+    import Box2D.Dynamics.b2Body;
     import flash.display.MovieClip;
     import src.interfaces.GameObject;
     import src.Player;
@@ -12,7 +13,7 @@
         
         public var level:int;
         
-        private var _collider:Collider;
+        private var wall:b2Body;
         private var _exit:Collider;
 
         public function Door() {
@@ -23,6 +24,10 @@
         
         public function setDestination ( LEVEL:int ) {
             level = LEVEL;
+        }
+        
+        public function setWall ( body:b2Body ) {
+            this.wall = body;
         }
         
         public function getDirection ():String {
@@ -58,10 +63,6 @@
             
         }
         
-        public function getCollider () : Collider {
-            return _collider;
-        }
-        
         public function getExit ():Collider {
             return _exit;
         }
@@ -74,14 +75,14 @@
             gotoAndPlay( "locked" );
             locked = true;
             
-            _collider.lock();
+            wall.SetActive(true);
         }
 
         public function unlock () {
             if ( visible ) {
                 gotoAndPlay( "unlocked" );
                 locked = false;
-                _collider.unlock();
+                wall.SetActive(false);
             }
         }
         
