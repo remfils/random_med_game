@@ -8,8 +8,8 @@
 		
 		// проверяет активен ли элемент
 		function isActive ():Boolean;
-		
-		function getCollider ():Collider;
+		// @TODO: make getBody
+		//function getBody ():Collider;
 
 	}
 
