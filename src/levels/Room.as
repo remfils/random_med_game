@@ -20,6 +20,7 @@
     import src.task.Task;
     
     public class Room extends MovieClip {
+        protected static const directions:Array = ["left", "right", "up", "down"];
         private var world:b2World;
         private static var gravity:b2Vec2 = new b2Vec2(0, 0);
         
@@ -31,7 +32,7 @@
         var currentTask:Task = null;
         
         var finished:Boolean = true;
-        var _player:Player;
+        static var _player:Player;
         var i:int = 0;
 
         public function Room() {
@@ -47,16 +48,10 @@
             }
             
             // doors
-            var door:Door = null;
-            i = 4;
-            while ( i-- ) {
-                door = getChildByName ( "door" + i ) as Door ;
-                door.hide();
-                
-                _doors.push( door );
-                collider = door.getCollider();
+            for each ( var direction:String in directions) {
+                var name:String = "door_collider_" + direction;
+                collider = getChildByName(name) as Collider;
                 collider.replaceWithB2Body(world);
-                // TODO add exits collision detection_exits.push ( door.getExit() );
             }
             
             if (Game.TEST_MODE) setDebugDraw();
@@ -117,7 +112,7 @@
         }
         
         public function makeDoorWay (wallName:String) {
-            switch ( wallName ) {
+            /*switch ( wallName ) {
                 case "left" :
                     _doors[0].show();
                     _doors[0].unlock();
@@ -134,7 +129,7 @@
                     _doors[1].show();
                     _doors[1].unlock();
                     break;
-            }
+            }*/
         }
         
         public function update () {

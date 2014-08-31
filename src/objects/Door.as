@@ -17,7 +17,7 @@
 
 		public function Door() {
 			_exit = getChildByName("exit") as Collider;
-			_collider = getChildByName("collider") as Collider;
+			//_collider = getChildByName("collider") as Collider;
 			
 			show();
 		}
