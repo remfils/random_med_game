@@ -23,7 +23,7 @@
         public function Collider () {
         }
         
-        public function replaceWithB2Body(world:b2World):b2Body {
+        public function replaceWithStaticB2Body(world:b2World):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
             bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
             

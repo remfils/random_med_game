@@ -47,14 +47,14 @@
             var collider:Collider = new Collider();
             while ( i-- ) {
                 collider = getChildByName ( "wall" + i ) as Collider
-                collider.replaceWithB2Body(world);
+                collider.replaceWithStaticB2Body(world);
             }
             
             // doors
             for each ( var direction:String in directions) {
                 var name:String = "door_collider_" + direction;
                 collider = getChildByName(name) as Collider;
-                var wall:b2Body = collider.replaceWithB2Body(world);
+                var wall:b2Body = collider.replaceWithStaticB2Body(world);
                 
                 name = "door_" + direction;
                 var door:Door = getChildByName(name) as Door;
@@ -68,7 +68,7 @@
         
         private function createPlayerBody():void {
             var collider:Collider = _player.getCollider().copy();
-            playerBody = collider.replaceWithB2Body(world);
+            playerBody = collider.replaceWithStaticB2Body(world);
             playerBody.SetPosition(new b2Vec2(300 / Game.WORLD_SCALE, 200 / Game.WORLD_SCALE));
         }
         
@@ -158,7 +158,7 @@
         
         public function update () {
             world.Step(Game.TIME_STEP, 5, 5);
-
+            world.ClearForces();
             updateEnemies();
             
             

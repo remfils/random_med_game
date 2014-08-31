@@ -33,10 +33,10 @@
         // переменные движения
         private var inputForce:b2Vec2 = new b2Vec2();
         private const SPEED:uint = 10;
-        public var MOVE_RIGHT = false;
-        public var MOVE_LEFT = false;
-        public var MOVE_UP = false;
-        public var MOVE_DOWN = false;
+        public var MOVE_RIGHT:Boolean = false;
+        public var MOVE_LEFT:Boolean = false;
+        public var MOVE_UP:Boolean = false;
+        public var MOVE_DOWN:Boolean = false;
         
         // направление персонажа
         public var dir_x:Number;
@@ -80,6 +80,7 @@
         }
         
         public function handleInput(keyCode:uint):void {
+            trace(keyCode);
             switch (keyCode) {
                 case 37 :
                 case 65 :

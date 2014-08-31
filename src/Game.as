@@ -163,6 +163,8 @@ package src {
         }
 
         public function update (e:Event) {
+            _player.preupdate();
+            
             _player.update ();
             
             if (!blockControlls) {
