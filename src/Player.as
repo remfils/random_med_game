@@ -1,5 +1,6 @@
 ﻿package src  {
     
+    import Box2D.Dynamics.b2Body;
     import flash.display.MovieClip;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
@@ -18,6 +19,9 @@
         public static var MAX_HEALTH = 6;
         public static var HEALTH:Number = MAX_HEALTH;
         public var MANA:Number = 4;
+        
+        private var body:b2Body;
+        
 //invincibility
         static var immune:Boolean = false;
         var invincibilityDelay:Number = 140;
@@ -40,16 +44,12 @@
         // направление персонажа
         public var dir_x:Number;
         public var dir_y:Number;
-        //коллайдер персонажа
         private var _collider:Collider;
-        // предидущие координаты персонажа
-        // нужны для движения персонажа и столкновений
-        private var px:Number;
-        private var py:Number;
         
         public var currentRoom:Object = {x:0, y:0, z:0};
         
-        private var currentBullet;
+        //TODO: change to currentBuletClass
+        private var currentBullet:Class;
         
         public function Player():void {
             // задаём стандартное направление
@@ -87,6 +87,10 @@
         
         public function getYInRoom() :Number {
             return y - PlayerStat.getInstance().height;
+        }
+        
+        public function setActorBody(body:b2Body):void {
+            this.body = body;
         }
         /**
          * задает движение персонажа и определяет его направление
