@@ -60,9 +60,6 @@
             // получаем коллайдер
             _collider = getChildByName( "collider" ) as Collider;
             
-            px = x;
-            py = y;
-            
             invincibilityTimer = new Timer(invincibilityDelay,6);
             
             currentBullet = Spark;
@@ -71,14 +68,6 @@
         static public function getInstance():Player {
             if ( instance == null ) instance = new Player();
             return instance;
-        }
-        /** получаем скорость по оси х */
-        public function getVX() :Number {
-            return x - px;
-        }
-        /** получаем скорость по уси у */
-        public function getVY ():Number {
-            return y - py;
         }
         
         public function getX ():Number {
@@ -117,14 +106,10 @@
                     break;
             }
         }
-        /** перемещение персонажа без начала движения */
-        public function move (X:Number, Y:Number):void {
-            x = px = X;
-            y = py = Y;
-        }
+        
         /** проверяет стоит ли персонаж */
         public function isStopped () :Boolean {
-            return Math.abs ( getVX() ) < 2 && Math.abs ( getVY() ) < 2 ;
+            return false;
         }
         
         /**
@@ -145,20 +130,6 @@
         }
         /** обновляет положение персонажа */
         public function update():void {
-            var ds = x - px;
-            px = x;
-            
-            ds -= ds/2.3 + ds*ds*ds/2000;
-            if ( Math.abs(ds) < 0.07 ) ds = 0;
-            x += ds;
-            
-            ds = y - py;
-            py = y;
-            
-            ds -= ds/2.3 + ds*ds*ds/2000;
-            if ( Math.abs(ds) < 0.07 ) ds = 0;
-            y += ds;
-            
             if ( MOVE_RIGHT )  {
                 dir_x = 1;
                 
@@ -235,7 +206,7 @@
         }
         
 
-        public function getCollider () :Collider {
+        public function getCollider ():Collider {
             return _collider;
         }
         

@@ -88,7 +88,7 @@
         
         public function init():void {
             playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
-            _player.setActorBody(_playerBody);
+            _player.setActorBody(playerBody);
         }
         
         public function addPlayerToWorld():void {

@@ -56,7 +56,8 @@ package src {
             super();
             
             _player = Player.getInstance();
-            _player.move (385,400);
+            _player.x = 385;
+            _player.y = 400;
         }
         
         public function init(level:Array) {
