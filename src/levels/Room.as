@@ -95,7 +95,7 @@
             _enemies.push(object);
             //_colliders.push(object.getCollider());
             addChild(object as FlyingEnemy);
-            trace("enemy added", object.x);
+            if (Game.TEST_MODE) trace("enemy added", object.x);
         }
         
         public function getGameObjects():Array {
