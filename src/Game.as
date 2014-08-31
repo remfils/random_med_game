@@ -71,7 +71,7 @@ package src {
             
             addEventListeners();
             
-            prepareCurrentLevel();
+            initCurrentLevel();
             
             stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
             stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
@@ -137,7 +137,6 @@ package src {
         }
         
         private function setUpLevelMapPosition() {
-            levelMap.y += stat.height;
             levelMap.x -= _player.currentRoom.x * cLevel.width;
             levelMap.y -= _player.currentRoom.y * cLevel.height;
         }
@@ -153,12 +152,13 @@ package src {
         }
         
         
-        public function prepareCurrentLevel() {
+        public function initCurrentLevel() {
             bulletController.changeLevel(cLevel);
             cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
             cLevel.addEventListener(OBJECT_ACTIVATE_EVENT, cLevel.completeCurrentTask);
             
             cLevel.subscribeGameObjects();
+            cLevel.init();
         }
 
         public function update (e:Event) {
@@ -282,7 +282,7 @@ package src {
             cLevel.lock();
             blockControlls = false;
             
-            prepareCurrentLevel();
+            initCurrentLevel();
             glassPanel.setCurrentLevel(cLevel);
             
             var tween:Tween = Tween(e.target);

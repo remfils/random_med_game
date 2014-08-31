@@ -36,9 +36,17 @@
             var body:b2Body = world.CreateBody(bodyDef);
             body.CreateFixture(fixtureDef);
             
-            parent.removeChild(this);
+            if (parent != null) parent.removeChild(this);
             
             return body;
+        }
+        
+        public function copy():Collider {
+            var result:Collider = new Collider();
+            result.width = this.width;
+            result.height = this.height;
+            result.rotation = this.rotation;
+            return result;
         }
 
         // разблокирываем коллайдер

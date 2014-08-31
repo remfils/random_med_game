@@ -34,11 +34,13 @@
         
         var finished:Boolean = true;
         static var _player:Player;
+        private var playerBody:b2Body;
         var i:int = 0;
 
         public function Room() {
             world = new b2World(gravity, true);
             _player = Player.getInstance();
+            createPlayerBody();
             
             // walls
             i = 8;
@@ -64,6 +66,12 @@
             if (Game.TEST_MODE) setDebugDraw();
         }
         
+        private function createPlayerBody():void {
+            var collider:Collider = _player.getCollider().copy();
+            playerBody = collider.replaceWithB2Body(world);
+            playerBody.SetPosition(new b2Vec2(300 / Game.WORLD_SCALE, 200 / Game.WORLD_SCALE));
+        }
+        
         private function setDebugDraw():void {
             var debugSprite:Sprite = new Sprite();
             
@@ -76,6 +84,15 @@
             
             world.SetDebugDraw(debugDraw);
             addChild(debugSprite);
+        }
+        
+        public function init():void {
+            playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
+            _player.setActorBody(_playerBody);
+        }
+        
+        public function addPlayerToWorld():void {
+            _player.getCollider();
         }
         
         public function addActiveObject(object:ActiveObject) {
