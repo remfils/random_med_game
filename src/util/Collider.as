@@ -28,7 +28,7 @@
             bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
             
             var shape:b2PolygonShape = new b2PolygonShape();
-            shape.SetAsBox(width/2, height/2);
+            shape.SetAsBox(width / 2 / Game.WORLD_SCALE, height / 2 / Game.WORLD_SCALE);
             
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             fixtureDef.shape = shape;

@@ -43,9 +43,9 @@
 			while ( i-- ) {
 				_bullets[i].update();
 				
-				if ( _bullets[i].isActive() && currentLevel.checkCollision(_bullets[i].x, _bullets[i].y)) {
+				/*if ( _bullets[i].isActive() && currentLevel.checkCollision(_bullets[i].x, _bullets[i].y)) {
 					deleteBullet(_bullets[i]);
-				}
+				}*/
 			}
 		}
 		

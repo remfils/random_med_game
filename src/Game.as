@@ -37,7 +37,7 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = true;
+        public static const TEST_MODE:Boolean = false;
 
         var stat:PlayerStat;
         var playerPanel:PlayerPanel;
