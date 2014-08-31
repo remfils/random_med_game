@@ -112,76 +112,8 @@
             return false;
         }
         
-        /**
-         * берем точку для каста лучей в зависимости от направления
-         * @return координата каста
-         */
-        public function getCastPointX () :Number {
-            if ( dir_x > 0 ) return x + width/2;
-            else return x - width/2;
-        }
-        /**
-         * берем точку для каста лучей в зависимости от направления
-         * @return координата каста
-         */
-        public function getCastPointY ():Number {
-            if ( dir_y > 0 ) return y + height/2;
-            else return y - height/2;
-        }
         /** обновляет положение персонажа */
         public function update():void {
-            if ( MOVE_RIGHT )  {
-                dir_x = 1;
-                
-                if ( MOVE_DOWN ) {
-                    x += D_SPEED;
-                    y += D_SPEED;
-                    dir_y = 1;
-                }
-                else if ( MOVE_UP ) {
-                    x += D_SPEED;
-                    y -= D_SPEED;
-                    dir_y = -1;
-                }
-                else {
-                    x += SPEED;
-                    dir_y = 0;
-                }
-                
-            }
-            
-            if ( MOVE_LEFT )  {
-                dir_x = -1;
-                if ( MOVE_DOWN ) {
-                    x -= D_SPEED;
-                    y += D_SPEED;
-                    dir_y = 1;
-                }
-                else if ( MOVE_UP ) {
-                    x -= D_SPEED;
-                    y -= D_SPEED;
-                    dir_y = -1;
-                }
-                else {
-                    x -= SPEED
-                    dir_y = 0;
-                };
-                
-            }
-            
-            if ( MOVE_DOWN && !( MOVE_RIGHT || MOVE_LEFT ) ) {
-                dir_y = 1;
-                dir_x = 0;
-                y += SPEED;
-            }
-            
-            if ( MOVE_UP && !( MOVE_RIGHT || MOVE_LEFT ) ) {
-                dir_y = -1;
-                dir_x = 0;
-                y -= SPEED;
-            }
-            
-            // setting the face directioon
             if ( isStopped() ) {
                 if ( dir_x == 0 ) {
                     if ( dir_y > 0 ) gotoAndStop ("stand_down");
