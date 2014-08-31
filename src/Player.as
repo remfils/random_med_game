@@ -28,12 +28,6 @@
         var invincibilityTimer:Timer;
         
         static public var instance:Player = null;
-
-        static public const FRICTION:Number = 0.2; //--
-        static public const MAX_SPEED = 6; //--
-        // скорости персонажа
-        static public const SPEED = 4;
-        static public const D_SPEED = SPEED * Math.SQRT2 / 2;//--
         
         // переменные движения
         public var MOVE_RIGHT = false;
