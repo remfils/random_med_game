@@ -173,39 +173,19 @@ package src {
             bulletController.update();
         }
 
-        public function keyDown_fun (E:KeyboardEvent) {
+        public function keyDown_fun (e:KeyboardEvent) {
             //trace (E.keyCode);
             
             if ( blockControlls ) return;
             
-            switch (E.keyCode) {
-                case 37 :
-                case 65 :
-                    _player.setMovement ("west");
-                    break;
-                case 38 :
-                case 87 :
-                    _player.setMovement ("north");
-                    break;
-                case 39 :
-                case 68 :
-                    _player.setMovement ("east");
-                    break;
-                case 40 :
-                case 83 :
-                    _player.setMovement ("south");
-                    break;
-                case 69:
+            _player.handleInput(e.keyCode);
+            /*
+            case 69:
                     activateObject();
-                    break;
-                case 32 :
-                    //stat.nextMenuTheme();
-                    _player.makeHit(2);
-                    break;
-                case 74 :
+                    break; 
+            case 74 :
                     bulletController.startBulletSpawn();
-                    break;
-            }
+                    break;*/
         }
         
         private function activateObject() {

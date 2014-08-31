@@ -1,5 +1,6 @@
 ﻿package src  {
     
+    import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
     import flash.display.MovieClip;
     import flash.events.KeyboardEvent;
@@ -30,6 +31,8 @@
         static public var instance:Player = null;
         
         // переменные движения
+        private var inputForce:b2Vec2 = new b2Vec2();
+        private const SPEED:uint = 10;
         public var MOVE_RIGHT = false;
         public var MOVE_LEFT = false;
         public var MOVE_UP = false;
@@ -75,6 +78,30 @@
         public function setActorBody(body:b2Body):void {
             this.body = body;
         }
+        
+        public function handleInput(keyCode:uint):void {
+            switch (keyCode) {
+                case 37 :
+                case 65 :
+                    setMovement ("west");
+                    break;
+                case 38 :
+                case 87 :
+                    setMovement ("north");
+                    break;
+                case 39 :
+                case 68 :
+                    setMovement ("east");
+                    break;
+                case 40 :
+                case 83 :
+                    setMovement ("south");
+                    break;
+                case 32 :
+                    makeHit(2);
+                    break;
+            }
+        }
         /**
          * задает движение персонажа и определяет его направление
          * @param State куда нажата клавиша
@@ -84,19 +111,15 @@
             switch (State) {
                 case "east" :
                     MOVE_RIGHT = max;
-                    if ( max ) gotoAndStop("right");
                     break;
                 case "west" :
                     MOVE_LEFT = max;
-                    if ( max ) gotoAndStop("left");
                     break;
                 case "south" :
                     MOVE_DOWN = max;
-                    if ( max ) gotoAndStop("down");
                     break;
                 case "north" :
                     MOVE_UP = max;
-                    if ( max ) gotoAndStop("up");
                     break;
             }
         }
@@ -107,7 +130,23 @@
         }
         
         /** обновляет положение персонажа */
+        public function preupdate():void {
+            movePlayer();
+        }
+        
+        private function movePlayer():void {
+            inputForce.SetZero();
+            
+            if (MOVE_DOWN) inputForce.y += SPEED;
+            if (MOVE_LEFT) inputForce.x += SPEED;
+            if (MOVE_RIGHT) inputForce.x -= SPEED;
+            if (MOVE_UP) inputForce.y -= SPEED;
+            
+            body.ApplyForce(inputForce, body.GetLocalCenter());
+        }
+        
         public function update():void {
+            
             if ( isStopped() ) {
                 if ( dir_x == 0 ) {
                     if ( dir_y > 0 ) gotoAndStop ("stand_down");
