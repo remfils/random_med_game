@@ -56,6 +56,7 @@
                 
                 name = "door_" + direction;
                 var door:Door = getChildByName(name) as Door;
+                door.hide();
                 door.setWall(wall);
                 _doors.push(door);
             }
