@@ -128,55 +128,6 @@
         }
         
         /**
-         * Отталкивает персонажа от коллайдера
-         * @param  C коллайдер
-         */
-        public function push ( C:Collider ) {
-            
-            var X:Number = x + _collider.x;
-            var Y:Number = y + _collider.y;
-            
-            var dx = 0, dy = 0;
-            
-            trace(C.getGlobalX());
-            
-            if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width * Math.sin(C.rotation * Math.PI / 180) / 2 + C.height * Math.cos(C.rotation * Math.PI / 180) / 2 + C.getGlobalX() + _collider.width/2 - X;
-                dy = 0
-            }
-            else if ( C.checkCollision(X + _collider.width/2, Y) ) {
-                dx = C.getGlobalX() - C.width * Math.sin(C.rotation * Math.PI / 180) / 2 - C.height * Math.cos(C.rotation * Math.PI / 180) / 2 - _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            else if ( C.checkCollision(X - _collider.width/2, Y) ) {
-                dx = C.width/2 + C.x + _collider.width/2 - X;
-                dy = 0;
-            }
-            
-            x += dx;
-            
-        }
-        /**
          * берем точку для каста лучей в зависимости от направления
          * @return координата каста
          */
