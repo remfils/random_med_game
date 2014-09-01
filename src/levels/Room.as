@@ -41,39 +41,62 @@
 
         public function Room() {
             world = new b2World(gravity, true);
+            world.SetContactListener(new ContactListener());
+            
             _player = Player.getInstance();
+            
             createPlayerBody();
             
-            // walls
-            i = 8;
-            var collider:Collider = new Collider();
-            while ( i-- ) {
-                collider = getChildByName ( "wall" + i ) as Collider
-                collider.replaceWithStaticB2Body(world);
-            }
+            addWalls();
             
-            // doors
-            for each ( var direction:String in directions) {
-                var name:String = "door_collider_" + direction;
-                collider = getChildByName(name) as Collider;
-                var wall:b2Body = collider.replaceWithStaticB2Body(world);
-                
-                name = "door_" + direction;
-                var door:Door = getChildByName(name) as Door;
-                door.hide();
-                door.setWall(wall);
-                _doors.push(door);
-            }
+            addDoors();
+            
             
             if (Game.TEST_MODE) setDebugDraw();
         }
         
         private function createPlayerBody():void {
             var collider:Collider = _player.getCollider().copy();
+            
             playerBody = collider.replaceWithDynamicB2Body(world, Player.fixtureDef);
+            
+            playerBody.GetFixtureList().SetUserData( { "object": _player } );
+            
             playerBody.SetPosition(new b2Vec2(300 / Game.WORLD_SCALE, 200 / Game.WORLD_SCALE));
             playerBody.SetLinearDamping(ROOM_FRICTION);
             playerBody.SetFixedRotation(true);
+        }
+        
+        private function addWalls():void {
+            i = 8;
+            var collider:Collider = new Collider();
+            while ( i-- ) {
+                collider = getChildByName ( "wall" + i ) as Collider
+                collider.replaceWithStaticB2Body(world);
+            }
+        }
+        
+        private function addDoors():void {
+            var collider:Collider;
+            for each ( var direction:String in directions) {
+                var name:String = "door_collider_" + direction;
+                collider = getChildByName(name) as Collider;
+                var wall:b2Body = collider.replaceWithStaticB2Body(world);
+                
+                name = "exit_" + direction;
+                collider = getChildByName(name) as Collider;
+                var exit:b2Body = collider.replaceWithSensor(world);
+                
+                name = "door_" + direction;
+                var door:Door = getChildByName(name) as Door;
+                door.hide();
+                door.setWall(wall);
+                door.setExit(exit);
+                
+                exit.GetFixtureList().SetUserData( { 'object' : door } );
+                
+                _doors.push(door);
+            }
         }
         
         private function setDebugDraw():void {
@@ -84,7 +107,7 @@
             debugDraw.SetDrawScale(Game.WORLD_SCALE);
             debugDraw.SetFillAlpha(0.3);
             debugDraw.SetAlpha(0.3);
-            debugDraw.SetFlags(b2DebugDraw.e_shapeBit);
+            debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_pairBit);
             
             world.SetDebugDraw(debugDraw);
             addChild(debugSprite);
