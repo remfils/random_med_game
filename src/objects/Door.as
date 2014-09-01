@@ -4,6 +4,7 @@
     import flash.display.MovieClip;
     import src.interfaces.GameObject;
     import src.Player;
+    import src.util.Collider;
     
     public class Door extends MovieClip implements GameObject {
         
@@ -14,11 +15,9 @@
         public var level:int;
         
         private var wall:b2Body;
-        private var _exit:Collider;
+        private var exit:b2Body;
 
         public function Door() {
-            _exit = getChildByName("exit") as Collider;
-            
             show();
         }
         
@@ -26,8 +25,12 @@
             level = LEVEL;
         }
         
-        public function setWall ( body:b2Body ) {
+        public function setWall ( body:b2Body ):void {
             this.wall = body;
+        }
+        
+        public function setExit( exitBody:b2Body ):void {
+            
         }
         
         public function getDirection ():String {
@@ -63,12 +66,13 @@
             
         }
         
+        // this is kostyl
         public function getExit ():Collider {
-            return _exit;
+            return new Collider();
         }
         
         public function checkExitCollision ( P:Player ): Boolean {
-            return !locked && _exit.checkCollision( P.x, P.y );
+            return !locked;
         }
         
         public function lock ():void {
