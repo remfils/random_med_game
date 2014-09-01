@@ -139,25 +139,14 @@
             }
         }
         
-        public function makeDoorWay (wallName:String) {
-            switch ( wallName ) {
-                case "left" :
-                    _doors[0].show();
-                    _doors[0].unlock();
-                    break;
-                case "right" :
-                    _doors[2].show();
-                    _doors[2].unlock();
-                    break;
-                case "up" :
-                    _doors[3].show();
-                    _doors[3].unlock();
-                    break;
-                case "down" :
-                    _doors[1].show();
-                    _doors[1].unlock();
-                    break;
-            }
+        public function makeDoorWay (direction:String) {
+            var door:Door = getDoorByDirection(direction);
+            door.show();
+            door.unlock();
+        }
+        
+        public function getDoorByDirection(direction:String):Door {
+            return getChildByName("door_" + direction) as Door;
         }
         
         public function update () {
