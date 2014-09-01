@@ -229,19 +229,19 @@ package src {
             var endDoor:Door = null;
             if ( _player.y < 200 ) {
                 _player.currentRoom.y --;
-                 endDoor = cLevel.getDoor("down");
+                 endDoor = cLevel.getDoorByDirection("down");
             }
             if ( _player.y > 500 ) {
                 _player.currentRoom.y ++;
-                endDoor = cLevel.getDoor("up");
+                endDoor = cLevel.getDoorByDirection("up");
             }
             if ( _player.x < 100 ) {
                 _player.currentRoom.x --;
-                endDoor = cLevel.getDoor("right");
+                endDoor = cLevel.getDoorByDirection("right");
             }
             if ( _player.x > 500 ) {
                 _player.currentRoom.x ++;
-                endDoor = cLevel.getDoor("left");
+                endDoor = cLevel.getDoorByDirection("left");
             }
             cLevel = getCurrentLevel();
             

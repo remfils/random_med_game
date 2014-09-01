@@ -124,21 +124,6 @@
             return new Array();
         }
         
-        public function getDoor(dir:String):Door {
-            switch ( dir ) {
-                case "left" :
-                    return _doors[0];
-                case "right" :
-                    return _doors[2];
-                case "up" :
-                    return _doors[3];
-                case "down" :
-                    return _doors[1];
-                default:
-                    return null;
-            }
-        }
-        
         public function makeDoorWay (direction:String) {
             var door:Door = getDoorByDirection(direction);
             door.show();
