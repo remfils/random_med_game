@@ -37,6 +37,14 @@
             return replaceThisWithBody(world, bodyDef, fixtureDef);
         }
         
+        public function replaceWithSensor(world:b2World):b2Body {
+            var bodyDef:b2BodyDef = new b2BodyDef();
+            var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            fixtureDef.isSensor = true;
+            
+            return replaceThisWithBody(world, bodyDef, fixtureDef);
+        }
+        
         private function replaceThisWithBody(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
             bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
             
