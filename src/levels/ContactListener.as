@@ -33,7 +33,7 @@ package src.levels {
                 Sprite(userDataA.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
             }
             
-            var name:String = userDataB.object.name as String;
+            name = userDataB.object.name as String;
             trace(name);
             if ( regexp.test(name) ) {
                 if ( Game.TEST_MODE ) trace("event dispathed");
