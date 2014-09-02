@@ -150,12 +150,12 @@ package src {
             stage.addEventListener ( Event.ENTER_FRAME, update );
             stage.addEventListener ( KeyboardEvent.KEY_DOWN, keyDown_fun );
             stage.addEventListener ( KeyboardEvent.KEY_UP, keyUp_fun );
+            stage.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom, true );
         }
         
         
         public function initCurrentLevel() {
             bulletController.changeLevel(cLevel);
-            cLevel.addEventListener ( RoomEvent.EXIT_ROOM_EVENT , nextRoom );
             cLevel.addEventListener(OBJECT_ACTIVATE_EVENT, cLevel.completeCurrentTask);
             
             cLevel.subscribeGameObjects();
@@ -221,7 +221,9 @@ package src {
         
         // по возможности удалить RoomEvent
         public function nextRoom (e:Event) {
-            blockControlls = true;
+            trace("asdasd");
+            
+            /*blockControlls = true;
             var tweenX:Tween = null;
             glassPanel.clear();
             cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
@@ -258,7 +260,7 @@ package src {
             var map = stat.getMapMC();
             map.update(_LEVEL);
 
-            tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
+            tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);*/
         }
         
         private function roomTweenFinished  (e:Event) {

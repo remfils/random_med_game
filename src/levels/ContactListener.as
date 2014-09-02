@@ -3,6 +3,7 @@ package src.levels {
     import Box2D.Dynamics.Contacts.b2Contact;
     import flash.display.Sprite;
     import flash.events.Event;
+    import src.events.RoomEvent;
     import src.Game;
 	/**
      * ...
@@ -29,14 +30,14 @@ package src.levels {
             var name:String = userDataA.object.name as String;
             if ( regexp.test(name) ) {
                 if ( Game.TEST_MODE ) trace("event dispathed");
-                Sprite(userDataA.object).dispatchEvent(new Event("event_IS_UNTYPED"));
+                Sprite(userDataA.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
             }
             
             var name:String = userDataB.object.name as String;
             trace(name);
             if ( regexp.test(name) ) {
                 if ( Game.TEST_MODE ) trace("event dispathed");
-                 Sprite(userDataB.object).dispatchEvent(new Event("event_IS_UNTYPED"));
+                 Sprite(userDataB.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
             }
         }
         
