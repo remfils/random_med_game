@@ -31,6 +31,7 @@ package src {
     
     public class Game extends Sprite {
         private var blockControlls:Boolean = false;
+        private var isTransition:Boolean = false;
         
         public static const WORLD_SCALE:Number = 30;
         public static const TIME_STEP:Number = 1 / 30;
@@ -169,6 +170,8 @@ package src {
         }
 
         public function update (e:Event) {
+            if (isTransition) return;
+            
             _player.preupdate();
             
             
@@ -227,57 +230,58 @@ package src {
         
         // по возможности удалить RoomEvent
         public function nextRoom (e:Event) {
-            trace("asdasd");
+            isTransition = true;
+            blockControlls = true;
             
-            /*blockControlls = true;
-            var tweenX:Tween = null;
             glassPanel.clear();
             cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
             
-            var endDoor:Door = null;
-            if ( _player.y < 200 ) {
-                _player.currentRoom.y --;
-                 endDoor = cLevel.getDoorByDirection("down");
+            var endDoor:Door = e.target as Door;
+            
+            trace(_player.currentRoom.x, _player.currentRoom.y);
+            
+            switch (endDoor.name) {
+                case "door_up":
+                    _player.currentRoom.y --;
+                break;
+                case "door_down":
+                    _player.currentRoom.y ++;
+                break;
+                case "door_left":
+                    _player.currentRoom.x --;
+                break;
+                case "door_right":
+                    _player.currentRoom.x ++;
+                break;
             }
-            if ( _player.y > 500 ) {
-                _player.currentRoom.y ++;
-                endDoor = cLevel.getDoorByDirection("up");
-            }
-            if ( _player.x < 100 ) {
-                _player.currentRoom.x --;
-                endDoor = cLevel.getDoorByDirection("right");
-            }
-            if ( _player.x > 500 ) {
-                _player.currentRoom.x ++;
-                endDoor = cLevel.getDoorByDirection("left");
-            }
+            trace(_player.currentRoom.x, _player.currentRoom.y);
+            
             cLevel = getCurrentLevel();
             
-            var correctY = stat.height;
-            
-            tweenX = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
-            var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y + correctY , 18);
+            var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
+            var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y , 18);
             tweenX.start();
             
             
             var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 18 );
-            var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y + correctY, 18 );
+            var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y, 18 );
             
             var map = stat.getMapMC();
             map.update(_LEVEL);
 
-            tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);*/
+            tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
         }
         
         private function roomTweenFinished  (e:Event) {
-            cLevel.lock();
-            blockControlls = false;
-            
-            initCurrentLevel();
-            glassPanel.setCurrentLevel(cLevel);
-            
             var tween:Tween = Tween(e.target);
             tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
+            initCurrentLevel();
+            cLevel.lock();
+
+            blockControlls = false;
+            isTransition = false;
+            
+            glassPanel.setCurrentLevel(cLevel);
         }
     }
 
