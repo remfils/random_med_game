@@ -40,6 +40,7 @@ package src {
         public static const TEST_MODE:Boolean = true;
 
         var stat:PlayerStat;
+        var gamePanel:Sprite;
         var playerPanel:PlayerPanel;
         var glassPanel:GlassPanel;
         
@@ -66,7 +67,13 @@ package src {
             
             this.stage.focus = this;
             
-            addObjectsToStage();
+            cLevel = getCurrentLevel();
+            
+            addBulletController();
+            
+            createGamePanel();
+            
+            addPlayerStat();
             
             setUpLevelMapPosition();
             
@@ -78,21 +85,25 @@ package src {
             stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
         }
         
-        private function addObjectsToStage() {
-            addLevel();
-            
-            cLevel = getCurrentLevel();
-            
-            addPlayerStat();
-            
-            addPlayer();
-            
-            addBulletController();
-            
-            addGlassPanel();
+        private function addBulletController() {
+            bulletController = new BulletController(playerPanel);
         }
         
-        private function addLevel() {
+        private function createGamePanel():void {
+            gamePanel = new Sprite();
+            
+            addLevelTo(gamePanel);
+            
+            addPlayerTo(gamePanel);
+            
+            addGlassPanelTo(gamePanel);
+            
+            gamePanel.y += PlayerStat.getInstance().height;
+            
+            addChild(gamePanel);
+        }
+        
+        private function addLevelTo(panel:DisplayObjectContainer):void {
             var k:int = _LEVEL.length;
             
             levelMap = new MovieClip();
@@ -105,7 +116,24 @@ package src {
                 }
             }
             
-            addChild(levelMap);
+            panel.addChild(levelMap);
+        }
+        
+        private function addPlayerTo(panel:DisplayObjectContainer):void {
+            playerPanel = new PlayerPanel();
+            
+            _player = Player.getInstance();
+            
+            playerPanel.addChild(_player);
+            
+            panel.addChild(playerPanel);
+        }
+        
+        private function addGlassPanelTo(panel:DisplayObjectContainer):void {
+            glassPanel = new GlassPanel();
+            glassPanel.setGameObjects(cLevel.getGameObjects());
+            glassPanel.setCurrentLevel(cLevel);
+            panel.addChild(glassPanel);
         }
         
         private function addPlayerStat() {
@@ -113,28 +141,6 @@ package src {
             stat.x = 0;
             stat.y = 0;
             addChild (stat);
-        }
-        
-        private function addPlayer() {
-            playerPanel = new PlayerPanel();
-            
-            _player = Player.getInstance();
-            
-            playerPanel.addChild(_player);
-            
-            addChild(playerPanel);
-        }
-        
-        private function addBulletController() {
-            bulletController = new BulletController(playerPanel);
-        }
-        
-        private function addGlassPanel() {
-            glassPanel = new GlassPanel();
-            glassPanel.y += stat.height;
-            glassPanel.setGameObjects(cLevel.getGameObjects());
-            glassPanel.setCurrentLevel(cLevel);
-            addChild(glassPanel);
         }
         
         private function setUpLevelMapPosition() {
