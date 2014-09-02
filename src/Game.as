@@ -38,7 +38,7 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = true;
+        public static const TEST_MODE:Boolean = false;
 
         var stat:PlayerStat;
         var gamePanel:Sprite;
@@ -233,28 +233,38 @@ package src {
             isTransition = true;
             blockControlls = true;
             
+            var destination:Point = new Point();
+            
             glassPanel.clear();
             cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
             
             var endDoor:Door = e.target as Door;
             
-            trace(_player.currentRoom.x, _player.currentRoom.y);
-            
             switch (endDoor.name) {
                 case "door_up":
                     _player.currentRoom.y --;
+                    destination.y -= _player.getCollider().height / 2;
+                    endDoor = cLevel.getDoorByDirection("down");
                 break;
                 case "door_down":
                     _player.currentRoom.y ++;
+                    destination.y += _player.getCollider().height / 2;
+                    endDoor = cLevel.getDoorByDirection("up");
                 break;
                 case "door_left":
                     _player.currentRoom.x --;
+                    destination.x -= _player.getCollider().width / 2;
+                    endDoor = cLevel.getDoorByDirection("right");
                 break;
                 case "door_right":
                     _player.currentRoom.x ++;
+                    destination.x += _player.getCollider().width / 2;
+                    endDoor = cLevel.getDoorByDirection("left");
                 break;
             }
-            trace(_player.currentRoom.x, _player.currentRoom.y);
+            
+            destination.x += endDoor.x;
+            destination.y += endDoor.y;
             
             cLevel = getCurrentLevel();
             
@@ -263,8 +273,8 @@ package src {
             tweenX.start();
             
             
-            var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, endDoor.x, 18 );
-            var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, endDoor.y, 18 );
+            var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, destination.x, 18 );
+            var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, destination.y, 18 );
             
             var map = stat.getMapMC();
             map.update(_LEVEL);
