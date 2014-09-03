@@ -24,7 +24,7 @@
     public class Room extends MovieClip {
         protected static const directions:Array = ["left", "right", "up", "down"];
 
-        protected var ROOM_FRICTION:Number = 10;
+        protected var ROOM_FRICTION:Number = 8;
         private var world:b2World;
         private static var gravity:b2Vec2 = new b2Vec2(0, 0);
         
