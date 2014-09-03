@@ -1,5 +1,6 @@
 package src.util {
     import flash.display.Sprite;
+    import flash.text.StaticText;
     import src.levels.CastleLevel;
     import src.levels.Room;
     import flash.display.MovieClip;
@@ -10,6 +11,8 @@ package src.util {
 	import flash.utils.*;
 	import src.objects.Lever;
 	import src.enemy.FlyingEnemy;
+    import src.objects.Obstacle;
+    import src.objects.StaticObstacle;
     import src.Player;
     
     public class LevelCreator {
@@ -63,6 +66,8 @@ package src.util {
                 
                 addDecorationsToRoom(cRoom, room.wallDecorations.*);
                 
+                addObstaclesToRoom(cRoom, room.obstacles.*);
+                
                 addActiveObjectsToRoom(cRoom, room.active.*);
                 
                 addEnemiesToRoom(cRoom, room.enemy);
@@ -94,6 +99,18 @@ package src.util {
                 }
                 
                 cRoom.addChild(decorationSprite);
+            }
+        }
+        
+        private function addObstaclesToRoom (cRoom:Room, obstaclesXMLList:XMLList):void {
+            for each (var obstacle:XML in obstaclesXMLList) {
+                var obstClass:Class = getDefinitionByName(obstacle.name()) as Class;
+                var obstSprite:Obstacle = new obstClass() as Obstacle;
+                
+                obstSprite.x = obstacle.@x;
+                obstSprite.y = obstacle.@y;
+                
+                cRoom.addObstacle(obstSprite);
             }
         }
         
