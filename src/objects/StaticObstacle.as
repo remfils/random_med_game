@@ -1,22 +1,19 @@
 package src.objects {
+    import Box2D.Common.Math.b2Vec2;
     import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
     import flash.display.Sprite;
+    import src.Game;
     import src.util.Collider;
 	/**
      * ...
      * @author vlad
      */
-    public class StaticObstacle extends MovieClip {
+    public class StaticObstacle extends Obstacle {
         
         public function StaticObstacle() {
             
-        }
-        
-        public function createBodyFromCollider(world:b2World):b2Body {
-            var collider:Collider = getChildByName("collider") as Collider;
-            return collider.replaceWithStaticB2Body(world);
         }
     }
 
