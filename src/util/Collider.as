@@ -46,7 +46,8 @@
         }
         
         private function replaceThisWithBody(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
-            bodyDef.position.Set( getGlobalX() / Game.WORLD_SCALE, getGlobalY() / Game.WORLD_SCALE);
+            var position:Point = new Point(getGlobalX(), getGlobalY());
+            bodyDef.position.Set( position.x / Game.WORLD_SCALE, position.y / Game.WORLD_SCALE);
             
             var shape:b2PolygonShape = new b2PolygonShape();
             shape.SetAsBox(width / 2 / Game.WORLD_SCALE, height / 2 / Game.WORLD_SCALE);
