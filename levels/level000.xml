@@ -47,6 +47,12 @@
         </room>
 
         <room x="1" y="2" first_level="true" type="normal_room" color="0xC6C6C6">
+            <wallDecorations>
+                <Torch x="129" y="77"></Torch>
+                <Torch x="624" y="77" flip="true"></Torch>
+                <Torch x="129" y="429" flip="true" rotation="180"></Torch>
+                <Torch x="624" y="429" rotation="180"></Torch>
+            </wallDecorations>
 
             <!-- <enemy x="200" y="200">
                 
