@@ -1,15 +1,13 @@
 ﻿package src.objects {
-
-    import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2World;
 	import flash.display.MovieClip;
 	import src.interfaces.ActiveObject;
 	import src.Main;
 	import flash.events.Event;
     import src.util.Collider;
+    import Box2D.Dynamics.b2Body;
 
-	public class Lever extends MovieClip implements ActiveObject {
-        private var body:b2Body;
+	public class Lever extends Obstacle implements ActiveObject {
 		private var _activeArea:Collider;
 		private var _active = true;
 		
@@ -25,12 +23,6 @@
 		}
 		
 		public function update () { }
-        
-        public function createBodyFromCollider (world:b2World):b2Body {
-            var collider:Collider = getChildByName( "collider" ) as Collider ;
-            body = collider.replaceWithStaticB2Body(world);
-            return body;
-        }
 		
 		public function getActiveArea ():Collider {
 			return _activeArea;
