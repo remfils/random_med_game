@@ -6,6 +6,7 @@
     import flash.display.MovieClip;
     import flash.events.KeyboardEvent;
     import flash.geom.Point;
+    import src.util.Collider;
     
     import src.bullets.*;
     import src.stats.PlayerStat;
