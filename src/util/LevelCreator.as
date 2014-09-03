@@ -1,4 +1,5 @@
 package src.util {
+    import flash.display.Sprite;
     import src.levels.CastleLevel;
     import src.levels.Room;
     import flash.display.MovieClip;
@@ -60,6 +61,8 @@ package src.util {
                     };
                 }
                 
+                addDecorationsToRoom(cRoom, room.wallDecorations.*);
+                
                 addActiveObjectsToRoom(cRoom, room.active.*);
                 
                 addEnemiesToRoom(cRoom, room.enemy);
@@ -72,6 +75,26 @@ package src.util {
             rooms = makeDoorsInRooms(rooms);
             
             return rooms;
+        }
+        
+        private function addDecorationsToRoom(cRoom:Room, wallDecorationsXML:XMLList):void {
+            for each (var decorationNode:XML in wallDecorationsXML) {
+                var decorationClass:Class = getDefinitionByName(decorationNode.name()) as Class;
+                trace(decorationClass);
+                var decorationSprite:Sprite = new decorationClass();
+                decorationSprite.x = decorationNode.@x;
+                decorationSprite.y = decorationNode.@y;
+                
+                if ( decorationNode.@flip == "true" ) {
+                    decorationSprite.scaleX *= -1;
+                }
+                
+                if ( decorationNode.@rotation ) {
+                    decorationSprite.rotation = decorationNode.@rotation;
+                }
+                
+                cRoom.addChild(decorationSprite);
+            }
         }
         
         private function addActiveObjectsToRoom (room:Room, activeObjectsXML:XMLList) {
