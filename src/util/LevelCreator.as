@@ -80,7 +80,7 @@ package src.util {
         private function addDecorationsToRoom(cRoom:Room, wallDecorationsXML:XMLList):void {
             for each (var decorationNode:XML in wallDecorationsXML) {
                 var decorationClass:Class = getDefinitionByName(decorationNode.name()) as Class;
-                trace(decorationClass);
+                
                 var decorationSprite:Sprite = new decorationClass();
                 decorationSprite.x = decorationNode.@x;
                 decorationSprite.y = decorationNode.@y;
