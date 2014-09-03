@@ -1,6 +1,8 @@
 ﻿package src.objects {
     
+    import Box2D.Collision.b2WorldManifold;
     import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
     import src.interfaces.GameObject;
     import src.Player;
@@ -64,6 +66,10 @@
         
         public function update () {
             
+        }
+        
+        public function createBodyFromCollider(world:b2World):b2Body {
+            return wall;
         }
         
         // this is kostyl

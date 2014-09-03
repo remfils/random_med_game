@@ -1,20 +1,22 @@
 ﻿package src.objects {
 
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2World;
 	import flash.display.MovieClip;
 	import src.interfaces.ActiveObject;
 	import src.Main;
 	import flash.events.Event;
+    import src.util.Collider;
 
 	public class Lever extends MovieClip implements ActiveObject {
-		
-		private var _collider:Collider;
+        private var body:b2Body;
 		private var _activeArea:Collider;
 		private var _active = true;
 		
 		private var testFun:Function;
 
 		public function Lever () {
-			_collider = getChildByName( "collider" ) as Collider ;
+			
 			_activeArea = getChildByName( "activeArea" ) as Collider ;
 		}
 		
@@ -22,11 +24,13 @@
 			return _active;
 		}
 		
-		public function update (){}
-		
-		public function getCollider ():Collider {
-			return _collider;
-		}
+		public function update () { }
+        
+        public function createBodyFromCollider (world:b2World):b2Body {
+            var collider:Collider = getChildByName( "collider" ) as Collider ;
+            body = collider.replaceWithStaticB2Body(world);
+            return body;
+        }
 		
 		public function getActiveArea ():Collider {
 			return _activeArea;

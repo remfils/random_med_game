@@ -1,4 +1,7 @@
 ﻿package src.enemy {
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2BodyDef;
+    import Box2D.Dynamics.b2World;
 	import flash.display.MovieClip;
 	import src.interfaces.GameObject;
 	import src.util.Collider;
@@ -36,6 +39,10 @@
 				}
 			}
 		}
+        // TODO: finish it
+        public function createBodyFromCollider(world:b2World):b2Body {
+            return new b2Body(new b2BodyDef(), world);
+        }
 
 		public function isActive ():Boolean {
 			return active;
