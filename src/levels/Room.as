@@ -6,6 +6,7 @@
     import flash.display.Sprite;
     import flash.display.Stage;
     import flash.display.MovieClip;
+    import src.interfaces.ActiveGameObject;
     import src.objects.Lever;
     import src.util.Random;
     import src.interfaces.GameObject;
@@ -127,6 +128,8 @@
             _colliders.push(object.getCollider());
             
             _gameObjects.push(object);*/
+            
+            object.createBodyFromCollider(world);
             
             addChild(MovieClip(object));
         }
