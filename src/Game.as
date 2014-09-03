@@ -38,7 +38,8 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = false;
+        public static const TEST_MODE:Boolean = true;
+        public static const TestModePanel:Sprite = new Sprite();
 
         var stat:PlayerStat;
         var gamePanel:Sprite;
@@ -84,6 +85,9 @@ package src {
             
             stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
             stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
+            
+            TestModePanel.y += stat.height;
+            addChild(TestModePanel);
         }
         
         private function addBulletController() {

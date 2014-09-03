@@ -101,17 +101,15 @@
         }
         
         private function setDebugDraw():void {
-            var debugSprite:Sprite = new Sprite();
             
             var debugDraw:b2DebugDraw = new b2DebugDraw();
-            debugDraw.SetSprite(debugSprite);
+            debugDraw.SetSprite(Game.TestModePanel);
             debugDraw.SetDrawScale(Game.WORLD_SCALE);
             debugDraw.SetFillAlpha(0.3);
             debugDraw.SetAlpha(0.3);
             debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_pairBit);
             
             world.SetDebugDraw(debugDraw);
-            addChild(debugSprite);
         }
         
         public function init():void {
@@ -129,9 +127,9 @@
             
             _gameObjects.push(object);*/
             
-            object.createBodyFromCollider(world);
-            
             addChild(MovieClip(object));
+            
+            object.createBodyFromCollider(world);
         }
         
         public function addTask(type:String) {
@@ -144,6 +142,11 @@
             //_colliders.push(object.getCollider());
             addChild(object as FlyingEnemy);
             if (Game.TEST_MODE) trace("enemy added", object.x);
+        }
+        
+        public function addObstacle(obstacle:Obstacle):void {
+            addChild(obstacle);
+            var o:b2Body = obstacle.createBodyFromCollider(world);
         }
         
         public function getGameObjects():Array {
