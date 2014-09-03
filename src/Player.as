@@ -35,7 +35,7 @@
         
         // переменные движения
         private var inputForce:b2Vec2 = new b2Vec2();
-        private const SPEED:uint = 15;
+        private const SPEED:uint = 40;
         public var MOVE_RIGHT:Boolean = false;
         public var MOVE_LEFT:Boolean = false;
         public var MOVE_UP:Boolean = false;
