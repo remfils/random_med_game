@@ -54,6 +54,12 @@
                 <Torch x="624" y="429" rotation="180"></Torch>
             </wallDecorations>
 
+            <obstacles>
+                <Barell x="200" y="100"></Barell>
+                <Barell x="300" y="100"></Barell>
+                <Barell x="400" y="100"></Barell>
+            </obstacles>
+
             <!-- <enemy x="200" y="200">
                 
             </enemy> -->
