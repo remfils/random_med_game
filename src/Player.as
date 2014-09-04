@@ -36,6 +36,7 @@
         
         // переменные движения
         private var inputForce:b2Vec2 = new b2Vec2();
+        private var DIRECTION_CHANGED:Boolean = false;
         private const SPEED:uint = 40;
         public var MOVE_RIGHT:Boolean = false;
         public var MOVE_LEFT:Boolean = false;
@@ -123,23 +124,23 @@
             switch (State) {
                 case "east" :
                     MOVE_RIGHT = max;
-                    if (MOVE_RIGHT) dir_x = 1;
-                    else dir_x = 0;
+                    if (max) dir_x = 1;
+                    else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "west" :
                     MOVE_LEFT = max;
-                    if (MOVE_LEFT) dir_x = -1;
-                    else dir_x = 0;
+                    if (max) dir_x = -1;
+                    else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "south" :
                     MOVE_DOWN = max;
-                    if (MOVE_DOWN) dir_y = 1;
-                    else dir_y = 0;
+                    if (max) dir_y = 1;
+                    else if ( dir_x != 0 ) dir_y = 0;
                     break;
                 case "north" :
                     MOVE_UP = max;
-                    if (MOVE_UP) dir_y = -1;
-                    else dir_y = 0;
+                    if (max) dir_y = -1;
+                    else if ( dir_x != 0 ) dir_y = 0;
                     break;
             }
         }
@@ -158,10 +159,22 @@
         private function movePlayer():void {
             inputForce.SetZero();
             
-            if (MOVE_DOWN) inputForce.y += SPEED;
-            if (MOVE_LEFT) inputForce.x -= SPEED;
-            if (MOVE_RIGHT) inputForce.x += SPEED;
-            if (MOVE_UP) inputForce.y -= SPEED;
+            if (MOVE_DOWN) {
+                inputForce.y += SPEED;
+                DIRECTION_CHANGED = true;
+            }
+            if (MOVE_LEFT) {
+                inputForce.x -= SPEED;
+                DIRECTION_CHANGED = true;
+            }
+            if (MOVE_RIGHT) {
+                inputForce.x += SPEED;
+                DIRECTION_CHANGED = true;
+            }
+            if (MOVE_UP) {
+                inputForce.y -= SPEED;
+                DIRECTION_CHANGED = true;
+            }
             
             body.ApplyForce(inputForce, body.GetLocalCenter());
         }
@@ -178,18 +191,22 @@
                 else gotoAndStop ("stand_left");
             }
             else {
-                if ( dir_x != 0 ) {
-                    if ( dir_y > 0 ) gotoAndStop("down");
-                    else if ( dir_y < 0 ) gotoAndStop("up");
-                    else {
-                        if ( dir_x > 0 ) gotoAndStop("right");
-                        else gotoAndStop("left");
+                if ( DIRECTION_CHANGED ) {
+                    if ( dir_x != 0 ) {
+                        if ( dir_y > 0 ) gotoAndStop("down");
+                        else if ( dir_y < 0 ) gotoAndStop("up");
+                        else {
+                            if ( dir_x > 0 ) gotoAndStop("right");
+                            else gotoAndStop("left");
+                        }
                     }
+                    else {
+                        if ( dir_y > 0 ) gotoAndStop("down");
+                        else if ( dir_y < 0 ) gotoAndStop("up");
+                    }
+                    DIRECTION_CHANGED = false;
                 }
-                else {
-                    if ( dir_y > 0 ) gotoAndStop("down");
-                    else if ( dir_y < 0 ) gotoAndStop("up");
-                }
+                
             }
         }
         
