@@ -38,6 +38,8 @@
         var finished:Boolean = true;
         static var _player:Player;
         private var playerBody:b2Body;
+        
+        private var activeAreas:Array;
         var i:int = 0;
 
         public function Room() {
@@ -101,7 +103,6 @@
         }
         
         private function setDebugDraw():void {
-            
             var debugDraw:b2DebugDraw = new b2DebugDraw();
             debugDraw.SetSprite(Game.TestModePanel);
             debugDraw.SetDrawScale(Game.WORLD_SCALE);
@@ -121,13 +122,16 @@
             _player.getCollider();
         }
         
+        public function addObstacle(obstacle:Obstacle):void {
+            
+        }
+        
         public function addActiveObject(object:ActiveObject) {
-            /*_activeAreas.push(object.getActiveArea());
-            _colliders.push(object.getCollider());
-            
-            _gameObjects.push(object);*/
-            
             addChild(MovieClip(object));
+            
+            activeAreas.push(object.getActiveArea());
+            
+            //_gameObjects.push(object);
             
             object.createBodyFromCollider(world);
         }
@@ -190,11 +194,11 @@
         }
         
         public function getCurrentActiveObject():ActiveObject {
-            /*var i = _activeAreas.length;
+            /*var i = activeAreas.length;
             
             while ( i-- ) {
-                if ( _activeAreas[i].checkCollision( _player.x, _player.y) ) {
-                    return _activeAreas[i].parent;
+                if ( activeAreas[i].checkCollision( _player.x, _player.y) ) {
+                    return activeAreas[i].parent;
                 }
             }*/
             
@@ -204,7 +208,7 @@
         public function completeCurrentTask (e:Event) {
             /*var object:ActiveObject = ActiveObject(e.target);
             
-            var i = _activeAreas.length;
+            var i = activeAreas.length;
             while (i--) {
                 if ( object == _gameObjects[i] ) {
                     if ( i == currentTask.getAnswer() ) {
