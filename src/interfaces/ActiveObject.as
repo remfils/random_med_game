@@ -6,11 +6,9 @@
 		// Interface methods:
 		function getActiveArea ():Collider;
 		
-		function action();
+		function positiveOutcome():void;
 		
-		function positiveOutcome();
-		
-		function negativeOutcome();
+		function negativeOutcome():void;
 	}
 
 }
