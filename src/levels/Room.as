@@ -189,6 +189,14 @@
             }
         }
         
+        public function playerIsInActiveArea():Boolean {
+            for each ( var activeArea:Collider in activeAreas ) {
+                if ( activeArea.checkCollision(_player.x, _player.y) ) {
+                    return true;
+                }
+            }
+        }
+        
         private function isThereTasks():Boolean {
             return currentTask == null;
         }
