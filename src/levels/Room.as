@@ -39,7 +39,7 @@
         static var _player:Player;
         private var playerBody:b2Body;
         
-        private var activeAreas:Array;
+        private var activeAreas:Array=new Array();
         var i:int = 0;
 
         public function Room() {
@@ -53,7 +53,6 @@
             addWalls();
             
             addDoors();
-            
             
             if (Game.TEST_MODE) setDebugDraw();
         }
@@ -116,14 +115,14 @@
         public function init():void {
             playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
             _player.setActorBody(playerBody);
+            
+            if ( hasTask() ) {
+                lock();
+            }
         }
         
         public function addPlayerToWorld():void {
             _player.getCollider();
-        }
-        
-        public function addObstacle(obstacle:Obstacle):void {
-            
         }
         
         public function addActiveObject(object:ActiveObject) {
@@ -134,11 +133,6 @@
             //_gameObjects.push(object);
             
             object.createBodyFromCollider(world);
-        }
-        
-        public function addTask(type:String) {
-            _tasks.push(currentTask);
-            currentTask = new Task(type);
         }
         
         public function addEnenemy(object:Enemy) {
@@ -172,13 +166,6 @@
             world.ClearForces();
             updateEnemies();
             
-            
-            //checkCollisions();
-            
-            if ( isThereTasks() ) {
-                //checkExitsCollision();
-            }
-            
             if (Game.TEST_MODE) world.DrawDebugData();
         }
         
@@ -189,16 +176,17 @@
             }
         }
         
-        public function playerIsInActiveArea():Boolean {
+        public function activateObjectNearPlayer():void {
             for each ( var activeArea:Collider in activeAreas ) {
-                if ( activeArea.checkCollision(_player.x, _player.y) ) {
-                    return true;
+                if ( activeArea.checkObjectCollision(_player) ) {
+                    activeArea.parent.dispatchEvent(new Event("GUESS_EVENT"));
+                    break;
                 }
             }
         }
         
-        private function isThereTasks():Boolean {
-            return currentTask == null;
+        public function hasTask():Boolean {
+            return currentTask != null;
         }
         
         public function getCurrentActiveObject():ActiveObject {
@@ -251,8 +239,6 @@
         }
         
         public function lock () {
-            if ( isThereTasks() ) return;
-            
             var i=_doors.length;
             
             while ( i-- ) {
@@ -272,6 +258,12 @@
             if ( param.hasOwnProperty("type") ) {
                 gotoAndStop(param.type);
             }
+        }
+        
+        public function assignTask(task:Task) {
+            currentTask = task;
+            
+            if ( currentTask == null ) unlock();
         }
 
     }
