@@ -47,15 +47,15 @@
         
         private function levelDataLoaded(e:Event) {
             var levelLoader:URLLoader = e.target as URLLoader;
-            
             levelLoader.removeEventListener(Event.COMPLETE, levelDataLoaded);
-            
-            var levelCreator:LevelCreator = new LevelCreator();
-            levelCreator.createLevelFromXML(XML(levelLoader.data));
             
             game = new Game();
             addChild(game);
-            game.init(levelCreator._level);
+            
+            var levelCreator:LevelCreator = new LevelCreator();
+            levelCreator.createLevelFromXML(game, XML(levelLoader.data));
+            
+            game.init();
             
             mainMenu.destroy();
         }
