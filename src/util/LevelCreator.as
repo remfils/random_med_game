@@ -1,6 +1,7 @@
 package src.util {
     import flash.display.Sprite;
     import flash.text.StaticText;
+    import src.Game;
     import src.levels.CastleLevel;
     import src.levels.Room;
     import flash.display.MovieClip;
@@ -14,18 +15,18 @@ package src.util {
     import src.objects.Obstacle;
     import src.objects.StaticObstacle;
     import src.Player;
+    import src.task.TaskManager;
     
     public class LevelCreator {
-        public var _level:Array;
+        private var gameTaskManager:TaskManager;
         private var floorCounter:int = 0;
         
         public function LevelCreator() {
-            _level = new Array();
         }
         
-        
-        public function createLevelFromXML (levelData:XML):void {
-            _level = createFloorArray(levelData);
+        public function createLevelFromXML (game:Game, levelData:XML):void {
+            gameTaskManager = game.taskManager;
+            game.setLevel(createFloorArray(levelData));
         }
         
         private function createFloorArray(xmlLevel:XML):Array {
@@ -53,7 +54,7 @@ package src.util {
                 }
                 
                 if ( String(room.task.@type) != "" ) {
-                    cRoom.addTask(room.task.@type);
+                    gameTaskManager.addLeverTaskToRoom(cRoom, room.task.@id);
                 }
                 
                 if ( room.@first_level == "true" ) {
@@ -68,7 +69,7 @@ package src.util {
                 
                 addObstaclesToRoom(cRoom, room.obstacles.*);
                 
-                addActiveObjectsToRoom(cRoom, room.active.*);
+                addTaskObjectsToRoom(cRoom, room.active.*);
                 
                 addEnemiesToRoom(cRoom, room.enemy);
                 
@@ -114,14 +115,15 @@ package src.util {
             }
         }
         
-        private function addActiveObjectsToRoom (room:Room, activeObjectsXML:XMLList) {
+        private function addTaskObjectsToRoom (room:Room, activeObjectsXML:XMLList) {
             
             for each ( var object:XML in activeObjectsXML ) {
                 switch ( object.name().toString() ) {
                     case "lever" :
-                        var currentObject:Lever = new Lever();
+                        var currentObject:Lever = new Lever(object.@id);
                         currentObject.x = object.@x;
                         currentObject.y = object.@y;
+                        currentObject.assignToTask(object.parent().@taskId);
                         
                         room.addActiveObject(currentObject);
                     break;
