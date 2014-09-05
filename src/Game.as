@@ -7,6 +7,7 @@ package src {
     import flash.events.*;
     import flash.ui.Keyboard;
     import flash.geom.Point;
+    import src.task.TaskManager;
     
     import src.levels.CastleLevel;
     import fl.transitions.Tween;
@@ -49,11 +50,12 @@ package src {
         var _player:Player;
 
         var _LEVEL:Array = new Array();
-        public static var cLevel:Room;
+        public static var cRoom:Room;
         
         var levelMap:MovieClip;
         
         var bulletController:BulletController;
+        public var taskManager:TaskManager = new TaskManager();
         
         public function Game() {
             super();
@@ -63,13 +65,14 @@ package src {
             _player.y = 400;
         }
         
-        public function init(level:Array) {
-            level.length;
+        public function setLevel(level:Array):void {
             _LEVEL = level;
-            
+        }
+        
+        public function init() {
             this.stage.focus = this;
             
-            cLevel = getCurrentLevel();
+            cRoom = getCurrentLevel();
             
             addBulletController();
             
@@ -136,8 +139,8 @@ package src {
         
         private function addGlassPanelTo(panel:DisplayObjectContainer):void {
             glassPanel = new GlassPanel();
-            glassPanel.setGameObjects(cLevel.getGameObjects());
-            glassPanel.setCurrentLevel(cLevel);
+            glassPanel.setGameObjects(cRoom.getGameObjects());
+            glassPanel.setCurrentLevel(cRoom);
             panel.addChild(glassPanel);
         }
         
@@ -149,8 +152,8 @@ package src {
         }
         
         private function setUpLevelMapPosition() {
-            levelMap.x -= _player.currentRoom.x * cLevel.width;
-            levelMap.y -= _player.currentRoom.y * cLevel.height;
+            levelMap.x -= _player.currentRoom.x * cRoom.width;
+            levelMap.y -= _player.currentRoom.y * cRoom.height;
         }
         
         private function getCurrentLevel ():Room {
@@ -166,11 +169,11 @@ package src {
         
         
         public function initCurrentLevel() {
-            bulletController.changeLevel(cLevel);
-            cLevel.addEventListener(OBJECT_ACTIVATE_EVENT, cLevel.completeCurrentTask);
+            bulletController.changeLevel(cRoom);
+            cRoom.addEventListener("GUESS_EVENT", taskManager.guessEventListener, true);
             
-            cLevel.subscribeGameObjects();
-            cLevel.init();
+            cRoom.subscribeGameObjects();
+            cRoom.init();
         }
 
         public function update (e:Event) {
@@ -180,7 +183,7 @@ package src {
             
             
             if (!blockControlls) {
-                cLevel.update();
+                cRoom.update();
                 glassPanel.update();
             }
             _player.update ();
@@ -189,23 +192,20 @@ package src {
         }
 
         public function keyDown_fun (e:KeyboardEvent) {
-            //trace (E.keyCode);
-            
             if ( blockControlls ) return;
             
             _player.handleInput(e.keyCode);
-            /*
-            case 69:
-                    activateObject();
-                    break; 
+            
+            switch (e.keyCode) {
+                case 69:
+                    cRoom.activateObjectNearPlayer();
+                break;
+            }
+            
+                    /*
             case 74 :
                     bulletController.startBulletSpawn();
                     break;*/
-        }
-        
-        private function activateObject() {
-            var A:ActiveObject = cLevel.getCurrentActiveObject();
-            if ( A != null ) A.action();
         }
         
         public function keyUp_fun (E:KeyboardEvent) {
@@ -240,7 +240,7 @@ package src {
             var destination:Point = new Point();
             
             glassPanel.clear();
-            cLevel.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
+            cRoom.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
             
             var endDoor:Door = e.target as Door;
             
@@ -248,32 +248,32 @@ package src {
                 case "door_up":
                     _player.currentRoom.y --;
                     destination.y -= _player.getCollider().height / 2;
-                    endDoor = cLevel.getDoorByDirection("down");
+                    endDoor = cRoom.getDoorByDirection("down");
                 break;
                 case "door_down":
                     _player.currentRoom.y ++;
                     destination.y += _player.getCollider().height / 2;
-                    endDoor = cLevel.getDoorByDirection("up");
+                    endDoor = cRoom.getDoorByDirection("up");
                 break;
                 case "door_left":
                     _player.currentRoom.x --;
                     destination.x -= _player.getCollider().width / 2;
-                    endDoor = cLevel.getDoorByDirection("right");
+                    endDoor = cRoom.getDoorByDirection("right");
                 break;
                 case "door_right":
                     _player.currentRoom.x ++;
                     destination.x += _player.getCollider().width / 2;
-                    endDoor = cLevel.getDoorByDirection("left");
+                    endDoor = cRoom.getDoorByDirection("left");
                 break;
             }
             
             destination.x += endDoor.x;
             destination.y += endDoor.y;
             
-            cLevel = getCurrentLevel();
+            cRoom = getCurrentLevel();
             
-            var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cLevel.x, 18);
-            var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cLevel.y , 18);
+            var tweenX:Tween = new Tween (levelMap, "x",Strong.easeInOut, levelMap.x, -cRoom.x, 18);
+            var tweenY:Tween = new Tween (levelMap, "y",Strong.easeInOut, levelMap.y, -cRoom.y , 18);
             tweenX.start();
             
             
@@ -290,12 +290,11 @@ package src {
             var tween:Tween = Tween(e.target);
             tween.removeEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
             initCurrentLevel();
-            cLevel.lock();
 
             blockControlls = false;
             isTransition = false;
             
-            glassPanel.setCurrentLevel(cLevel);
+            glassPanel.setCurrentLevel(cRoom);
         }
     }
 
