@@ -7,42 +7,25 @@
     import src.util.Collider;
     import Box2D.Dynamics.b2Body;
 
-    public class Lever extends TaskObject implements ActiveObject {
+    public class Lever extends TaskObject {
         private var _activeArea:Collider;
-        private var _active = true;
         
         private var testFun:Function;
 
-        public function Lever () {
-            
+        public function Lever (id:uint=1):void {
+            super(id);
             _activeArea = getChildByName( "activeArea" ) as Collider ;
         }
         
-        public function isActive ():Boolean {
-            return _active;
-        }
-        
-        public function update () { }
-        
-        public function getActiveArea ():Collider {
+        override public function getActiveArea ():Collider {
             return _activeArea;
         }
         
-        public function setFun ( f:Function ) {
-            testFun = f;
-        }
-        
-        public function action () {
-            if ( _active ) {
-                //dispatchEvent(new Event(Main.OBJECT_ACTIVATE_EVENT));
-            }
-        }
-        
-        public function positiveOutcome() {
+        override public function positiveOutcome():void {
             gotoAndPlay("open");
         }
         
-        public function negativeOutcome() {
+        override public function negativeOutcome():void {
             gotoAndPlay("break");
         }
     }
