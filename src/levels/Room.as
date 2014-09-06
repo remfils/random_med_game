@@ -178,7 +178,7 @@
         
         public function activateObjectNearPlayer():void {
             for each ( var activeArea:Collider in activeAreas ) {
-                if ( activeArea.checkObjectCollision(_player) ) {
+                if ( activeArea.checkObjectCollision(_player.getCollider()) ) {
                     activeArea.parent.dispatchEvent(new Event("GUESS_EVENT"));
                     break;
                 }
