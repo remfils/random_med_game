@@ -125,22 +125,22 @@
                 case "east" :
                     MOVE_RIGHT = keyDown;
                     if (keyDown) dir_x = 1;
-                    else if ( dir_y != 0 ) dir_x = 0;
+                    //else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "west" :
                     MOVE_LEFT = keyDown;
                     if (keyDown) dir_x = -1;
-                    else if ( dir_y != 0 ) dir_x = 0;
+                    //else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "south" :
                     MOVE_DOWN = keyDown;
                     if (keyDown) dir_y = 1;
-                    else if ( dir_x != 0 ) dir_y = 0;
+                    //else if ( dir_x != 0 ) dir_y = 0;
                     break;
                 case "north" :
                     MOVE_UP = keyDown;
-                    if (max) dir_y = -1;
-                    else if ( dir_x != 0 ) dir_y = 0;
+                    if (keyDown) dir_y = -1;
+                    //else if ( dir_x != 0 ) dir_y = 0;
                     break;
             }
         }
@@ -183,6 +183,12 @@
             x = body.GetPosition().x * Game.WORLD_SCALE;
             y = body.GetPosition().y * Game.WORLD_SCALE;
             
+            if ( DIRECTION_CHANGED ) {
+                calculateDirection();
+                applyDirectionChanges();
+                DIRECTION_CHANGED = false;
+            }
+            
             if ( isStopped() ) {
                 if ( dir_x == 0 ) {
                     if ( dir_y > 0 ) gotoAndStop ("stand_down");
@@ -190,23 +196,40 @@
                 } else if ( dir_x > 0 ) gotoAndStop ("stand_right");
                 else gotoAndStop ("stand_left");
             }
+        }
+        
+        private function calculateDirection():void {
+            dir_x = body.GetLinearVelocity().x / body.GetLinearVelocity().Length();
+            dir_y = body.GetLinearVelocity().y / body.GetLinearVelocity().Length();
+            
+            if ( Math.abs(dir_x) < 0.1 ) {
+                dir_x = 0;
+            }
             else {
-                if ( DIRECTION_CHANGED ) {
-                    if ( dir_x != 0 ) {
-                        if ( dir_y > 0 ) gotoAndStop("down");
-                        else if ( dir_y < 0 ) gotoAndStop("up");
-                        else {
-                            if ( dir_x > 0 ) gotoAndStop("right");
-                            else gotoAndStop("left");
-                        }
-                    }
-                    else {
-                        if ( dir_y > 0 ) gotoAndStop("down");
-                        else if ( dir_y < 0 ) gotoAndStop("up");
-                    }
-                    DIRECTION_CHANGED = false;
+                dir_x = dir_x > 0 ? 1 : -1;
+            }
+            
+            if ( Math.abs(dir_y) < 0.1 ) {
+                dir_y = 0;
+            }
+            else {
+                dir_y = dir_y > 0 ? 1 : -1;
+            }
+            trace(dir_x, dir_y);
+        }
+        
+        private function applyDirectionChanges():void {
+            if ( dir_x != 0 ) {
+                if ( dir_y > 0 ) gotoAndStop("down");
+                else if ( dir_y < 0 ) gotoAndStop("up");
+                else {
+                    if ( dir_x > 0 ) gotoAndStop("right");
+                    else gotoAndStop("left");
                 }
-                
+            }
+            else {
+                if ( dir_y > 0 ) gotoAndStop("down");
+                else if ( dir_y < 0 ) gotoAndStop("up");
             }
         }
         
