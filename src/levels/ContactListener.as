@@ -34,7 +34,6 @@ package src.levels {
             }
             
             name = userDataB.object.name as String;
-            trace(name);
             if ( regexp.test(name) ) {
                 if ( Game.TEST_MODE ) trace("event dispathed");
                  Sprite(userDataB.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
