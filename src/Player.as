@@ -120,25 +120,25 @@
          * @param State куда нажата клавиша
          * @param max = true если клавиша нажата, false - отжата
          */
-        public function setMovement(State:String, max:Boolean = true) {
+        public function setMovement(State:String, keyDown:Boolean = true) {
             switch (State) {
                 case "east" :
-                    MOVE_RIGHT = max;
-                    if (max) dir_x = 1;
+                    MOVE_RIGHT = keyDown;
+                    if (keyDown) dir_x = 1;
                     else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "west" :
-                    MOVE_LEFT = max;
-                    if (max) dir_x = -1;
+                    MOVE_LEFT = keyDown;
+                    if (keyDown) dir_x = -1;
                     else if ( dir_y != 0 ) dir_x = 0;
                     break;
                 case "south" :
-                    MOVE_DOWN = max;
-                    if (max) dir_y = 1;
+                    MOVE_DOWN = keyDown;
+                    if (keyDown) dir_y = 1;
                     else if ( dir_x != 0 ) dir_y = 0;
                     break;
                 case "north" :
-                    MOVE_UP = max;
+                    MOVE_UP = keyDown;
                     if (max) dir_y = -1;
                     else if ( dir_x != 0 ) dir_y = 0;
                     break;
