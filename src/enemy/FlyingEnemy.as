@@ -8,9 +8,21 @@
         private var leashJoint:b2MouseJoint;
         private var target:b2Body;
         
+        static private var jointDef:b2MouseJointDef;
+        
         public function FlyingEnemy() {
             super();
-            agroDistance = 100;
+            agroDistance = 230;
+        }
+        
+        protected function defineJoint():void {
+            jointDef = new b2MouseJointDef();
+            jointDef.bodyA = this.body.GetWorld().GetGroundBody();
+            jointDef.bodyB = this.body;
+            jointDef.target = this.body.GetPosition();
+            jointDef.maxForce = 20 * this.body.GetMass();
+            jointDef.dampingRatio = 1;
+            jointDef.collideConnected = true;
         }
         
         override public function update():void {
@@ -36,13 +48,7 @@
         }
         
         private function createLeashJoint():void {
-            var jointDef:b2MouseJointDef = new b2MouseJointDef();
-            jointDef.bodyA = this.body.GetWorld().GetGroundBody();
-            jointDef.bodyB = this.body;
-            jointDef.target = this.body.GetPosition();
-            jointDef.maxForce = 20 * this.body.GetMass();
-            jointDef.dampingRatio = 1;
-            jointDef.collideConnected = true;
+            if (!jointDef) defineJoint();
             
             leashJoint = this.body.GetWorld().CreateJoint(jointDef) as b2MouseJoint;
             leashJoint.SetTarget(target.GetPosition());
