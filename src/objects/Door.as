@@ -64,7 +64,7 @@
             return locked;
         }
         
-        public function update () {
+        public function update ():void {
             
         }
         

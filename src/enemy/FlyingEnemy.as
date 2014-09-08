@@ -9,7 +9,7 @@
 			super();
 		}
 		
-		override public function update() {
+		override public function update():void {
 			super.update();
 			
 			agroDistance = 400;

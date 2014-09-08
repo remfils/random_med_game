@@ -16,7 +16,7 @@
         var agroDistance:Number = 150;
         var playerDistance:Number;
 
-        public function Enemy() {
+        public function Enemy():void {
             player = Player.getInstance();
             
             _collider = this.getChildByName("collider") as Collider;
@@ -25,7 +25,7 @@
             py = y;
         }
         
-        public function update () {
+        public function update ():void {
             calculateDistanceToPlayer();
             
             if ( !isActive() ){
@@ -60,12 +60,12 @@
             return _collider;
         }
         
-        public function setPosition (X:Number, Y:Number) {
+        public function setPosition (X:Number, Y:Number):void {
             x = px = X;
             y = py = Y;
         }
         
-        protected function calculateDistanceToPlayer() {
+        protected function calculateDistanceToPlayer():void {
             var dx = player.x - x,
                 dy = player.getYInRoom() - y;
             playerDistance = Math.sqrt(dx*dx + dy*dy);

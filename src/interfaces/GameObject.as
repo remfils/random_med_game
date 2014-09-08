@@ -6,7 +6,7 @@
     public interface GameObject {
         
         // обновляет координаты элемента
-        function update ();
+        function update ():void;
         
         // проверяет активен ли элемент
         function isActive ():Boolean;

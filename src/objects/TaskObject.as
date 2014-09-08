@@ -31,7 +31,7 @@ package src.objects {
             return new Collider();
         }
         
-        public function update() {}
+        public function update():void {}
         
         public function isActive():Boolean {
             return active;
