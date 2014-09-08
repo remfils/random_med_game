@@ -33,6 +33,7 @@
         public function replaceWithDynamicB2Body(world:b2World, fixtureDef:b2FixtureDef):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
             bodyDef.type = b2Body.b2_dynamicBody;
+            bodyDef.fixedRotation = true;
             
             return replaceThisWithBody(world, bodyDef, fixtureDef);
         }
