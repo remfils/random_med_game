@@ -60,9 +60,9 @@
                 <Barell x="400" y="100"></Barell>
             </obstacles>
 
-            <!-- <enemy x="200" y="200">
-                
-            </enemy> -->
+            <enemies>
+                <FlyingHead x="200" y="200" />
+            </enemies>
             
         </room>
 
