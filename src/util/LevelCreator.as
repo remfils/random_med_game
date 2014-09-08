@@ -71,7 +71,7 @@ package src.util {
                 
                 addTaskObjectsToRoom(cRoom, room.active.*);
                 
-                addEnemiesToRoom(cRoom, room.enemy);
+                addEnemiesToRoom(cRoom, room.enemies.*);
                 
                 cRoom.setParameters(createParameters(room.@*));
                 
@@ -133,7 +133,9 @@ package src.util {
         
         private function addEnemiesToRoom (room:Room, enemiesXML:XMLList) {
             for each ( var object:XML in enemiesXML ) {
-                var enemy:FlyingEnemy = new FlyingEnemy();
+                var enemyClass:Class = getDefinitionByName(object.name()) as Class;
+                
+                var enemy = new enemyClass();
                 enemy.setPosition(object.@x,object.@y);
                 
                 room.addEnenemy(enemy);
