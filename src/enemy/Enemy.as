@@ -1,6 +1,7 @@
 ﻿package src.enemy {
     import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2BodyDef;
+    import Box2D.Dynamics.b2FixtureDef;
     import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
     import src.interfaces.GameObject;
@@ -15,9 +16,14 @@
         var py:Number;
         var agroDistance:Number = 150;
         var playerDistance:Number;
+        
+        protected var enemyFixtureDefenition:b2FixtureDef;
 
         public function Enemy():void {
             player = Player.getInstance();
+            
+            enemyFixtureDefenition = new b2FixtureDef();
+            enemyFixtureDefenition.density = 0.3;
             
             _collider = this.getChildByName("collider") as Collider;
             
@@ -39,9 +45,10 @@
                 }
             }
         }
-        // TODO: finish it
+        
         public function createBodyFromCollider(world:b2World):b2Body {
-            return new b2Body(new b2BodyDef(), world);
+            var collider:Collider = getChildByName("collider001") as Collider;
+            collider.replaceWithDynamicB2Body(world, enemyFixtureDef);
         }
 
         public function isActive ():Boolean {
@@ -67,7 +74,7 @@
         
         protected function calculateDistanceToPlayer():void {
             var dx = player.x - x,
-                dy = player.getYInRoom() - y;
+                dy = player.y - y;
             playerDistance = Math.sqrt(dx*dx + dy*dy);
         }
 
