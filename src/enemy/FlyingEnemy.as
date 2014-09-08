@@ -7,12 +7,12 @@
         
         public function FlyingEnemy() {
             super();
+            agroDistance = 400;
         }
         
         override public function update():void {
             super.update();
             
-            agroDistance = 400;
             
             moveEnemy();
             
@@ -32,13 +32,8 @@
         
         private function followPlayer() {
             if (!isActive()) return;
-            /*var k:Number = (player.y - py) / (player.x - px),
-                b = -k * player.x + player.y;
-                
-            x = (-b+y+x/k)*k/(k*k+1);
-            y = k*x + b;*/
             
-            var dy = y - player.getYInRoom();
+            var dy = y - player.y;
             y -= dy/Math.abs(dy) * MAX_SPEED * ERROR;
             
             dy = x - player.x;
