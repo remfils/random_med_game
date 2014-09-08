@@ -26,7 +26,7 @@
         }
         
         public function update () {
-            calculatePlayerDistance();
+            calculateDistanceToPlayer();
             
             if ( !isActive() ){
                 if ( agroDistance > playerDistance ) {
@@ -53,7 +53,6 @@
         }
         
         public function deactivate():void {
-            trace("enemy deactivated");
             active = false;
         }
         
@@ -66,7 +65,7 @@
             y = py = Y;
         }
         
-        protected function calculatePlayerDistance() {
+        protected function calculateDistanceToPlayer() {
             var dx = player.x - x,
                 dy = player.getYInRoom() - y;
             playerDistance = Math.sqrt(dx*dx + dy*dy);
