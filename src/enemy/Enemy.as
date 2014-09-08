@@ -4,6 +4,7 @@
     import Box2D.Dynamics.b2FixtureDef;
     import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
+    import src.Game;
     import src.interfaces.GameObject;
     import src.util.Collider;
     import src.Player;
@@ -34,6 +35,9 @@
         
         public function update ():void {
             calculateDistanceToPlayer();
+            
+            x = body.GetPosition().x * Game.WORLD_SCALE;
+            y = body.GetPosition().y * Game.WORLD_SCALE;
             
             if ( !isActive() ){
                 if ( agroDistance > playerDistance ) {
