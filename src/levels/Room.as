@@ -107,7 +107,7 @@
             debugDraw.SetDrawScale(Game.WORLD_SCALE);
             debugDraw.SetFillAlpha(0.3);
             debugDraw.SetAlpha(0.3);
-            debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_pairBit);
+            debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_pairBit | b2DebugDraw.e_jointBit);
             
             world.SetDebugDraw(debugDraw);
         }
@@ -137,8 +137,13 @@
         
         public function addEnenemy(object:Enemy) {
             _enemies.push(object);
-            //_colliders.push(object.getCollider());
+            object.createBodyFromCollider(world);
             addChild(object);
+            
+            if ( object is FlyingEnemy ) {
+                FlyingEnemy(object).setTarget(playerBody);
+            }
+            
             if (Game.TEST_MODE) trace("enemy added", object.x);
         }
         
@@ -164,7 +169,9 @@
         public function update () {
             world.Step(Game.TIME_STEP, 5, 5);
             world.ClearForces();
+            
             updateEnemies();
+            
             
             if (Game.TEST_MODE) world.DrawDebugData();
         }
