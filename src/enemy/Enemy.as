@@ -48,7 +48,7 @@
         
         public function createBodyFromCollider(world:b2World):b2Body {
             var collider:Collider = getChildByName("collider001") as Collider;
-            collider.replaceWithDynamicB2Body(world, enemyFixtureDef);
+            return collider.replaceWithDynamicB2Body(world, enemyFixtureDefenition);
         }
 
         public function isActive ():Boolean {

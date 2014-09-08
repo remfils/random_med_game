@@ -138,7 +138,7 @@
         public function addEnenemy(object:Enemy) {
             _enemies.push(object);
             //_colliders.push(object.getCollider());
-            addChild(object as FlyingEnemy);
+            addChild(object);
             if (Game.TEST_MODE) trace("enemy added", object.x);
         }
         
