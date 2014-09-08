@@ -185,11 +185,18 @@
             }
             
             if ( isStopped() ) {
-                if ( dir_x == 0 ) {
-                    if ( dir_y > 0 ) gotoAndStop ("stand_down");
-                    else gotoAndStop ("stand_up");
-                } else if ( dir_x > 0 ) gotoAndStop ("stand_right");
-                else gotoAndStop ("stand_left");
+                if ( dir_x != 0 ) {
+                    if ( dir_y > 0 ) gotoAndStop("stand_down");
+                    else if ( dir_y < 0 ) gotoAndStop("stand_up");
+                    else {
+                        if ( dir_x > 0 ) gotoAndStop("stand_right");
+                        else gotoAndStop("stand_left");
+                    }
+                }
+                else {
+                    if ( dir_y > 0 ) gotoAndStop("stand_down");
+                    else if ( dir_y < 0 ) gotoAndStop("stand_up");
+                }
             }
         }
         
