@@ -16,6 +16,7 @@
         var py:Number;
         var agroDistance:Number = 150;
         var playerDistance:Number;
+        protected var body:b2Body;
         
         protected var enemyFixtureDefenition:b2FixtureDef;
 
@@ -48,7 +49,8 @@
         
         public function createBodyFromCollider(world:b2World):b2Body {
             var collider:Collider = getChildByName("collider001") as Collider;
-            return collider.replaceWithDynamicB2Body(world, enemyFixtureDefenition);
+            body = collider.replaceWithDynamicB2Body(world, enemyFixtureDefenition);
+            return body;
         }
 
         public function isActive ():Boolean {
