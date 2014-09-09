@@ -4,19 +4,26 @@
     
     
     public class Heart extends MovieClip {
-        private var active = true;
+        private var active:Boolean = true;
+        private var isHalfHit:Boolean = false;
         
-        public function Heart() {
+        public function Heart():void {
             stop();
+        }
+        
+        public function makeHalfHit():void {
+            if ( isHalfHit ) {
+                makeFullHit();
+            }
+            else {
+                isHalfHit = true;
+                gotoAndPlay("half_hit");
+            }
         }
         
         public function makeFullHit() {
             gotoAndPlay("full_hit");
             active = false;
-        }
-        
-        public function makeHalfHit() {
-            gotoAndPlay("half_hit");
         }
         
         public function isActive():Boolean {
