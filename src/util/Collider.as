@@ -21,6 +21,7 @@
 
         //создаём коллайдер
         public function Collider () {
+            this.visible = Game.TEST_MODE;
         }
         
         public function replaceWithStaticB2Body(world:b2World):b2Body {
