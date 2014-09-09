@@ -10,6 +10,7 @@
     import src.Player;
     
     public class Enemy extends MovieClip implements GameObject {
+        public var damage:Number = 1;
         var active:Boolean = false;
         var _collider:Collider;
         var player:Player;
@@ -26,6 +27,7 @@
             
             enemyFixtureDefenition = new b2FixtureDef();
             enemyFixtureDefenition.density = 0.3;
+            enemyFixtureDefenition.userData = {"object": this};
             
             _collider = this.getChildByName("collider") as Collider;
             
