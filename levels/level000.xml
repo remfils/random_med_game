@@ -40,7 +40,14 @@
             </active>
         </room>
 
-        <room x="2" y="1" type="normal_room" color="0xC6C6C6"/>
+        <room x="2" y="1" type="normal_room" color="0xC6C6C6">
+            <enemies>
+                <FlyingHead x="150" y="150" />
+                <FlyingHead x="150" y="350" />
+                <FlyingHead x="550" y="150" />
+                <FlyingHead x="550" y="350" />
+            </enemies>
+        </room>
 
         <room x="4" y="1" type="normal_room" color="0xC6C6C6">
             
