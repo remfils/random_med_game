@@ -1,5 +1,9 @@
 package src.levels {
+    import Box2D.Common.Math.b2Vec2;
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2ContactImpulse;
     import Box2D.Dynamics.b2ContactListener;
+    import Box2D.Dynamics.b2Fixture;
     import Box2D.Dynamics.Contacts.b2Contact;
     import flash.display.Sprite;
     import flash.events.Event;
@@ -28,27 +32,51 @@ package src.levels {
             
             checkExitCollide(userDataA, userDataB);
             
-            checkPlayerEnemyCollision(userDataA, userDataB);
         }
         
         private function checkExitCollide(userDataA:Object, userDataB:Object):void {
-            if ( userDataA.object is Door || userDataB.object is Door ) {
-                if ( userDataA.object is Player ) {
+            if ( userDataA.object is Player || userDataB.object is Player ) {
+                if ( userDataA.object is Door ) {
                     Sprite(userDataA.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
                 }
-                if ( userDataB.object is Player ) {
+                if ( userDataB.object is Door ) {
                     Sprite(userDataB.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
                 }
             }
         }
         
-        private function checkPlayerEnemyCollision(userDataA:Object, userDataB:Object):void {
+        override public function PostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
+            super.PostSolve(contact, impulse);
+            
+            if ( contact.GetFixtureA().GetUserData() == null  || contact.GetFixtureB().GetUserData() == null) return;
+            
+            checkPlayerEnemyCollision(contact.GetFixtureA(), contact.GetFixtureB());
+        }
+        
+        
+        private function checkPlayerEnemyCollision(fixtureA:b2Fixture, fixtureB:b2Fixture):void {
+            var userDataA:Object = fixtureA.GetUserData();
+            var userDataB:Object = fixtureB.GetUserData();
+            
             if ( userDataA.object is Enemy || userDataB.object is Enemy ) {
+                var bodyA:b2Body = fixtureA.GetBody();
+                var bodyB:b2Body = fixtureB.GetBody();
+                var dr:b2Vec2;
+                
                 if ( userDataA.object is Player ) {
+                    dr = bodyA.GetPosition().Copy();
+                    dr.Subtract(bodyB.GetPosition());
+                    dr.Multiply(3);
+                    bodyA.ApplyImpulse( dr ,bodyA.GetWorldCenter());
                     Player(userDataA.object).makeHit( Enemy(userDataB.object).damage );
                 }
                 
                 if ( userDataB.object is Player ) {
+                    dr = bodyB.GetPosition().Copy();
+                    dr.Subtract(bodyA.GetPosition());
+                    dr.Multiply(3);
+                    
+                    bodyB.ApplyImpulse( dr ,bodyB.GetWorldCenter());
                     Player(userDataB.object).makeHit( Enemy(userDataA.object).damage );
                 }
             }
