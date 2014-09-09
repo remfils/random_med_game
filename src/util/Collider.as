@@ -28,7 +28,7 @@
             var bodyDef:b2BodyDef = new b2BodyDef();
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             
-            return replaceThisWithBody(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef);
         }
         
         public function replaceWithDynamicB2Body(world:b2World, fixtureDef:b2FixtureDef):b2Body {
@@ -36,7 +36,7 @@
             bodyDef.type = b2Body.b2_dynamicBody;
             bodyDef.fixedRotation = true;
             
-            return replaceThisWithBody(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef);
         }
         
         public function replaceWithSensor(world:b2World):b2Body {
@@ -44,10 +44,10 @@
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             fixtureDef.isSensor = true;
             
-            return replaceThisWithBody(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef);
         }
         
-        private function replaceThisWithBody(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
+        public function replaceWithB2Body(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
             var position:Point = new Point(getGlobalX(), getGlobalY());
             bodyDef.position.Set( position.x / Game.WORLD_SCALE, position.y / Game.WORLD_SCALE);
             
