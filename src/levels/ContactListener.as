@@ -3,8 +3,11 @@ package src.levels {
     import Box2D.Dynamics.Contacts.b2Contact;
     import flash.display.Sprite;
     import flash.events.Event;
+    import src.enemy.Enemy;
     import src.events.RoomEvent;
     import src.Game;
+    import src.objects.Door;
+    import src.Player;
 	/**
      * ...
      * @author vlad
@@ -22,21 +25,32 @@ package src.levels {
             var userDataB:Object = contact.GetFixtureB().GetUserData();
             
             if ( userDataA == null  || userDataB == null) return;
+            
             checkExitCollide(userDataA, userDataB);
+            
+            checkPlayerEnemyCollision(userDataA, userDataB);
         }
         
         private function checkExitCollide(userDataA:Object, userDataB:Object):void {
-            var regexp:RegExp = new RegExp("door_.*");
-            var name:String = userDataA.object.name as String;
-            if ( regexp.test(name) ) {
-                if ( Game.TEST_MODE ) trace("event dispathed");
-                Sprite(userDataA.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+            if ( userDataA.object is Door || userDataB.object is Door ) {
+                if ( userDataA.object is Player ) {
+                    Sprite(userDataA.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+                }
+                if ( userDataB.object is Player ) {
+                    Sprite(userDataB.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+                }
             }
-            
-            name = userDataB.object.name as String;
-            if ( regexp.test(name) ) {
-                if ( Game.TEST_MODE ) trace("event dispathed");
-                 Sprite(userDataB.object).dispatchEvent(new RoomEvent(RoomEvent.EXIT_ROOM_EVENT));
+        }
+        
+        private function checkPlayerEnemyCollision(userDataA:Object, userDataB:Object):void {
+            if ( userDataA.object is Enemy || userDataB.object is Enemy ) {
+                if ( userDataA.object is Player ) {
+                    Player(userDataA.object).makeHit( Enemy(userDataB.object).damage );
+                }
+                
+                if ( userDataB.object is Player ) {
+                    Player(userDataB.object).makeHit( Enemy(userDataA.object).damage );
+                }
             }
         }
         
