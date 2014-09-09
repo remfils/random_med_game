@@ -5,7 +5,7 @@
     
     public class Heart extends MovieClip {
         private var active:Boolean = true;
-        private var isHalfHit:Boolean = false;
+        public var isHalfHit:Boolean = false;
         
         public function Heart():void {
             stop();

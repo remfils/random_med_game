@@ -230,6 +230,7 @@
                 die();
                 HEALTH = 0;
             }
+            
             PlayerStat.getInstance().registerDamage(dmg);
         }
         
