@@ -8,7 +8,7 @@
         private var leashJoint:b2MouseJoint;
         private var target:b2Body;
         
-        static private var jointDef:b2MouseJointDef;
+        private var jointDef:b2MouseJointDef;
         
         public function FlyingEnemy() {
             super();
