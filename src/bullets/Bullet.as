@@ -1,9 +1,16 @@
 ﻿package src.bullets {
+    import Box2D.Common.Math.b2Vec2;
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2BodyDef;
+    import Box2D.Dynamics.b2FixtureDef;
     import flash.display.MovieClip;
+    import src.util.Collider;
     
-    public class Bullet extends MovieClip {
-        public const SPEED:Number = 10;
+    public class Bullet extends MovieClip implements GameObject {
+        public var speed:Number = 10;
         static public const DELAY:Number = 500;
+        
+        protected var body:b2Body;
         
         private var active = true;
 
@@ -11,17 +18,42 @@
             
         }
         
+        public function createBodyFromCollider(world:b2World):b2Body {
+            var collider:Collider = costume.getChildByName("collider001");
+            
+            var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            fixtureDef.density = 1;
+            
+            body = collider.replaceWithDynamicB2Body(world, fixtureDef);
+            body.SetBullet(true);
+            return body;
+        }
+        
+        public function setSpeedDirection(dir_x:Number, dir_y:Number):void {
+            body.SetLinearVelocity(new b2Vec2(dir_x * speed, dir_y * speed);
+        }
+        
         public function update() {
             if (currentFrame == totalFrames) active = false;
             if (!active) return;
+            
+            x = body.GetPosition().x * Game.WORLD_SCALE;
+            y = body.GetPosition().y * Game.WORLD_SCALE;
         }
         
         public function activate() {
             active = true;
+            updateActiveState();
         }
         
         public function deactivate() {
             active = false;
+            updateActiveState();
+        }
+        
+        private function updateActiveState():void {
+            body.SetActive(active);
+            visible = active;
         }
         
         public function isActive() {
