@@ -138,6 +138,8 @@ package src.util {
                 var enemyClass:Class = getDefinitionByName(object.name()) as Class;
                 
                 var enemy = new enemyClass();
+                
+                enemy.cRoom = room;
                 enemy.setPosition(object.@x,object.@y);
                 
                 room.addEnenemy(enemy);
