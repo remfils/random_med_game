@@ -28,7 +28,6 @@ package src.levels {
         override public function BeginContact(contact:b2Contact):void {
             super.BeginContact(contact);
             
-            
             var userDataA:Object = contact.GetFixtureA().GetUserData();
             var userDataB:Object = contact.GetFixtureB().GetUserData();
             
