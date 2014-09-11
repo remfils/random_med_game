@@ -3,8 +3,11 @@
     import Box2D.Dynamics.b2BodyDef;
     import Box2D.Dynamics.b2FixtureDef;
     import Box2D.Dynamics.b2World;
+    import fl.motion.Color;
+    import fl.motion.ColorMatrix;
     import flash.display.MovieClip;
     import flash.events.Event;
+    import flash.filters.ColorMatrixFilter;
     import src.events.RoomEvent;
     import src.Game;
     import src.interfaces.GameObject;
@@ -13,18 +16,20 @@
     import src.Player;
     
     public class Enemy extends MovieClip implements GameObject {
+        protected var health:Number = 100;
         public var damage:Number = 1;
+        var agroDistance:Number = 150;
+        
         public var killed:Boolean = false;
         var active:Boolean = false;
-        var _collider:Collider;
-        var player:Player;
-        var px:Number;
-        var py:Number;
-        var agroDistance:Number = 150;
-        var playerDistance:Number;
+        
         public var body:b2Body;
-        protected var health:Number = 100;
         public var cRoom:Room;
+        var player:Player;
+        var playerDistance:Number;
+        private var hitFrames:uint = 0;
+        
+        private static var hitColor:Color = new Color();
         
         protected var enemyFixtureDefenition:b2FixtureDef;
 
@@ -34,11 +39,6 @@
             enemyFixtureDefenition = new b2FixtureDef();
             enemyFixtureDefenition.density = 0.3;
             enemyFixtureDefenition.userData = {"object": this};
-            
-            _collider = this.getChildByName("collider") as Collider;
-            
-            px = x;
-            py = y;
         }
         
         public function update ():void {
@@ -46,6 +46,16 @@
             if ( killed ) {
                 destroy();
                 return;
+            }
+            
+            if ( hitFrames ) {
+                hitFrames --;
+                
+                hitColor.setTint(0xff0000, 0.5);
+                if ( hitFrames == 0 )
+                    hitColor.setTint(0, 0);
+                
+                transform.colorTransform = hitColor;
             }
             
             x = body.GetPosition().x * Game.WORLD_SCALE;
@@ -81,13 +91,9 @@
             active = false;
         }
         
-        public function getCollider ():Collider {
-            return _collider;
-        }
-        
         public function setPosition (X:Number, Y:Number):void {
-            x = px = X;
-            y = py = Y;
+            x = X;
+            y = Y;
         }
         
         protected function calculateDistanceToPlayer():void {
@@ -98,6 +104,8 @@
         
         public function makeHit(damage:Number):void {
             health -= damage;
+            
+            hitFrames = 5;
             
             if ( health <= 0 ) {
                 killed = true;
