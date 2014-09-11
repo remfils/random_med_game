@@ -54,7 +54,7 @@ package src {
         
         var levelMap:MovieClip;
         
-        var bulletController:BulletController;
+        public var bulletController:BulletController;
         public var taskManager:TaskManager = new TaskManager();
         
         public function Game() {
