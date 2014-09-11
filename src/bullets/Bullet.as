@@ -3,7 +3,10 @@
     import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2BodyDef;
     import Box2D.Dynamics.b2FixtureDef;
+    import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
+    import src.Game;
+    import src.interfaces.GameObject;
     import src.util.Collider;
     
     public class Bullet extends MovieClip implements GameObject {
@@ -19,21 +22,22 @@
         }
         
         public function createBodyFromCollider(world:b2World):b2Body {
-            var collider:Collider = costume.getChildByName("collider001");
+            var collider:Collider = getChildByName("collider001") as Collider;
             
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             fixtureDef.density = 1;
             
             body = collider.replaceWithDynamicB2Body(world, fixtureDef);
             body.SetBullet(true);
+            
             return body;
         }
         
         public function setSpeedDirection(dir_x:Number, dir_y:Number):void {
-            body.SetLinearVelocity(new b2Vec2(dir_x * speed, dir_y * speed);
+            body.SetLinearVelocity(new b2Vec2(dir_x * speed, dir_y * speed));
         }
         
-        public function update() {
+        public function update():void {
             if (currentFrame == totalFrames) active = false;
             if (!active) return;
             
@@ -41,12 +45,12 @@
             y = body.GetPosition().y * Game.WORLD_SCALE;
         }
         
-        public function activate() {
+        public function activate():void {
             active = true;
             updateActiveState();
         }
         
-        public function deactivate() {
+        public function deactivate():void {
             active = false;
             updateActiveState();
         }
@@ -56,8 +60,14 @@
             visible = active;
         }
         
-        public function isActive() {
+        public function isActive():Boolean {
             return active;
+        }
+        
+        public function moveTo(X:Number, Y:Number):void {
+            this.x = X;
+            this.y = Y;
+            body.SetPosition(new b2Vec2(X / Game.WORLD_SCALE, Y / Game.WORLD_SCALE));
         }
 
     }
