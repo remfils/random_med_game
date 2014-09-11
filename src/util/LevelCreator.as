@@ -18,6 +18,7 @@ package src.util {
     import src.task.TaskManager;
     
     public class LevelCreator {
+        private var game:Game;
         private var gameTaskManager:TaskManager;
         private var floorCounter:int = 0;
         
@@ -26,6 +27,7 @@ package src.util {
         
         public function createLevelFromXML (game:Game, levelData:XML):void {
             gameTaskManager = game.taskManager;
+            this.game = game;
             game.setLevel(createFloorArray(levelData));
         }
         
@@ -45,7 +47,7 @@ package src.util {
                 cRoom:CastleLevel = null;
             
             for each ( var room:XML in xmlFloor.room ) {
-                cRoom = new CastleLevel();
+                cRoom = new CastleLevel(game);
                 cRoom.x = room.@x * cRoom.width;
                 cRoom.y = room.@y * cRoom.height;
                 

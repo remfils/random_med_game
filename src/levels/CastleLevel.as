@@ -1,6 +1,7 @@
 ﻿package src.levels {
     
     import flash.display.MovieClip;
+    import src.Game;
     import src.levels.Room;
     import src.Player;
     import flash.display.Sprite;
@@ -11,8 +12,8 @@
         var wall_color:uint;
         var walls:Sprite;
         
-        public function CastleLevel() {
-            super();
+        public function CastleLevel(game:Game) {
+            super(game);
             
             walls = new Sprite();
             

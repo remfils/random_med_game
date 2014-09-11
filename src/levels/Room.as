@@ -42,9 +42,9 @@
         private var activeAreas:Array=new Array();
         var i:int = 0;
 
-        public function Room() {
+        public function Room(game:Game) {
             world = new b2World(gravity, true);
-            world.SetContactListener(new ContactListener());
+            world.SetContactListener(new ContactListener(game));
             
             _player = Player.getInstance();
             

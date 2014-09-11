@@ -7,6 +7,8 @@ package src.levels {
     import Box2D.Dynamics.Contacts.b2Contact;
     import flash.display.Sprite;
     import flash.events.Event;
+    import flash.net.ObjectEncoding;
+    import src.bullets.Bullet;
     import src.enemy.Enemy;
     import src.events.RoomEvent;
     import src.Game;
@@ -17,22 +19,52 @@ package src.levels {
      * @author vlad
      */
     public class ContactListener extends b2ContactListener {
+        private var game:Game;
         
-        public function ContactListener() {
-            
+        public function ContactListener(game:Game) {
+            this.game = game;
         }
         
         override public function BeginContact(contact:b2Contact):void {
             super.BeginContact(contact);
             
+            
             var userDataA:Object = contact.GetFixtureA().GetUserData();
             var userDataB:Object = contact.GetFixtureB().GetUserData();
+            
+            checkBulletCollision(userDataA, userDataB);
             
             if ( userDataA == null  || userDataB == null) return;
             
             checkExitCollide(userDataA, userDataB);
             
+            
         }
+        
+        private function checkBulletCollision(userDataA:Object, userDataB:Object):void {
+            if ( userDataA == null && userDataB == null ) return;
+            
+            if ( userDataA is Object && userDataA.hasOwnProperty("object") ) {
+                if ( userDataA.object is Bullet )
+                    asymetricBulletCheck(userDataA.object as Bullet, userDataB);
+            }
+            
+            if ( userDataB is Object && userDataB.hasOwnProperty("object") ) {
+                if ( userDataB.object is Bullet )
+                    asymetricBulletCheck(userDataB.object as Bullet, userDataA.object);
+            }
+        }
+        
+        private function asymetricBulletCheck(bullet:Bullet, userData:Object):void {
+            if ( userData is Object && userData.hasOwnProperty("object") ) {
+                if ( userData.object is Player ) {
+                    return;
+                }
+            }
+            
+            game.bulletController.deleteBullet(bullet);
+        }
+        
         
         private function checkExitCollide(userDataA:Object, userDataB:Object):void {
             if ( userDataA.object is Player || userDataB.object is Player ) {
@@ -44,6 +76,9 @@ package src.levels {
                 }
             }
         }
+        
+        
+        
         
         override public function PostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
             super.PostSolve(contact, impulse);
