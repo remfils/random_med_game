@@ -4,6 +4,7 @@
         static public const DELAY:Number = 500;
         
         public function Spark() {
+            super();
         }
     }
     
