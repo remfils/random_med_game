@@ -1,4 +1,7 @@
-﻿package src{
+﻿package src.util {
+
+	// this is usseless
+	// should be deleted soon
 
 	import flash.display.MovieClip;
 	import flash.geom.Point;

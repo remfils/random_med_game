@@ -1,0 +1,47 @@
+<table>
+    <level>
+        <name>level 1</name>
+        <src>levels/level000.xml</src>
+        <rating>2</rating>
+    </level>
+    <level>
+        <name>Максимальная ширина</name>
+        <src>levels/level001.xml</src>
+        <rating>1</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 1</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 2</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 3</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 5</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 4</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 5</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+    <level locked="true">
+        <name>Закрытый уровень 5</name>
+        <src>levels/level001.xml</src>
+        <rating>0</rating>
+    </level>
+</table>

@@ -1,0 +1,88 @@
+<level>
+    <floor>
+        <room x="1" y="0" color="0xC6C6C6" type="normal_room">
+            <task type="levers" id="1"/>
+            <active taskId="1">
+                <lever x="200" y="150" id='1'></lever>
+                <lever x="400" y="200" id='2'></lever>
+                <lever x="600" y="150" id='3'></lever>
+            </active>
+        </room>
+
+        <room x="2" y="0" color="0xC6C6C6" type="normal_room">
+        </room>
+        <room x="3" y="0" color="0xC6C6C6" type="normal_room"/>
+
+        <room x="4" y="0" color="0xC6C6C6" type="normal_room">
+            <task type="levers" id="2"/>
+            <active taskId="2">
+                <lever x="600" y="150" id='1'></lever>
+                <lever x="600" y="240" id='2'></lever>
+                <lever x="600" y="340" id='3'></lever>
+            </active>
+        </room>
+
+        <room x="0" y="1" color="0xC6C6C6" type="normal_room">
+            <task type="levers" id="3"/>
+            <active taskId="3">
+                <lever x="300" y="100" id='1'></lever>
+                <lever x="200" y="200" id='2'></lever>
+                <lever x="100" y="300" id='3'></lever>
+            </active>
+        </room>
+
+        <room x="1" y="1" color="0xC6C6C6" type="normal_room">
+            <task type="levers" id="4"/>
+            <active taskId="4">
+                <lever x="200" y="150" id='1'></lever>
+                <lever x="400" y="200" id='2'></lever>
+                <lever x="600" y="150" id='3'></lever>
+            </active>
+        </room>
+
+        <room x="2" y="1" type="normal_room" color="0xC6C6C6">
+            <enemies>
+                <FlyingHead x="150" y="150" />
+                <FlyingHead x="150" y="350" />
+                <FlyingHead x="550" y="150" />
+                <FlyingHead x="550" y="350" />
+            </enemies>
+        </room>
+
+        <room x="4" y="1" type="normal_room" color="0xC6C6C6">
+            
+        </room>
+
+        <room x="1" y="2" first_level="true" type="normal_room" color="0xC6C6C6">
+            <wallDecorations>
+                <Torch x="129" y="77"></Torch>
+                <Torch x="624" y="77" flip="true"></Torch>
+                <Torch x="129" y="429" flip="true" rotation="180"></Torch>
+                <Torch x="624" y="429" rotation="180"></Torch>
+            </wallDecorations>
+
+            <obstacles>
+                <Barell x="200" y="100"></Barell>
+                <Barell x="300" y="100"></Barell>
+                <Barell x="400" y="100"></Barell>
+            </obstacles>
+
+            <enemies>
+                <FlyingHead x="200" y="200" />
+            </enemies>
+            
+        </room>
+
+        <room x="2" y="2" type="normal_room" color="0xC6C6C6">
+            <task type="levers" id="5"/>
+            <active taskId="5">
+                <lever x="400" y="400" id='1'></lever>
+                <lever x="250" y="300" id='2'></lever>
+                <lever x="550" y="300" id='3'></lever>
+                <lever x="300" y="200" id='4'></lever>
+                <lever x="500" y="200" id='5'></lever>
+            </active>
+        </room>
+
+    </floor>
+</level>

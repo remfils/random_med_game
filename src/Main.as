@@ -1,197 +1,66 @@
-﻿package src{
+﻿package src {
+    import flash.events.*;
+    import flash.display.Sprite;
+    import flash.net.URLLoader;
+    import flash.net.URLRequest;
+    import src.Game;
+    import src.MainMenu;
+    import src.util.LevelCreator;
+    import src.events.*;
 
-	import flash.display.MovieClip;
-	import flash.events.*;
-	import flash.ui.Keyboard;
-	import flash.geom.Point;
-
-	public class Main extends MovieClip {
-
-		private var finished:Boolean = false;
-
-		var _player:Player;
-
-		var _colliders:Array = new Array ();
-		var _walls:Array = new Array();
-
-		var _doors:Array = new Array();
-		var _GO:Array = new Array();
-
-		var spawner:Spawner;
-
-		public function Main () {
-			super ();
-
-			_player = new Player();
-			_player.move (200,200);
-		}
-
-		// FUNCTIONS FOR LEVEL START
-
-		// setups game
-		public function init () {
-			this.stage.focus = this;
-			addChild (_player);
-
-			stage.addEventListener (Event.ENTER_FRAME, update);
-			stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown_fun);
-			stage.addEventListener (KeyboardEvent.KEY_UP, keyUp_fun);
-		}
-
-		// adding a wall to array
-		public function addWall ( A:Collider ) {
-			_walls.push (A);
-			_colliders.push ( A );
-		}
-
-		// adds door
-		public function addDoor (D:Door) {
-			_doors.push (D);
-			_colliders.push ( D.getCollider() );
-		}
-
-		// adds object
-		public function addObject (A:GameObject) {
-			_GO.push (A);
-			
-			_colliders.push ( A.getCollider() );
-		}
-
-		public function lockDoors () {
-			for each (var k in _doors) {
-				k.lock ();
-			}
-			_walls.unlock ();
-		}
-
-
-		// FUNCTION FOR MID-LEVEL
-
-		public function update (e:Event) {
-			_player.update ();
-
-			checkCollisions ();
-		}
-
-		public function checkCollisions () {
-			var ray:Ray;
-			
-			for ( var i:int=0; i < 3; i++ ) {
-				switch ( i ) {
-					case 0:
-						ray = new Ray(_player.getCastPointX(),_player.y,_player.getVX(),_player.getVY());
-						break;
-					case 1:
-						ray = new Ray(_player.y,_player.getCastPointY(),_player.getVX(),_player.getVY());
-						break;
-					default:
-						ray = new Ray(_player.getCastPointX(),_player.getCastPointY(),_player.getVX(),_player.getVY());
-				}
-				
-
-				while ( ray.collided() ) {
-					for (var k in _colliders) {
-						if (_colliders[k].checkCollision(ray.x,ray.y)) {
-							_player.push ( _colliders[k] );
-						}
-					}
-	
-					ray.inc ();
-				}
-			}
-			
-			// check spawner collision
-			if ( finished ) {
-				for ( k in _doors ) {
-					if ( _doors[k].checkSpawner ( _player ) ) {
-						goOut ( _doors[k] );
-					}
-					
-				}
-			}
-		}
-
-		public function keyDown_fun (E:KeyboardEvent) {
-			switch (E.keyCode) {
-				case 37 :
-				case 65 :
-					_player.setMovement ("west");
-					break;
-				case 38 :
-				case 87 :
-					_player.setMovement ("north");
-					break;
-				case 39 :
-				case 68 :
-					_player.setMovement ("east");
-					break;
-				case 40 :
-				case 83 :
-					_player.setMovement ("south");
-					break;
-				case 32 :
-					openLevel ();
-					break;
-			}
-		}
-
-		public function keyUp_fun (E:KeyboardEvent) {
-			switch (E.keyCode) {
-				case 37 :
-				case 65 :
-					_player.setMovement ("west",false);
-					break;
-				case 38 :
-				case 87 :
-					_player.setMovement ("north",false);
-					break;
-				case 39 :
-				case 68 :
-					_player.setMovement ("east",false);
-					break;
-				case 40 :
-				case 83 :
-					_player.setMovement ("south",false);
-					break;
-			}
-		}
-
-		// FUNCTIONS FOR END GAME
-
-
-		private function openLevel () {
-			finished = true;
-			for each (var k in _doors) {
-				k.unlock ();
-			}
-		}
-		
-		private function lockLevel () {
-			finished = false;
-			for(var k in _doors) {
-				_doors[k].lock ();
-			}
-		}
-
-		public function gotoLevel (frame:Number) {
-			gotoAndStop (frame);
-			
-			lockLevel ();
-		}
-		
-		public function goOut ( DOOR:Door ) {
-			gotoLevel ( DOOR.level );
-			
-			_player.move (DOOR.x, DOOR.y);
-		}
-
-// --
-		public function gotoLevelFromDoor (I:Number) {
-			gotoAndStop (_doors[I].frame);
-			_player.x = _doors[I].x;
-			_player.y = _doors[I].y;
-		}
-
-	}
+    public class Main extends Sprite {
+        var mainMenu:MainMenu;
+        var loader:URLLoader;
+        var game:Game;
+        
+        public function Main () {
+            super ();
+            startDataLoading();
+            
+            addEventListener(MenuItemSelectedEvent.LEVEL_SELECTED, startLevelLoading);
+        }
+        
+        private function startDataLoading():void {
+            loader = new URLLoader(new URLRequest("level_table.xml"));
+            loader.addEventListener(Event.COMPLETE, loadCompleteListener);
+        }
+        
+        private function loadCompleteListener(e:Event):void {
+            loader.removeEventListener(Event.COMPLETE, loadCompleteListener);
+            
+            createMainMenu();
+            mainMenu.importExternalData(new XMLList(loader.data));
+            mainMenu.switchToMenu("title");
+        }
+        
+        private function createMainMenu():void {
+            mainMenu = new MainMenu();
+            addChild(mainMenu);
+        }
+        
+        private function startLevelLoading(e:MenuItemSelectedEvent):void {
+            var levelLoader = new URLLoader();
+            levelLoader.addEventListener(Event.COMPLETE, levelDataLoaded);
+            
+            levelLoader.load(new URLRequest(e.URL));
+        }
+        
+        private function levelDataLoaded(e:Event) {
+            var levelLoader:URLLoader = e.target as URLLoader;
+            levelLoader.removeEventListener(Event.COMPLETE, levelDataLoaded);
+            
+            game = new Game();
+            addChild(game);
+            
+            var levelCreator:LevelCreator = new LevelCreator();
+            levelCreator.createLevelFromXML(game, XML(levelLoader.data));
+            
+            game.init();
+            
+            mainMenu.destroy();
+        }
+    }
 
 }
+
+
