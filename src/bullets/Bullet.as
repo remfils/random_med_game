@@ -25,7 +25,10 @@
             var collider:Collider = getChildByName("collider001") as Collider;
             
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            fixtureDef.userData = { "object": this };
             fixtureDef.density = 1;
+            fixtureDef.friction = 0;
+            fixtureDef.restitution = 0;
             
             body = collider.replaceWithDynamicB2Body(world, fixtureDef);
             body.SetBullet(true);
@@ -43,6 +46,10 @@
             
             x = body.GetPosition().x * Game.WORLD_SCALE;
             y = body.GetPosition().y * Game.WORLD_SCALE;
+        }
+        
+        public function disableMovement():void {
+             body.SetActive(false);
         }
         
         public function activate():void {
