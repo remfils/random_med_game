@@ -60,6 +60,10 @@ package src.levels {
                 if ( userData.object is Player ) {
                     return;
                 }
+                
+                if ( userData.object is Enemy ) {
+                    Enemy(userData.object).makeHit(bullet.damage);
+                }
             }
             
             game.bulletController.deleteBullet(bullet);

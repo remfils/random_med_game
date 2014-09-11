@@ -27,6 +27,7 @@
         
         override public function update():void {
             super.update();
+            if ( killed ) return;
             
             if ( isActive() ) {
                 if ( leashJoint ) {
@@ -55,8 +56,15 @@
         }
         
         private function destroyLeashJoint():void {
-            body.GetWorld().DestroyJoint(leashJoint);
-            leashJoint = null;
+            if ( leashJoint ) {
+                body.GetWorld().DestroyJoint(leashJoint);
+                leashJoint = null;
+            }
+        }
+        
+        override protected function destroy():void {
+            destroyLeashJoint();
+            super.destroy();
         }
     }
     

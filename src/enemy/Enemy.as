@@ -4,13 +4,17 @@
     import Box2D.Dynamics.b2FixtureDef;
     import Box2D.Dynamics.b2World;
     import flash.display.MovieClip;
+    import flash.events.Event;
+    import src.events.RoomEvent;
     import src.Game;
     import src.interfaces.GameObject;
+    import src.levels.Room;
     import src.util.Collider;
     import src.Player;
     
     public class Enemy extends MovieClip implements GameObject {
         public var damage:Number = 1;
+        public var killed:Boolean = false;
         var active:Boolean = false;
         var _collider:Collider;
         var player:Player;
@@ -18,7 +22,9 @@
         var py:Number;
         var agroDistance:Number = 150;
         var playerDistance:Number;
-        protected var body:b2Body;
+        public var body:b2Body;
+        protected var health:Number = 100;
+        public var cRoom:Room;
         
         protected var enemyFixtureDefenition:b2FixtureDef;
 
@@ -37,6 +43,10 @@
         
         public function update ():void {
             calculateDistanceToPlayer();
+            if ( killed ) {
+                destroy();
+                return;
+            }
             
             x = body.GetPosition().x * Game.WORLD_SCALE;
             y = body.GetPosition().y * Game.WORLD_SCALE;
@@ -84,6 +94,18 @@
             var dx = player.x - x,
                 dy = player.y - y;
             playerDistance = Math.sqrt(dx*dx + dy*dy);
+        }
+        
+        public function makeHit(damage:Number):void {
+            health -= damage;
+            
+            if ( health <= 0 ) {
+                killed = true;
+            }
+        }
+        
+        protected function destroy():void {
+            dispatchEvent(new RoomEvent(RoomEvent.ENEMY_KILL_EVENT));
         }
 
     }
