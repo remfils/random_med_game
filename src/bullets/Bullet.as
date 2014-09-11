@@ -38,7 +38,7 @@
         }
         
         public function update():void {
-            if (currentFrame == totalFrames) active = false;
+            if (currentFrame == totalFrames) deactivate();
             if (!active) return;
             
             x = body.GetPosition().x * Game.WORLD_SCALE;
