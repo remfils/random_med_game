@@ -74,9 +74,9 @@ package src {
             
             cRoom = getCurrentLevel();
             
-            addBulletController();
-            
             createGamePanel();
+            
+            addBulletController();
             
             addPlayerStat();
             
@@ -200,12 +200,10 @@ package src {
                 case 69:
                     cRoom.activateObjectNearPlayer();
                 break;
-            }
-            
-                    /*
-            case 74 :
+                case 74 :
                     bulletController.startBulletSpawn();
-                    break;*/
+                break;
+            }
         }
         
         public function keyUp_fun (E:KeyboardEvent) {
