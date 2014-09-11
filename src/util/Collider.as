@@ -24,30 +24,32 @@
             this.visible = Game.TEST_MODE;
         }
         
-        public function replaceWithStaticB2Body(world:b2World):b2Body {
+        public function replaceWithStaticB2Body(world:b2World, userData:Object = null):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             
-            return replaceWithB2Body(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef, userData);
         }
         
-        public function replaceWithDynamicB2Body(world:b2World, fixtureDef:b2FixtureDef):b2Body {
+        public function replaceWithDynamicB2Body(world:b2World, fixtureDef:b2FixtureDef, userData:Object = null):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
             bodyDef.type = b2Body.b2_dynamicBody;
             bodyDef.fixedRotation = true;
             
-            return replaceWithB2Body(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef, userData);
         }
         
-        public function replaceWithSensor(world:b2World):b2Body {
+        public function replaceWithSensor(world:b2World, userData:Object = null ):b2Body {
             var bodyDef:b2BodyDef = new b2BodyDef();
+            bodyDef.type = b2Body.b2_staticBody;
+            
             var fixtureDef:b2FixtureDef = new b2FixtureDef();
             fixtureDef.isSensor = true;
             
-            return replaceWithB2Body(world, bodyDef, fixtureDef);
+            return replaceWithB2Body(world, bodyDef, fixtureDef, userData);
         }
         
-        public function replaceWithB2Body(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef):b2Body {
+        public function replaceWithB2Body(world:b2World, bodyDef:b2BodyDef, fixtureDef:b2FixtureDef, userData:Object = null):b2Body {
             var position:Point = new Point(getGlobalX(), getGlobalY());
             bodyDef.position.Set( position.x / Game.WORLD_SCALE, position.y / Game.WORLD_SCALE);
             
@@ -55,6 +57,9 @@
             shape.SetAsBox(width / 2 / Game.WORLD_SCALE, height / 2 / Game.WORLD_SCALE);
             
             fixtureDef.shape = shape;
+            
+            if ( fixtureDef.userData == null )
+                fixtureDef.userData = userData;
             
             var body:b2Body = world.CreateBody(bodyDef);
             body.CreateFixture(fixtureDef);
