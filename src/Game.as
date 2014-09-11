@@ -39,7 +39,7 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = false;
+        public static const TEST_MODE:Boolean = true;
         public static const TestModePanel:Sprite = new Sprite();
 
         var stat:PlayerStat;
@@ -71,6 +71,7 @@ package src {
         
         public function init() {
             this.stage.focus = this;
+            Room.taskManager = taskManager;
             
             cRoom = getCurrentLevel();
             
@@ -170,9 +171,6 @@ package src {
         
         public function initCurrentLevel() {
             bulletController.changeLevel(cRoom);
-            cRoom.addEventListener("GUESS_EVENT", taskManager.guessEventListener, true);
-            
-            cRoom.subscribeGameObjects();
             cRoom.init();
         }
 
@@ -238,7 +236,7 @@ package src {
             var destination:Point = new Point();
             
             glassPanel.clear();
-            cRoom.removeEventListener(EXIT_ROOM_EVENT, nextRoom);
+            cRoom.exit();
             
             var endDoor:Door = e.target as Door;
             

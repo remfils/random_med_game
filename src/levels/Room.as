@@ -8,6 +8,7 @@
     import flash.display.MovieClip;
     import src.interfaces.ActiveGameObject;
     import src.objects.Lever;
+    import src.task.TaskManager;
     import src.util.Random;
     import src.interfaces.GameObject;
     import src.interfaces.ActiveObject;
@@ -23,6 +24,7 @@
     
     public class Room extends MovieClip {
         protected static const directions:Array = ["left", "right", "up", "down"];
+        public static var taskManager:TaskManager;
 
         public var world:b2World;
         private static var gravity:b2Vec2 = new b2Vec2(0, 0);
@@ -116,6 +118,9 @@
             playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
             _player.setActorBody(playerBody);
             
+            addEventListener("GUESS_EVENT", taskManager.guessEventListener, true);
+            addEventListener(RoomEvent.ENEMY_KILL_EVENT, killEnemy, true);
+            
             if ( hasTask() ) {
                 lock();
             }
@@ -145,6 +150,23 @@
             }
             
             if (Game.TEST_MODE) trace("enemy added", object.x);
+        }
+        
+        public function removeEnemy(enemy:Enemy):void {
+            var i = _enemies.length;
+            while ( i-- ) {
+                if ( _enemies[i] == enemy ) {
+                    _enemies.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        
+        public function killEnemy(e:RoomEvent):void {
+            var enemy:Enemy = e.target as Enemy;
+            removeChild(enemy);
+            world.DestroyBody(enemy.body);
+            removeEnemy(enemy)
         }
         
         public function addObstacle(obstacle:Obstacle):void {
@@ -271,6 +293,11 @@
             currentTask = task;
             
             if ( currentTask == null ) unlock();
+        }
+        
+        public function exit():void {
+            removeEventListener("GUESS_EVENT", taskManager.guessEventListener, true);
+            removeEventListener(RoomEvent.ENEMY_KILL_EVENT, killEnemy, true);
         }
 
     }
