@@ -96,9 +96,8 @@
             var j = _bullets.length;
             while (j--) {
                 if ( B == _bullets[j] ) {
-                    //_bullets[j].visible = false;
+                    _bullets[j].disableMovement();
                     _bullets[j].gotoAndPlay("destroy");
-                    _bullets[j].stopUpdate();
                     return;
                 }
             }
