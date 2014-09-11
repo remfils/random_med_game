@@ -37,12 +37,10 @@
         var _tasks:Array = new Array();
         var currentTask:Task = null;
         
-        var finished:Boolean = true;
         static var _player:Player;
         private var playerBody:b2Body;
         
         private var activeAreas:Array=new Array();
-        var i:int = 0;
 
         public function Room(game:Game) {
             world = new b2World(gravity, true);
@@ -72,7 +70,7 @@
         }
         
         private function addWalls():void {
-            i = 8;
+            var i = 8;
             var collider:Collider = new Collider();
             while ( i-- ) {
                 collider = getChildByName ( "wall" + i ) as Collider
@@ -173,7 +171,7 @@
             addChild(obstacle);
             var o:b2Body = obstacle.createBodyFromCollider(world);
         }
-        
+        // delete me in GlassPanel
         public function getGameObjects():Array {
             return new Array();
         }
@@ -216,55 +214,6 @@
         
         public function hasTask():Boolean {
             return currentTask != null;
-        }
-        
-        public function getCurrentActiveObject():ActiveObject {
-            /*var i = activeAreas.length;
-            
-            while ( i-- ) {
-                if ( activeAreas[i].checkCollision( _player.x, _player.y) ) {
-                    return activeAreas[i].parent;
-                }
-            }*/
-            
-            return null;
-        }
-        
-        public function completeCurrentTask (e:Event) {
-            /*var object:ActiveObject = ActiveObject(e.target);
-            
-            var i = activeAreas.length;
-            while (i--) {
-                if ( object == _gameObjects[i] ) {
-                    if ( i == currentTask.getAnswer() ) {
-                        object.positiveOutcome();
-                        currentTask = getNextTask();
-                        unsubscribeGameObjects();
-                        unlock();
-                    }
-                    else {
-                        object.negativeOutcome();
-                    }
-                }
-            }*/
-        }
-        
-        private function getNextTask():Task {
-            return _tasks.pop();
-        }
-        
-        public function subscribeGameObjects() {
-            /*var i = _gameObjects.length;
-            while (i--) {
-                _gameObjects[i].addEventListener(Game.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
-            }*/
-        }
-        
-        public function unsubscribeGameObjects() {
-            /*var i = _gameObjects.length;
-            while (i--) {
-                _gameObjects[i].removeEventListener(Game.OBJECT_ACTIVATE_EVENT, completeCurrentTask);
-            }*/
         }
         
         public function lock () {
