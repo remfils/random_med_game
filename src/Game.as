@@ -193,14 +193,24 @@ package src {
             if ( blockControlls ) return;
             
             _player.handleInput(e.keyCode);
-            
+            trace(e.keyCode);
             switch (e.keyCode) {
+                // E key
                 case 69:
                     cRoom.activateObjectNearPlayer();
                 break;
+                // J key
                 case 74 :
                     bulletController.startBulletSpawn();
-                    player
+                    playerStat.flashButton("fire");
+                break;
+                // H key
+                case 72:
+                    bulletController.setPrevBullet();
+                break;
+                // K key
+                case 75:
+                    bulletController.setNextBullet();
                 break;
             }
         }
@@ -238,6 +248,7 @@ package src {
             
             glassPanel.clear();
             cRoom.exit();
+            bulletController.clearBullets();
             
             var endDoor:Door = e.target as Door;
             
