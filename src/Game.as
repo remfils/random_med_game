@@ -77,9 +77,9 @@ package src {
             
             createGamePanel();
             
-            addBulletController();
-            
             addPlayerStat();
+            
+            addBulletController();
             
             setUpLevelMapPosition();
             
@@ -96,6 +96,7 @@ package src {
         
         private function addBulletController() {
             bulletController = new BulletController(playerPanel);
+            playerStat.setCurrentSpell(bulletController.BulletClass);
         }
         
         private function createGamePanel():void {
@@ -193,7 +194,7 @@ package src {
             if ( blockControlls ) return;
             
             _player.handleInput(e.keyCode);
-            trace(e.keyCode);
+            
             switch (e.keyCode) {
                 // E key
                 case 69:
@@ -207,10 +208,14 @@ package src {
                 // H key
                 case 72:
                     bulletController.setPrevBullet();
+                    playerStat.flashButton("spellLeft");
+                    playerStat.setCurrentSpell(bulletController.BulletClass);
                 break;
                 // K key
                 case 75:
                     bulletController.setNextBullet();
+                    playerStat.flashButton("spellRight");
+                    playerStat.setCurrentSpell(bulletController.BulletClass);
                 break;
             }
         }
