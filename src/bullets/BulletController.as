@@ -8,32 +8,32 @@
     import src.Player;
     
     public class BulletController {
-        var _bullets:Array;
-        var fire:Boolean;
+        private var _bullets:Array = new Array();
+        private var _bulletsToRemove:Array = new Array();
+        private var fire:Boolean;
         
-        var BulletClass:Class;
+        private var bulletClasses:Array = [Spark, BombSpell];
+        private var currentBulletClass:int = 0;
+        public var BulletClass:Class;
         
-        var bulletDelay:Timer;
-        var block:Boolean = false;
+        private var bulletDelay:Timer;
+        private var block:Boolean = false;
         
-        var currentLevel:Room = null;
+        private var currentRoom:Room = null;
         
-        var stage:DisplayObjectContainer;
-        var i:int = 0;
+        private var stage:DisplayObjectContainer;
 
         public function BulletController(stage:DisplayObjectContainer) {
             this.stage = stage;
             
-            _bullets = new Array();
-            
-            BulletClass = Spark;
+            BulletClass = bulletClasses[currentBulletClass];
             
             bulletDelay = new Timer(BulletClass.DELAY);
             bulletDelay.addEventListener(TimerEvent.TIMER, unlockSpawn);
         }
         
         public function changeLevel (level:Room):void {
-            currentLevel = level;
+            currentRoom = level;
         }
         
         public function update () {
@@ -41,13 +41,17 @@
                 spawnBullet();
             }
             
-            i = _bullets.length;
+            var i = _bullets.length;
             while ( i-- ) {
                 _bullets[i].update();
-                
-                /*if ( _bullets[i].isActive() && currentLevel.checkCollision(_bullets[i].x, _bullets[i].y)) {
-                    deleteBullet(_bullets[i]);
-                }*/
+            }
+            
+            i = _bulletsToRemove.length;
+            while ( i-- ) {
+                if ( !_bulletsToRemove[i].isActive() ) {
+                    deleteBullet(_bulletsToRemove[i]);
+                    _bulletsToRemove.splice(i,1);
+                }
             }
         }
         
@@ -66,7 +70,7 @@
             
             if ( bullet == null ) {
                 bullet = new BulletClass();
-                bullet.createBodyFromCollider(currentLevel.world);
+                bullet.createBodyFromCollider(currentRoom.world);
                 stage.addChild (bullet);
                 _bullets.push(bullet);
             }
@@ -81,7 +85,7 @@
         }
         
         public function getFreeBullet():Bullet {
-            i = _bullets.length;
+            var i = _bullets.length;
             while (i--) {
                 if (!_bullets[i].isActive()) {
                     _bullets[i].activate();
@@ -92,16 +96,67 @@
             return null;
         }
         
-        public function deleteBullet (B:Bullet) {
-            var j = _bullets.length;
-            while (j--) {
-                if ( B == _bullets[j] ) {
-                    _bullets[j].disableMovement();
-                    _bullets[j].gotoAndPlay("destroy");
+        public function hideBullet (B:Bullet) {
+            var i = _bullets.length;
+            while (i--) {
+                if ( B == _bullets[i] ) {
+                    _bullets[i].disableMovement();
+                    _bullets[i].gotoAndPlay("destroy");
                     return;
                 }
             }
         }
+        
+        public function setNextBullet():void {
+            currentBulletClass ++;
+            if ( currentBulletClass == bulletClasses.length ) {
+                currentBulletClass = 0;
+            }
+            updateBulletClass();
+        }
+        
+        public function setPrevBullet():void {
+            currentBulletClass --;
+            if ( currentBulletClass == -1 ) {
+                currentBulletClass = bulletClasses.length - 1;
+            }
+            updateBulletClass();
+        }
+        
+        private function updateBulletClass():void {
+            BulletClass = bulletClasses[currentBulletClass];
+            bulletDelay.delay = BulletClass.DELAY;
+            smartClearBullets();
+        }
+        
+        private function deleteBullet(b:Bullet) {
+            currentRoom.world.DestroyBody(b.body);
+            stage.removeChild(b);
+            _bullets.splice(_bullets.indexOf(b),1);
+        }
+        
+        public function clearBullets():void {
+            var i = _bullets.length;
+            
+            while (i--) {
+                deleteBullet(_bullets[i]);
+            }
+        }
+        
+        public function smartClearBullets():void {
+            var i = _bullets.length;
+            
+            while (i--) {
+                if ( _bullets[i].isActive() ) {
+                    if ( _bulletsToRemove.indexOf(_bullets[i]) == -1 )
+                        _bulletsToRemove.push(_bullets[i]);
+                }
+                else {
+                    deleteBullet(_bullets[i]);
+                }
+            }
+        }
+        
         // timer methods
         public function lockSpawn() {
             block = true;

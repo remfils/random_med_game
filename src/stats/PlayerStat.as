@@ -3,6 +3,7 @@
     import flash.display.MovieClip;
     import src.Player;
     import src.stats.Heart;
+    import src.bullets.*;
     
     public class PlayerStat extends MovieClip {
         static public var instance:PlayerStat = null;
@@ -41,9 +42,31 @@
             }
         }
         
+        public function setCurrentSpell(spell:Class):void {
+            if ( spell == Spark )
+                spellPic_mc.gotoAndStop("spark");
+            
+            if ( spell == BombSpell )
+                spellPic_mc.gotoAndStop("bombSpell");
+        }
+        
         public static function getInstance():PlayerStat {
             if ( instance === null ) instance = new PlayerStat();
             return instance;
+        }
+        
+        public function flashButton(btnName:String):void {
+            switch (btnName) {
+                case "fire":
+                    spellFire_mc.play();
+                break;
+                case "spellLeft":
+                    spellLeft_mc.play();
+                break;
+                case "spellRight":
+                    spellRight_mc.play();
+                break;
+            }
         }
         
         public function drawPlayerHearts() {
