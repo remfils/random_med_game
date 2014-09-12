@@ -65,7 +65,7 @@ package src.levels {
                 }
             }
             
-            game.bulletController.deleteBullet(bullet);
+            game.bulletController.hideBullet(bullet);
         }
         
         
