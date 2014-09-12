@@ -42,7 +42,6 @@ package src {
         public static const TEST_MODE:Boolean = true;
         public static const TestModePanel:Sprite = new Sprite();
 
-        var stat:PlayerStat;
         var gamePanel:Sprite;
         var playerPanel:PlayerPanel;
         var glassPanel:GlassPanel;
@@ -54,6 +53,7 @@ package src {
         
         var levelMap:MovieClip;
         
+        var playerStat:PlayerStat;
         public var bulletController:BulletController;
         public var taskManager:TaskManager = new TaskManager();
         
@@ -87,10 +87,10 @@ package src {
             
             initCurrentLevel();
             
-            stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
-            stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
+            playerStat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
+            playerStat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
             
-            TestModePanel.y += stat.height;
+            TestModePanel.y += playerStat.height;
             addChild(TestModePanel);
         }
         
@@ -146,10 +146,10 @@ package src {
         }
         
         private function addPlayerStat() {
-            stat = PlayerStat.getInstance();
-            stat.x = 0;
-            stat.y = 0;
-            addChild (stat);
+            playerStat = PlayerStat.getInstance();
+            playerStat.x = 0;
+            playerStat.y = 0;
+            addChild (playerStat);
         }
         
         private function setUpLevelMapPosition() {
@@ -200,6 +200,7 @@ package src {
                 break;
                 case 74 :
                     bulletController.startBulletSpawn();
+                    player
                 break;
             }
         }
@@ -276,7 +277,7 @@ package src {
             var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, destination.x, 18 );
             var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, destination.y, 18 );
             
-            var map = stat.getMapMC();
+            var map = playerStat.getMapMC();
             map.update(_LEVEL);
 
             tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
