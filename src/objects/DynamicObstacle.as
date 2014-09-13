@@ -13,7 +13,7 @@ package src.objects {
         public function DynamicObstacle() {
             super();
             fixtureDef = new b2FixtureDef();
-            fixtureDef.density = 10;
+            fixtureDef.density = 6;
             fixtureDef.friction = 0.6;
         }
         
