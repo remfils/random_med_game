@@ -17,7 +17,7 @@ package src.objects {
         }
         
         public function createBodyFromCollider(world:b2World):b2Body {
-            var col:Collider = getChildByName("collider") as Collider;
+            var col:Collider = getChildByName("collider001") as Collider;
             var body:b2Body = col.replaceWithStaticB2Body(world);
             body.SetPosition(new b2Vec2( (x + col.x) / Game.WORLD_SCALE, (y + col.y) / Game.WORLD_SCALE));
             return body;
