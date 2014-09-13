@@ -13,8 +13,8 @@ package src {
     import fl.transitions.Tween;
     import fl.transitions.TweenEvent;
     import fl.transitions.easing.*;
-    import src.stats.PlayerStat;
-    import src.stats.Map;
+    import src.ui.playerStat.PlayerStat;
+    import src.ui.playerStat.Map;
     
     import src.interfaces.*;
     
@@ -22,7 +22,7 @@ package src {
     import src.levels.*;
     import src.events.*;
     import src.bullets.BulletController;
-    import src.stats.Heart;
+    import src.ui.playerStat.Heart;
     import src.util.GlassPanel;
     import flash.net.URLLoader;
     import flash.net.URLRequest;

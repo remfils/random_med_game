@@ -9,7 +9,7 @@
     import src.util.Collider;
     
     import src.bullets.*;
-    import src.stats.PlayerStat;
+    import src.ui.playerStat.PlayerStat;
     import flash.utils.Timer;
     import flash.events.TimerEvent;
     

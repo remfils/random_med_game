@@ -1,8 +1,8 @@
-﻿package src.stats {
+﻿package src.ui.playerStat {
     
     import flash.display.MovieClip;
     import src.Player;
-    import src.stats.Heart;
+    import src.ui.playerStat.Heart;
     import src.bullets.*;
     
     public class PlayerStat extends MovieClip {

@@ -1,5 +1,5 @@
 ﻿package src.util {
-	import src.stats.PlayerStat;
+	import src.ui.playerStat.PlayerStat;
 	import src.Player;
 	import flash.display.Sprite;
 	import src.levels.Room;

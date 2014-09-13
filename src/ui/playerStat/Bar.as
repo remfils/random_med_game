@@ -1,4 +1,4 @@
-﻿package src.stats {
+﻿package src.ui.playerStat {
 	
 	public class Bar {
 
