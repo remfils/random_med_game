@@ -27,7 +27,6 @@ package src {
     import flash.net.URLLoader;
     import flash.net.URLRequest;
     import src.ui.GenericLevelButton;
-    import src.util.PlayerPanel;
     import flash.display.*;
     
     public class Game extends Sprite {
@@ -43,7 +42,7 @@ package src {
         public static const TestModePanel:Sprite = new Sprite();
 
         var gamePanel:Sprite;
-        var playerPanel:PlayerPanel;
+        var playerPanel:Sprite;
         var glassPanel:GlassPanel;
         
         var _player:Player;
@@ -130,7 +129,7 @@ package src {
         }
         
         private function addPlayerTo(panel:DisplayObjectContainer):void {
-            playerPanel = new PlayerPanel();
+            playerPanel = new Sprite();
             
             _player = Player.getInstance();
             
