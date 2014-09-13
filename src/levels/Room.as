@@ -6,7 +6,6 @@
     import flash.display.Sprite;
     import flash.display.Stage;
     import flash.display.MovieClip;
-    import src.interfaces.ActiveGameObject;
     import src.objects.Lever;
     import src.task.TaskManager;
     import src.util.Random;
