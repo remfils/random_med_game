@@ -31,7 +31,7 @@
         protected var ROOM_FRICTION:Number = 8;
         
         var _doors:Array = new Array();
-        
+        var _gameObjects:Array = new Array();
         var _enemies:Array = new Array();
         
         var _tasks:Array = new Array();
@@ -170,6 +170,10 @@
         public function addObstacle(obstacle:Obstacle):void {
             addChild(obstacle);
             var o:b2Body = obstacle.createBodyFromCollider(world);
+            
+            if ( obstacle is GameObject ) {
+                _gameObjects.push(obstacle);
+            }
         }
         // delete me in GlassPanel
         public function getGameObjects():Array {
@@ -192,6 +196,7 @@
             
             updateEnemies();
             
+            updateGameObjects();
             
             if (Game.TEST_MODE) world.DrawDebugData();
         }
@@ -200,6 +205,13 @@
             var i = _enemies.length;
             while (i--) {
                 _enemies[i].update();
+            }
+        }
+        
+        private function updateGameObjects():void {
+            var i = _gameObjects.length;
+            while ( i-- ) {
+                _gameObjects[i].update();
             }
         }
         
