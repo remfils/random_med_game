@@ -23,7 +23,7 @@ package src {
     import src.events.*;
     import src.bullets.BulletController;
     import src.ui.playerStat.Heart;
-    import src.util.GlassPanel;
+    import src.util.GameObjectPanel;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
     import src.ui.GenericLevelButton;
@@ -42,8 +42,8 @@ package src {
         public static const TestModePanel:Sprite = new Sprite();
 
         var gamePanel:Sprite;
-        var playerPanel:Sprite;
-        var glassPanel:GlassPanel;
+        var playerPanel:Sprite; // for bullets
+        private var glassPanel:Sprite;
         
         var _player:Player;
 
@@ -89,6 +89,10 @@ package src {
             playerStat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
             playerStat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
             
+            glassPanel = new Sprite();
+            glassPanel.y += playerStat.height;
+            addChild(glassPanel);
+            
             TestModePanel.y += playerStat.height;
             addChild(TestModePanel);
         }
@@ -104,8 +108,6 @@ package src {
             addLevelTo(gamePanel);
             
             addPlayerTo(gamePanel);
-            
-            addGlassPanelTo(gamePanel);
             
             gamePanel.y += PlayerStat.getInstance().height;
             
@@ -136,13 +138,6 @@ package src {
             playerPanel.addChild(_player);
             
             panel.addChild(playerPanel);
-        }
-        
-        private function addGlassPanelTo(panel:DisplayObjectContainer):void {
-            glassPanel = new GlassPanel();
-            glassPanel.setGameObjects(cRoom.getGameObjects());
-            glassPanel.setCurrentLevel(cRoom);
-            panel.addChild(glassPanel);
         }
         
         private function addPlayerStat() {
@@ -182,7 +177,6 @@ package src {
             
             if (!blockControlls) {
                 cRoom.update();
-                glassPanel.update();
             }
             _player.update ();
             
@@ -245,12 +239,13 @@ package src {
         
         // по возможности удалить RoomEvent
         public function nextRoom (e:Event) {
+            glassPanel.addChild(_player);
+            
             isTransition = true;
             blockControlls = true;
             
             var destination:Point = new Point();
             
-            glassPanel.clear();
             cRoom.exit();
             bulletController.clearBullets();
             
@@ -305,8 +300,6 @@ package src {
 
             blockControlls = false;
             isTransition = false;
-            
-            glassPanel.setCurrentLevel(cRoom);
         }
     }
 
