@@ -3,11 +3,13 @@
     import Box2D.Dynamics.b2Body;
     import Box2D.Dynamics.b2DebugDraw;
     import Box2D.Dynamics.b2World;
+    import flash.display.DisplayObject;
     import flash.display.Sprite;
     import flash.display.Stage;
     import flash.display.MovieClip;
     import src.objects.Lever;
     import src.task.TaskManager;
+    import src.util.GameObjectPanel;
     import src.util.Random;
     import src.interfaces.GameObject;
     import src.interfaces.ActiveObject;
@@ -38,12 +40,15 @@
         
         static var _player:Player;
         private var playerBody:b2Body;
+        private var gameObjectPanel:GameObjectPanel;
         
         private var activeAreas:Array=new Array();
 
         public function Room(game:Game) {
             world = new b2World(gravity, true);
             world.SetContactListener(new ContactListener(game));
+            gameObjectPanel = new GameObjectPanel();
+            addChild(gameObjectPanel);
             
             _player = Player.getInstance();
             
@@ -114,6 +119,7 @@
         public function init():void {
             playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
             _player.setActorBody(playerBody);
+            gameObjectPanel.addChild(_player);
             
             addEventListener("GUESS_EVENT", taskManager.guessEventListener, true);
             addEventListener(RoomEvent.ENEMY_KILL_EVENT, killEnemy, true);
@@ -128,7 +134,7 @@
         }
         
         public function addActiveObject(object:ActiveObject) {
-            addChild(MovieClip(object));
+            gameObjectPanel.addChild(object as DisplayObject);
             
             activeAreas.push(object.getActiveArea());
             
@@ -140,7 +146,7 @@
         public function addEnenemy(object:Enemy) {
             _enemies.push(object);
             object.createBodyFromCollider(world);
-            addChild(object);
+            gameObjectPanel.addChild(object);
             
             if ( object is FlyingEnemy ) {
                 FlyingEnemy(object).setTarget(playerBody);
@@ -161,18 +167,21 @@
         
         public function killEnemy(e:RoomEvent):void {
             var enemy:Enemy = e.target as Enemy;
-            removeChild(enemy);
+            gameObjectPanel.removeChild(enemy);
             world.DestroyBody(enemy.body);
             removeEnemy(enemy)
         }
         
         public function addObstacle(obstacle:Obstacle):void {
-            addChild(obstacle);
-            var o:b2Body = obstacle.createBodyFromCollider(world);
-            
             if ( obstacle is GameObject ) {
                 _gameObjects.push(obstacle);
+                gameObjectPanel.addChild(obstacle);
             }
+            else {
+                addChild(obstacle);
+            }
+            
+            var o:b2Body = obstacle.createBodyFromCollider(world);
         }
         // delete me in GlassPanel
         public function getGameObjects():Array {
@@ -196,6 +205,8 @@
             updateEnemies();
             
             updateGameObjects();
+            
+            gameObjectPanel.update();
             
             if (Game.TEST_MODE) world.DrawDebugData();
         }
