@@ -51,7 +51,7 @@ package src {
         
         var levelMap:MovieClip;
         
-        var playerStat:PlayerStat;
+        public var playerStat:PlayerStat;
         public var bulletController:BulletController;
         public var taskManager:TaskManager = new TaskManager();
         
