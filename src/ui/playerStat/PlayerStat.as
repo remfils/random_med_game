@@ -83,6 +83,10 @@
         public function registerDamage (dmg:Number) {
             healthBar.removePoints(dmg);
         }
+        
+        public function registerManaLoss (manaLoss:Number):void {
+            manaBar.removePoints(manaLoss);
+        }
     }
     
 }
