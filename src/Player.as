@@ -20,7 +20,9 @@
     public class Player extends MovieClip {
 //stats
         public static var MAX_HEALTH = 6;
+        public static var MAX_MANA = 14;
         public static var HEALTH:Number = MAX_HEALTH;
+        public static var MANA = MAX_MANA;
         public var MANA:Number = 4;
         
         private var body:b2Body;
