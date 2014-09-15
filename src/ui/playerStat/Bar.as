@@ -1,11 +1,14 @@
 ﻿package src.ui.playerStat {
-	
-	public class Bar {
+    import flash.display.Sprite;
+    
+    public class Bar extends Sprite {
 
-		public function Bar() {
-			// constructor code
-		}
+        public function Bar() {
+            
+        }
+        
+        private function add
 
-	}
-	
+    }
+    
 }

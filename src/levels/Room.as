@@ -91,15 +91,14 @@
                 
                 name = "exit_" + direction;
                 collider = getChildByName(name) as Collider;
-                var exit:b2Body = collider.replaceWithSensor(world);
                 
                 name = "door_" + direction;
                 var door:Door = getChildByName(name) as Door;
                 door.hide();
                 door.setWall(wall);
-                door.setExit(exit);
                 
-                exit.GetFixtureList().SetUserData( { 'object' : door } );
+                var exit:b2Body = collider.replaceWithSensor(world, { 'object' : door });
+                door.setExit(exit);
                 
                 _doors.push(door);
             }

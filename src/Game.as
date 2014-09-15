@@ -22,7 +22,6 @@ package src {
     import src.levels.*;
     import src.events.*;
     import src.bullets.BulletController;
-    import src.ui.playerStat.Heart;
     import src.util.GameObjectPanel;
     import flash.net.URLLoader;
     import flash.net.URLRequest;

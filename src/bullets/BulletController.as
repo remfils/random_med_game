@@ -130,6 +130,7 @@
         }
         
         private function deleteBullet(b:Bullet) {
+            b.moveTo(-100, -100);
             currentRoom.world.DestroyBody(b.body);
             stage.removeChild(b);
             _bullets.splice(_bullets.indexOf(b),1);

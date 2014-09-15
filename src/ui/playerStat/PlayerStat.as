@@ -2,7 +2,7 @@
     
     import flash.display.MovieClip;
     import src.Player;
-    import src.ui.playerStat.Heart;
+    import src.ui.playerStat.StatPoint;
     import src.bullets.*;
     
     public class PlayerStat extends MovieClip {
@@ -24,11 +24,11 @@
             addChild (level_map);
             
             var playerHP = Math.round(Player.MAX_HEALTH / 2);
-            var playerHeart:Heart;
+            var playerHeart:StatPoint;
             var playerHasFullHeart = playerHP == Player.MAX_HEALTH;
             
             while (playerHP --) {
-                playerHeart = new Heart();
+                playerHeart = new StatPoint();
                 playerHeart.x = HEARTS_START_X + (playerHeart.width + 3) * playerHP;
                 playerHeart.y = HEARTS_START_Y;
                 
@@ -71,7 +71,7 @@
         
         public function drawPlayerHearts() {
             var heartNum:Number = Player.HEALTH,
-                playerHeart:Heart = new Heart();
+                playerHeart:StatPoint = new StatPoint();
             
             
         }
@@ -98,10 +98,10 @@
             if ( dmg == 2 ) {
                 for ( i = 0; i < hearts.length; i++ ) {
                     if ( hearts[i].isActive() ) {
-                        if ( Heart(hearts[i]).isHalfHit ) {
+                        if ( StatPoint(hearts[i]).isHalfHit ) {
                             dmg = 1;
                         }
-                        Heart(hearts[i]).makeFullHit();
+                        StatPoint(hearts[i]).makeFullHit();
                         
                         break;
                     }
@@ -111,7 +111,7 @@
             if ( dmg == 1 ) {
                 for ( var i = 0; i < hearts.length; i++ ) {
                     if ( hearts[i].isActive() ) {
-                        Heart(hearts[i]).makeHalfHit();
+                        StatPoint(hearts[i]).makeHalfHit();
                         break;
                     }
                 }

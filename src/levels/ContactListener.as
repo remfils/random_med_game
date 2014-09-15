@@ -36,8 +36,6 @@ package src.levels {
             if ( userDataA == null  || userDataB == null) return;
             
             checkExitCollide(userDataA, userDataB);
-            
-            
         }
         
         private function checkBulletCollision(userDataA:Object, userDataB:Object):void {
