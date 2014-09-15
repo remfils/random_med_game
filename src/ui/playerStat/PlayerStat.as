@@ -10,6 +10,9 @@
         public var current_theme = 1;
         var level_map;
         
+        private var healthBar:Bar;
+        private var manaBar:Bar;
+        
         private const HEARTS_START_X:Number = 90;
         private const HEARTS_START_Y:Number = 29;
         
@@ -23,23 +26,17 @@
             level_map.y = 13;
             addChild (level_map);
             
-            var playerHP = Math.round(Player.MAX_HEALTH / 2);
-            var playerHeart:StatPoint;
-            var playerHasFullHeart = playerHP == Player.MAX_HEALTH;
+            healthBar = new Bar(StatHeart as Class, Player.MAX_HEALTH / 2);
+            healthBar.x = 90;
+            healthBar.y = 29;
+            addChild(healthBar);
             
-            while (playerHP --) {
-                playerHeart = new StatPoint();
-                playerHeart.x = HEARTS_START_X + (playerHeart.width + 3) * playerHP;
-                playerHeart.y = HEARTS_START_Y;
-                
-                addChild(playerHeart);
-                
-                hearts.push(playerHeart);
-            }
-            
-            if (!playerHasFullHeart) {
-                
-            }
+            manaBar = new Bar(StatMana as Class, Player.MAX_MANA / 2);
+            manaBar.x = 90;
+            manaBar.y = 67;
+            manaBar.pointsLeftPadding = 7;
+            manaBar.redraw();
+            addChild(manaBar);
         }
         
         public function setCurrentSpell(spell:Class):void {
@@ -69,17 +66,6 @@
             }
         }
         
-        public function drawPlayerHearts() {
-            var heartNum:Number = Player.HEALTH,
-                playerHeart:StatPoint = new StatPoint();
-            
-            
-        }
-        
-        public function redrawPlayerHearts() {
-            drawPlayerHearts();
-        }
-        
         public function swapMenuTheme(keyFrame:int) {
             gotoAndStop(keyFrame);
         }
@@ -95,28 +81,7 @@
         }
         
         public function registerDamage (dmg:Number) {
-            if ( dmg == 2 ) {
-                for ( i = 0; i < hearts.length; i++ ) {
-                    if ( hearts[i].isActive() ) {
-                        if ( StatPoint(hearts[i]).isHalfHit ) {
-                            dmg = 1;
-                        }
-                        StatPoint(hearts[i]).makeFullHit();
-                        
-                        break;
-                    }
-                }
-            }
-            
-            if ( dmg == 1 ) {
-                for ( var i = 0; i < hearts.length; i++ ) {
-                    if ( hearts[i].isActive() ) {
-                        StatPoint(hearts[i]).makeHalfHit();
-                        break;
-                    }
-                }
-            }
-            
+            healthBar.removePoints(dmg);
         }
     }
     
