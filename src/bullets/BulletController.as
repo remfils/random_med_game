@@ -38,10 +38,12 @@
         }
         
         public function update () {
-            if (fire) {
+            if (fire && Player.MANA >= BulletClass.MANA_COST) {
                 var b:Bullet = spawnBullet();
                 if ( b ) {
                     currentRoom.game.playerStat.registerManaLoss(BulletClass.MANA_COST);
+                    Player.MANA -= BulletClass.MANA_COST;
+                    trace(Player.MANA);
                 }
             }
             
