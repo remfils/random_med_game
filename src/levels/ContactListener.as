@@ -50,7 +50,7 @@ package src.levels {
             
             if ( userDataB is Object && userDataB.hasOwnProperty("object") ) {
                 if ( userDataB.object is Bullet )
-                    asymetricBulletCheck(userDataB.object as Bullet, userDataA.object);
+                    asymetricBulletCheck(userDataB.object as Bullet, userDataA);
             }
         }
         
