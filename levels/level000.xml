@@ -72,6 +72,8 @@
                 <Torch x="624" y="77" flip="true"></Torch>
                 <Torch x="129" y="429" flip="true" rotation="180"></Torch>
                 <Torch x="624" y="429" rotation="180"></Torch>
+                <ShieldStars x="244" y="59"></ShieldStars>
+                <ShieldStars x="526" y="59" flip="true"></ShieldStars>
             </wallDecorations>
 
             <enemies>
