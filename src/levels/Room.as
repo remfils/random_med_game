@@ -115,6 +115,12 @@
             world.SetDebugDraw(debugDraw);
         }
         
+        override public function addChild(child:DisplayObject):DisplayObject {
+            var obj:DisplayObject = super.addChild(child);
+            setChildIndex(gameObjectPanel, numChildren - 1);
+            return obj;
+        }
+        
         public function init():void {
             playerBody.SetPosition(new b2Vec2(_player.x / Game.WORLD_SCALE, _player.y / Game.WORLD_SCALE));
             _player.setActorBody(playerBody);
