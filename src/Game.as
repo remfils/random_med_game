@@ -13,8 +13,8 @@ package src {
     import fl.transitions.Tween;
     import fl.transitions.TweenEvent;
     import fl.transitions.easing.*;
-    import src.stats.PlayerStat;
-    import src.stats.Map;
+    import src.ui.playerStat.PlayerStat;
+    import src.ui.playerStat.Map;
     
     import src.interfaces.*;
     
@@ -22,12 +22,10 @@ package src {
     import src.levels.*;
     import src.events.*;
     import src.bullets.BulletController;
-    import src.stats.Heart;
-    import src.util.GlassPanel;
+    import src.util.GameObjectPanel;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
     import src.ui.GenericLevelButton;
-    import src.util.PlayerPanel;
     import flash.display.*;
     
     public class Game extends Sprite {
@@ -39,13 +37,12 @@ package src {
         
         public static const EXIT_ROOM_EVENT = "exit_room";
         public static const OBJECT_ACTIVATE_EVENT = "object_activate";
-        public static const TEST_MODE:Boolean = true;
+        public static const TEST_MODE:Boolean = false;
         public static const TestModePanel:Sprite = new Sprite();
 
-        var stat:PlayerStat;
         var gamePanel:Sprite;
-        var playerPanel:PlayerPanel;
-        var glassPanel:GlassPanel;
+        var playerPanel:Sprite; // for bullets
+        private var glassPanel:Sprite;
         
         var _player:Player;
 
@@ -54,6 +51,7 @@ package src {
         
         var levelMap:MovieClip;
         
+        public var playerStat:PlayerStat;
         public var bulletController:BulletController;
         public var taskManager:TaskManager = new TaskManager();
         
@@ -77,9 +75,9 @@ package src {
             
             createGamePanel();
             
-            addBulletController();
-            
             addPlayerStat();
+            
+            addBulletController();
             
             setUpLevelMapPosition();
             
@@ -87,15 +85,20 @@ package src {
             
             initCurrentLevel();
             
-            stat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
-            stat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
+            playerStat.getMapMC().setUpScale(_LEVEL[_player.currentRoom.z]);
+            playerStat.getMapMC().update(_LEVEL[_player.currentRoom.z]);
             
-            TestModePanel.y += stat.height;
+            glassPanel = new Sprite();
+            glassPanel.y += playerStat.height;
+            addChild(glassPanel);
+            
+            TestModePanel.y += playerStat.height;
             addChild(TestModePanel);
         }
         
         private function addBulletController() {
             bulletController = new BulletController(playerPanel);
+            playerStat.setCurrentSpell(bulletController.BulletClass);
         }
         
         private function createGamePanel():void {
@@ -104,8 +107,6 @@ package src {
             addLevelTo(gamePanel);
             
             addPlayerTo(gamePanel);
-            
-            addGlassPanelTo(gamePanel);
             
             gamePanel.y += PlayerStat.getInstance().height;
             
@@ -129,7 +130,7 @@ package src {
         }
         
         private function addPlayerTo(panel:DisplayObjectContainer):void {
-            playerPanel = new PlayerPanel();
+            playerPanel = new Sprite();
             
             _player = Player.getInstance();
             
@@ -138,18 +139,11 @@ package src {
             panel.addChild(playerPanel);
         }
         
-        private function addGlassPanelTo(panel:DisplayObjectContainer):void {
-            glassPanel = new GlassPanel();
-            glassPanel.setGameObjects(cRoom.getGameObjects());
-            glassPanel.setCurrentLevel(cRoom);
-            panel.addChild(glassPanel);
-        }
-        
         private function addPlayerStat() {
-            stat = PlayerStat.getInstance();
-            stat.x = 0;
-            stat.y = 0;
-            addChild (stat);
+            playerStat = PlayerStat.getInstance();
+            playerStat.x = 0;
+            playerStat.y = 0;
+            addChild (playerStat);
         }
         
         private function setUpLevelMapPosition() {
@@ -182,7 +176,6 @@ package src {
             
             if (!blockControlls) {
                 cRoom.update();
-                glassPanel.update();
             }
             _player.update ();
             
@@ -195,11 +188,26 @@ package src {
             _player.handleInput(e.keyCode);
             
             switch (e.keyCode) {
+                // E key
                 case 69:
                     cRoom.activateObjectNearPlayer();
                 break;
+                // J key
                 case 74 :
                     bulletController.startBulletSpawn();
+                    playerStat.flashButton("fire");
+                break;
+                // H key
+                case 72:
+                    bulletController.setPrevBullet();
+                    playerStat.flashButton("spellLeft");
+                    playerStat.setCurrentSpell(bulletController.BulletClass);
+                break;
+                // K key
+                case 75:
+                    bulletController.setNextBullet();
+                    playerStat.flashButton("spellRight");
+                    playerStat.setCurrentSpell(bulletController.BulletClass);
                 break;
             }
         }
@@ -230,13 +238,15 @@ package src {
         
         // по возможности удалить RoomEvent
         public function nextRoom (e:Event) {
+            glassPanel.addChild(_player);
+            
             isTransition = true;
             blockControlls = true;
             
             var destination:Point = new Point();
             
-            glassPanel.clear();
             cRoom.exit();
+            bulletController.clearBullets();
             
             var endDoor:Door = e.target as Door;
             
@@ -276,7 +286,7 @@ package src {
             var playerXTween:Tween = new Tween (_player, "x", Strong.easeInOut, _player.x, destination.x, 18 );
             var playerYTween:Tween = new Tween (_player, "y", Strong.easeInOut, _player.y, destination.y, 18 );
             
-            var map = stat.getMapMC();
+            var map = playerStat.getMapMC();
             map.update(_LEVEL);
 
             tweenX.addEventListener(TweenEvent.MOTION_FINISH, roomTweenFinished);
@@ -289,8 +299,6 @@ package src {
 
             blockControlls = false;
             isTransition = false;
-            
-            glassPanel.setCurrentLevel(cRoom);
         }
     }
 

@@ -29,6 +29,19 @@
                 <lever x="200" y="200" id='2'></lever>
                 <lever x="100" y="300" id='3'></lever>
             </active>
+
+            <obstacles>
+                <Barell x="461" y="108"></Barell>
+                <Barell x="430" y="144"></Barell>
+                <Barell x="400" y="190"></Barell>
+                <Barell x="461" y="190"></Barell>
+                <Barell x="461" y="232"></Barell>
+                <Barell x="430" y="275"></Barell>
+                <Barell x="400" y="320"></Barell>
+                <Barell x="461" y="359"></Barell>
+                <Barell x="461" y="398"></Barell>
+                <Barell x="400" y="398"></Barell>
+            </obstacles>
         </room>
 
         <room x="1" y="1" color="0xC6C6C6" type="normal_room">
@@ -53,19 +66,15 @@
             
         </room>
 
-        <room x="1" y="2" first_level="true" type="normal_room" color="0xC6C6C6">
+        <room x="1" y="2" first_level="true" type="start_room" color="0xC6C6C6">
             <wallDecorations>
                 <Torch x="129" y="77"></Torch>
                 <Torch x="624" y="77" flip="true"></Torch>
                 <Torch x="129" y="429" flip="true" rotation="180"></Torch>
                 <Torch x="624" y="429" rotation="180"></Torch>
+                <ShieldStars x="244" y="59"></ShieldStars>
+                <ShieldStars x="526" y="59" flip="true"></ShieldStars>
             </wallDecorations>
-
-            <obstacles>
-                <Barell x="200" y="100"></Barell>
-                <Barell x="300" y="100"></Barell>
-                <Barell x="400" y="100"></Barell>
-            </obstacles>
 
             <enemies>
                 <FlyingHead x="200" y="200" />
@@ -82,6 +91,13 @@
                 <lever x="300" y="200" id='4'></lever>
                 <lever x="500" y="200" id='5'></lever>
             </active>
+
+            <obstacles>
+                <Vase x="134" y="127"></Vase>
+                <Vase x="134" y="393"></Vase>
+                <Vase x="614" y="127"></Vase>
+                <Vase x="614" y="384"></Vase>
+            </obstacles>
         </room>
 
     </floor>

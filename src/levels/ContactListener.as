@@ -36,8 +36,6 @@ package src.levels {
             if ( userDataA == null  || userDataB == null) return;
             
             checkExitCollide(userDataA, userDataB);
-            
-            
         }
         
         private function checkBulletCollision(userDataA:Object, userDataB:Object):void {
@@ -50,7 +48,7 @@ package src.levels {
             
             if ( userDataB is Object && userDataB.hasOwnProperty("object") ) {
                 if ( userDataB.object is Bullet )
-                    asymetricBulletCheck(userDataB.object as Bullet, userDataA.object);
+                    asymetricBulletCheck(userDataB.object as Bullet, userDataA);
             }
         }
         
@@ -65,7 +63,7 @@ package src.levels {
                 }
             }
             
-            game.bulletController.deleteBullet(bullet);
+            game.bulletController.hideBullet(bullet);
         }
         
         
