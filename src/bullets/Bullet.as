@@ -12,6 +12,7 @@
     public class Bullet extends MovieClip implements GameObject {
         public var damage:Number = 50;
         public var speed:Number = 10;
+        static public var MANA_COST:Number = 0;
         static public const DELAY:Number = 500;
         
         public var body:b2Body;

@@ -2,6 +2,7 @@
     import flash.display.DisplayObjectContainer;
     import flash.utils.Timer;
     import flash.events.TimerEvent;
+    import src.events.RoomEvent;
     import src.Game;
     
     import src.levels.Room;
@@ -38,7 +39,10 @@
         
         public function update () {
             if (fire) {
-                spawnBullet();
+                var b:Bullet = spawnBullet();
+                if ( b ) {
+                    currentRoom.game.playerStat.registerManaLoss(BulletClass.MANA_COST);
+                }
             }
             
             var i = _bullets.length;
@@ -63,8 +67,8 @@
             fire = false;
         }
         
-        public function spawnBullet() {
-            if ( block ) return;
+        public function spawnBullet():Bullet {
+            if ( block ) return null;
             
             var bullet = getFreeBullet();
             
@@ -80,8 +84,9 @@
             bullet.moveTo(player.x + player.dir_x*15, player.y);
             
             bullet.setSpeedDirection (player.dir_x, player.dir_y);
-            
             lockSpawn();
+            
+            return bullet;
         }
         
         public function getFreeBullet():Bullet {
