@@ -33,6 +33,10 @@
             while ( numChildren ) {
                 removeChildAt(numChildren - 1);
             }
+            
+            while ( points.length ) {
+                points.splice( points.length - 1, 1);
+            }
         }
         
         public function removePoints(pointsToRemove:uint):void {
@@ -43,7 +47,6 @@
                             pointsToRemove = 1;
                         }
                         StatPoint(points[i]).makeFullHit();
-                        
                         break;
                     }
                 }
