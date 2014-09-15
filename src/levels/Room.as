@@ -27,6 +27,8 @@
         protected static const directions:Array = ["left", "right", "up", "down"];
         public static var taskManager:TaskManager;
 
+        public var game:Game;
+        
         public var world:b2World;
         private static var gravity:b2Vec2 = new b2Vec2(0, 0);
         protected var ROOM_FRICTION:Number = 8;
@@ -45,6 +47,8 @@
         private var activeAreas:Array=new Array();
 
         public function Room(game:Game) {
+            this.game = game;
+            
             world = new b2World(gravity, true);
             world.SetContactListener(new ContactListener(game));
             gameObjectPanel = new GameObjectPanel();
